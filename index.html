@@ -1558,7 +1558,132 @@
     }
 
     // ==================== MEROSHARE CSV PARSER ====================
+    // ==================== UNIVERSAL SMART MEROSHARE CSV PARSER ====================
     function handleCsvUpload(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      if (file.name.toLowerCase().endsWith(".xlsx") || file.name.toLowerCase().endsWith(".xls")) {
+        alert("⚠️ तपाईंले Excel (.xlsx) फाइल छान्नुभयो। कृपया 'My Shares.csv' फाइल छान्नुहोस् (वा Excel मा Save As > CSV गर्नुहोस्)।");
+        event.target.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const text = (e.target.result || "").replace(/^\uFEFF/, "");
+        const rawLines = text.split(/\r?\n/).filter(l => l.trim());
+        const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
+        const accObj = connectedAccounts.find(a => a.id === targetAcc);
+
+        const parseLine = (line, sep) => {
+          const res = [];
+          let cur = "", inQ = false;
+          for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (ch === '"') inQ = !inQ;
+            else if (ch === sep && !inQ) { res.push(cur.trim()); cur = ""; }
+            else cur += ch;
+          }
+          res.push(cur.trim());
+          return res;
+        };
+
+        const cleanNum = (val) => {
+          if (val === undefined || val === null || val === "") return NaN;
+          return parseFloat(String(val).replace(/,/g, "").replace(/Rs\.?|NPR/gi, "").trim());
+        };
+
+        let colMap = null;
+        let importedCount = 0;
+
+        rawLines.forEach((line, idx) => {
+          const sep = (line.split(";").length > line.split(",").length) ? ";" : ",";
+          const cols = parseLine(line, sep);
+          if (cols.length < 2) return;
+
+          const joinedLower = cols.join("|").toLowerCase();
+
+          // 1. Detect Header Row
+          if (joinedLower.includes("scrip") || joinedLower.includes("symbol")) {
+            colMap = { scrip: -1, units: -1, prevClose: -1, ltp: -1, buyRate: -1 };
+            cols.forEach((colName, cIdx) => {
+              const c = colName.toLowerCase();
+              if (c.includes("scrip") || c.includes("symbol")) colMap.scrip = cIdx;
+              else if (c.includes("current balance") || c.includes("balance") || c.includes("unit") || c.includes("qty") || c.includes("kitta")) colMap.units = cIdx;
+              else if (c.includes("previous closing price") || (c.includes("prev") && !c.includes("value"))) colMap.prevClose = cIdx;
+              else if (c.includes("last transaction") || c.includes("ltp") || (c.includes("closing price") && !c.includes("previous") && !c.includes("value"))) colMap.ltp = cIdx;
+              else if (c.includes("wacc") || c.includes("buy") || c.includes("purchase") || c.includes("cost")) colMap.buyRate = cIdx;
+            });
+            return;
+          }
+
+          if (joinedLower.includes("total") || joinedLower.includes("my portfolio") || joinedLower.includes("as of")) return;
+
+          let scrip = "", unitsVal = NaN, prevVal = NaN, ltpVal = NaN, buyVal = NaN;
+
+          if (colMap && colMap.scrip >= 0) {
+            scrip = (cols[colMap.scrip] || "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+            unitsVal = colMap.units >= 0 ? cleanNum(cols[colMap.units]) : NaN;
+            prevVal = colMap.prevClose >= 0 ? cleanNum(cols[colMap.prevClose]) : NaN;
+            ltpVal = colMap.ltp >= 0 ? cleanNum(cols[colMap.ltp]) : NaN;
+            buyVal = colMap.buyRate >= 0 ? cleanNum(cols[colMap.buyRate]) : NaN;
+          } else {
+            // Auto-detect Scrip column even if header was missing/different
+            const scripIdx = cols.findIndex(c => /^[A-Za-z]{2,10}$/.test(c.replace(/[^A-Za-z0-9]/g, "")));
+            if (scripIdx >= 0) {
+              scrip = cols[scripIdx].replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+              const nums = cols.slice(scripIdx + 1).map(cleanNum).filter(n => !isNaN(n) && n > 0);
+              if (nums.length >= 1) unitsVal = nums[0];
+              if (nums.length >= 2) prevVal = nums[1];
+              if (nums.length >= 4) ltpVal = nums[3]; // MeroShare skips Value column at index 2
+              else if (nums.length >= 3) ltpVal = nums[2];
+            }
+          }
+
+          if (scrip && scrip.length >= 2 && scrip.length <= 10 && !isNaN(unitsVal) && unitsVal > 0) {
+            const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === scrip);
+            const finalLtp = !isNaN(ltpVal) && ltpVal > 0 ? ltpVal : (listed ? listed.refPrice : 100);
+            const finalPrev = !isNaN(prevVal) && prevVal > 0 ? prevVal : finalLtp;
+            const finalBuy = !isNaN(buyVal) && buyVal > 0 ? buyVal : finalPrev;
+
+            const existingIdx = holdingsData.findIndex(h => h.account === targetAcc && h.scrip === scrip);
+            if (existingIdx >= 0) {
+              holdingsData[existingIdx] = {
+                ...holdingsData[existingIdx],
+                units: unitsVal,
+                prevClose: finalPrev,
+                ltp: finalLtp,
+                buyRate: !isNaN(buyVal) && buyVal > 0 ? buyVal : holdingsData[existingIdx].buyRate
+              };
+            } else {
+              holdingsData.push({
+                id: "CSV" + Date.now() + "_" + idx,
+                account: targetAcc,
+                accountLabel: accObj ? accObj.name : "Primary",
+                scrip,
+                sector: listed ? listed.sector : "Equity",
+                name: listed ? listed.name : scrip,
+                units: unitsVal,
+                buyRate: finalBuy,
+                prevClose: finalPrev,
+                ltp: finalLtp
+              });
+            }
+            importedCount++;
+          }
+        });
+
+        event.target.value = "";
+        if (importedCount > 0) {
+          saveUserWorkspace(); renderPortfolio();
+          alert(`✅ MeroShare CSV बाट ${importedCount} वटा सेयर/Mutual Fund को वास्तविक डेटा लोड भयो!`);
+        } else {
+          alert("⚠️ CSV फाइलमा सेयर डेटा भेटिएन। कृपया MeroShare बाट डाउनलोड भएको 'My Shares.csv' नै छान्नुहोस्।");
+        }
+      };
+      reader.readAsText(file);
+    } 
       const file = event.target.files?.[0];
       if (!file) return;
 
