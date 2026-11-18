@@ -1731,7 +1731,7 @@
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
+            body: JSON.stringify({...})
               contents: [{ parts: [{ text: userQuery }] }],
               systemInstruction: { parts: [{ text: `You are an expert NEPSE & Mutual Fund analyst. Respond strictly in ${selectedLang}. Use Google Search grounding for live NEPSE/ShareSansar/MeroLagani/NRB news. Portfolio: ${portfolioSummary}` }] },
               // tools: [{ google_search: {} }]            })
