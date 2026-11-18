@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>NEPSE CloudPulse AI — Excel/CSV & Candlestick Terminal</title>
+  <title>NEPSE CloudPulse AI — Accurate WACC & Candlestick Terminal</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- SheetJS Library: Supports .xlsx, .xls, and .csv directly -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -54,7 +53,7 @@
       <div class="flex items-center justify-between mb-4">
         <div>
           <h1 class="text-xl font-bold text-white">NEPSE CloudPulse <span class="text-emerald-400">AI</span></h1>
-          <p class="text-xs text-slate-400">Excel & CSV • Bonus/Right WACC • Candlestick</p>
+          <p class="text-xs text-slate-400">Exact MeroShare + Trade Book WACC Engine</p>
         </div>
         <span id="login-market-badge" class="px-2.5 py-1 text-[10px] font-bold rounded-full bg-slate-800 text-emerald-300 border border-slate-700">NPT</span>
       </div>
@@ -174,7 +173,7 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 1: PORTFOLIO & UNIVERSAL EXCEL/CSV IMPORTER ==================== -->
+    <!-- ==================== TAB 1: PORTFOLIO & ACCURATE RECONCILIATION ==================== -->
     <main id="tab-portfolio" class="px-4 pt-4 space-y-4">
       <section class="dynamic-banner rounded-2xl p-5">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -191,7 +190,7 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div class="bg-black/35 rounded-xl p-3.5 border border-white/10 min-w-[215px]">
-              <div class="text-[11px] text-slate-300 mb-1">Real P/L vs Adjusted WACC</div>
+              <div class="text-[11px] text-slate-300 mb-1">Real P/L vs Purchase WACC</div>
               <div class="flex items-baseline justify-between gap-2">
                 <span id="overall-pl-amount" class="text-base font-extrabold text-purple-300">NPR 0.00</span>
                 <span id="overall-pl-pct" class="px-2 py-0.5 rounded text-xs font-bold bg-purple-500/25 text-purple-200">0.00%</span>
@@ -213,8 +212,8 @@
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="openHoldingModal()" class="px-3 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">+ Add Stock</button>
           <label class="px-3.5 py-2.5 rounded-xl bg-indigo-600/35 hover:bg-indigo-600/50 text-xs font-bold text-indigo-200 border border-indigo-500/50 cursor-pointer flex items-center gap-1.5">
-            <span>📂 Upload MeroShare / Trade Book (Excel .xlsx or CSV)</span>
-            <input type="file" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,*/*" class="hidden" onchange="handleSmartSpreadsheetUpload(event)" />
+            <span>📂 Upload MeroShare / Trade Book (Excel or CSV)</span>
+            <input type="file" accept="*/*" class="hidden" onchange="handleSmartSpreadsheetUpload(event)" />
           </label>
           <button onclick="openBulkPasteModal()" class="px-3 py-2.5 rounded-xl bg-purple-500/20 text-xs font-bold text-purple-200 border border-purple-500/40 cursor-pointer">⚡ Paste Live LTP</button>
         </div>
@@ -228,8 +227,8 @@
       <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
         <div class="p-3.5 border-b border-slate-800 flex flex-wrap justify-between items-center gap-2">
           <div>
-            <h3 class="text-sm font-bold text-white">Holdings — Real WACC (Bonus/Right Auto-Adjusted) & High/Low Sort</h3>
-            <p class="text-[11px] text-slate-400">💡 पहिले MeroShare (Excel/CSV) र त्यसपछि `Bimal Data.csv` (वा Excel) अपलोड गर्दा बढी कित्ता स्वतः Bonus/Right मा जोडिन्छ</p>
+            <h3 class="text-sm font-bold text-white">Holdings — Exact MeroShare Units & Real Purchase WACC</h3>
+            <p class="text-[11px] text-slate-400">💡 पहिले Clear थिचेर सफा गर्नुहोस्, अनि MeroShare CSV र Bimal Data.csv अपलोड गर्नुहोस्</p>
           </div>
           <div class="flex items-center gap-2">
             <select id="mobile-sort-select" onchange="setSortFromDropdown(this.value)" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-[11px] text-emerald-300 font-semibold">
@@ -251,9 +250,9 @@
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-900/95 text-[11px] uppercase text-slate-300 border-b border-slate-800 select-none">
-                <th onclick="toggleSort('scrip')" class="py-3 px-4 cursor-pointer hover:text-emerald-300">Scrip & Bonus/Right <span id="sort-ind-scrip">⇅</span></th>
-                <th onclick="toggleSort('units')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Total Units <span id="sort-ind-units">⇅</span></th>
-                <th onclick="toggleSort('buyRate')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Real Avg WACC <span id="sort-ind-buyRate">⇅</span></th>
+                <th onclick="toggleSort('scrip')" class="py-3 px-4 cursor-pointer hover:text-emerald-300">Scrip & Reconciliation <span id="sort-ind-scrip">⇅</span></th>
+                <th onclick="toggleSort('units')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">MeroShare Qty <span id="sort-ind-units">⇅</span></th>
+                <th onclick="toggleSort('buyRate')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Purchase WACC <span id="sort-ind-buyRate">⇅</span></th>
                 <th onclick="toggleSort('prevClose')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Prev Close <span id="sort-ind-prevClose">⇅</span></th>
                 <th onclick="toggleSort('ltp')" class="py-3 px-3 text-right text-emerald-300 cursor-pointer hover:text-white">Live LTP / Unit <span id="sort-ind-ltp">⇅</span></th>
                 <th onclick="toggleSort('val')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Total Value <span id="sort-ind-val">⇅</span></th>
@@ -274,7 +273,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div>
             <h3 class="text-base font-bold text-white">🕯️ NEPSE Interactive Candlestick & Technical Analysis</h3>
-            <p class="text-xs text-slate-400">NEPSE का सबै सूचीकृत कम्पनी (NGPL, LEC, AKJCL, SSHL, AHPC, API, NABIL, Mutual Funds आदि) को Candlestick, EMA, SMA र RSI</p>
+            <p class="text-xs text-slate-400">NEPSE का सबै सूचीकृत कम्पनी (NGPL, LEC, SSHL, AHPC, API, NABIL, Mutual Funds आदि) को Candlestick, EMA, SMA र RSI</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <input id="candle-search" type="text" oninput="filterCandleScrips()" placeholder="Search Symbol..." class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white w-32" />
@@ -361,7 +360,7 @@
 
         <div id="agent-chat-box" class="flex-1 overflow-y-auto p-4 space-y-3 text-xs sm:text-sm">
           <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 text-slate-200">
-            नमस्ते! तपाईंको पोर्टफोलियोको <strong>Real WACC, Bonus/Right कित्ता र Live LTP</strong> मसँग सिधै जोडिएको छ। कुनै पनि प्रश्न सोध्नुहोस्!
+            नमस्ते! तपाईंको पोर्टफोलियोको <strong>MeroShare Qty, Purchase WACC, Bonus/Right र Live LTP</strong> मसँग सिधै जोडिएको छ। कुनै पनि प्रश्न सोध्नुहोस्!
           </div>
         </div>
 
@@ -417,7 +416,7 @@
         <input id="hold-name" type="text" required placeholder="Company / Mutual Fund Name" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         <div class="grid grid-cols-2 gap-2">
           <div><label class="text-[10px] text-slate-400">Total MeroShare Units</label><input id="hold-units" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
-          <div><label class="text-[10px] text-slate-400">Real Avg WACC (Rs)</label><input id="hold-buy" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
+          <div><label class="text-[10px] text-slate-400">Purchase WACC (Rs)</label><input id="hold-buy" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
         </div>
         <div id="bonus-reconcile-box" class="hidden p-2.5 rounded-xl bg-indigo-950/50 border border-indigo-500/40 space-y-1.5 text-xs">
           <div id="bonus-reconcile-info" class="text-indigo-200 font-semibold"></div>
@@ -438,7 +437,7 @@
     </div>
   </div>
 
-  <!-- Demat Vault Modal WITH Edit & Delete -->
+  <!-- Demat Vault Modal -->
   <div id="vault-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -464,7 +463,7 @@
     </div>
   </div>
 
-  <!-- Bulk Paste Live Market Data Modal -->
+  <!-- Bulk Paste Modal -->
   <div id="bulkpaste-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -476,7 +475,7 @@
     </div>
   </div>
 
-  <!-- API Key & Custom Live NEPSE Proxy URL Settings Modal -->
+  <!-- Settings Modal -->
   <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -550,6 +549,7 @@
       { symbol: "NRIC", name: "Nepal Reinsurance Co.", sector: "Investment", refPrice: 760.0 },
       { symbol: "HRL", name: "Himalayan Reinsurance", sector: "Investment", refPrice: 835.0 },
       { symbol: "HIDCL", name: "Hydroelectricity Inv. & Dev.", sector: "Investment", refPrice: 239.0 },
+      { symbol: "HIDCLP", name: "HIDCL Promoter Share", sector: "Investment", refPrice: 185.0 },
       { symbol: "CIT", name: "Citizen Investment Trust", sector: "Investment", refPrice: 2180.0 },
       { symbol: "NIBLPF", name: "NIBL Pragati Fund", sector: "Mutual Fund", refPrice: 10.45 },
       { symbol: "NIBLSF", name: "NIBL Sahabhagita Fund", sector: "Mutual Fund", refPrice: 10.62 },
@@ -564,7 +564,7 @@
       { symbol: "NTC", name: "Nepal Telecom", sector: "Manufacturing & Processing", refPrice: 918.0 }
     ];
 
-    // ==================== UNIVERSAL EXCEL (.xlsx/.xls) & CSV SMART UPLOADER ====================
+    // ==================== ACCURATE SPREADSHEET UPLOADER (MEROSHARE + TRADE BOOK) ====================
     function handleSmartSpreadsheetUpload(event) {
       const file = event.target.files?.[0];
       if (!file) return;
@@ -575,23 +575,14 @@
           const data = new Uint8Array(e.target.result);
           const workbook = XLSX.read(data, { type: "array" });
           const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-          // Convert any Excel (.xlsx/.xls) or CSV sheet into a clean 2D array of rows
           const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: "" });
-          if (!rows || rows.length === 0) {
-            alert("⚠️ फाइल खाली छ।");
-            event.target.value = "";
-            return;
-          }
+          if (!rows || rows.length === 0) { alert("⚠️ फाइल खाली छ।"); event.target.value = ""; return; }
 
-          // Auto-detect whether this file is a Broker Trade Book (has BUY/SELL or TRADE QTY) or MeroShare Portfolio
-          const flatHeaderCheck = rows.slice(0, 10).map(r => r.join("|").toLowerCase()).join("\n");
+          const flatHeaderCheck = rows.slice(0, 12).map(r => r.join("|").toLowerCase()).join("\n");
           const isTradeBook = flatHeaderCheck.includes("buy/sell") || flatHeaderCheck.includes("trade qty") || flatHeaderCheck.includes("exchange trade id");
 
-          if (isTradeBook) {
-            processTradeBookRows(rows);
-          } else {
-            processMeroShareRows(rows);
-          }
+          if (isTradeBook) processTradeBookRows(rows);
+          else processMeroShareRows(rows);
         } catch (err) {
           alert("⚠️ फाइल पढ्न समस्या आयो: " + err.message);
         }
@@ -600,41 +591,76 @@
       reader.readAsArrayBuffer(file);
     }
 
+    // 1. Strict Header-Mapped MeroShare Parser (Fixes S.N. / Value column swap bug!)
     function processMeroShareRows(rows) {
       const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
+      let colMap = null;
       let count = 0;
+
+      const cleanNum = (v) => {
+        if (v === undefined || v === null || v === "") return NaN;
+        return parseFloat(String(v).replace(/,/g, "").replace(/Rs\.?|NPR/gi, "").trim());
+      };
 
       rows.forEach((cols, idx) => {
         if (!Array.isArray(cols) || cols.length < 2) return;
         const cells = cols.map(c => String(c).trim());
         const joined = cells.join("|").toLowerCase();
-        if (joined.includes("scrip") || joined.includes("total") || joined.includes("my portfolio")) return;
 
-        const sIdx = cells.findIndex(c => /^[A-Za-z]{2,10}$/.test(c.replace(/[^A-Za-z0-9]/g, "")));
-        if (sIdx < 0) return;
+        // Detect MeroShare Header Row accurately
+        if (joined.includes("scrip") || joined.includes("current balance")) {
+          colMap = { scrip: -1, units: -1, prevClose: -1, ltp: -1 };
+          cells.forEach((h, i) => {
+            const c = h.toLowerCase();
+            if (c === "scrip" || c.includes("scrip") || c.includes("symbol")) colMap.scrip = i;
+            else if (c.includes("current balance") || c.includes("balance") || c.includes("unit") || c.includes("qty")) colMap.units = i;
+            else if (c.includes("previous closing price") || (c.includes("prev") && !c.includes("value"))) colMap.prevClose = i;
+            else if (c.includes("last transaction") || c.includes("ltp") || (c.includes("closing price") && !c.includes("previous") && !c.includes("value"))) colMap.ltp = i;
+          });
+          return;
+        }
 
-        const scrip = cells[sIdx].replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-        const nums = cells.slice(sIdx + 1)
-          .map(v => parseFloat(String(v).replace(/,/g, "")))
-          .filter(n => !isNaN(n) && n > 0);
-        if (nums.length === 0) return;
+        if (joined.includes("total") || joined.includes("my portfolio") || joined.includes("as of")) return;
 
-        const units = nums[0];
-        const prev = nums[1] || 100;
-        const ltp = (latestMarketCache[scrip]?.ltp) || nums[3] || nums[2] || prev;
+        let scrip = "", units = NaN, prev = NaN, ltp = NaN;
+
+        if (colMap && colMap.scrip >= 0 && colMap.units >= 0) {
+          scrip = (cells[colMap.scrip] || "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+          units = cleanNum(cells[colMap.units]);
+          prev = colMap.prevClose >= 0 ? cleanNum(cells[colMap.prevClose]) : NaN;
+          ltp = colMap.ltp >= 0 ? cleanNum(cells[colMap.ltp]) : NaN;
+        } else {
+          // Standard MeroShare My Shares column order: [0: S.N., 1: Scrip, 2: Current Balance, 3: Prev Close, 4: Value Prev, 5: LTP, 6: Value LTP]
+          const sIdx = cells.findIndex(c => /^[A-Za-z]{2,10}$/.test(c.replace(/[^A-Za-z0-9]/g, "")));
+          if (sIdx < 0) return;
+          scrip = cells[sIdx].replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+          units = cleanNum(cells[sIdx + 1]);
+          prev = cleanNum(cells[sIdx + 2]);
+          ltp = cleanNum(cells[sIdx + 4]); // Skip Value as of Prev Close at sIdx + 3
+        }
+
+        if (!scrip || !/^[A-Z0-9]{2,10}$/.test(scrip) || isNaN(units) || units <= 0) return;
+
         const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === scrip);
+        const liveQuote = latestMarketCache[scrip];
+        const finalLtp = (liveQuote && liveQuote.ltp > 0) ? liveQuote.ltp : (!isNaN(ltp) && ltp > 0 ? ltp : (listed ? listed.refPrice : 100));
+        const finalPrev = (liveQuote && liveQuote.prevClose > 0) ? liveQuote.prevClose : (!isNaN(prev) && prev > 0 ? prev : finalLtp);
 
         const exIdx = holdingsData.findIndex(h => h.account === targetAcc && h.scrip === scrip);
         if (exIdx >= 0) {
           const ex = holdingsData[exIdx];
-          holdingsData[exIdx] = { ...ex, units, prevClose: prev, ltp };
-          recalculateHoldingWithBonusRight(holdingsData[exIdx]);
+          ex.meroShareUnits = units;
+          ex.prevClose = finalPrev;
+          ex.ltp = finalLtp;
+          reconcileHoldingWithMeroShareAndTradeBook(ex);
         } else {
           holdingsData.push({
             id: "MS" + Date.now() + "_" + idx, account: targetAcc, scrip,
             sector: listed ? listed.sector : "Equity", name: listed ? listed.name : scrip,
-            units, buyRate: prev, prevClose: prev, ltp,
-            netTradedQty: 0, netBuyCost: 0, bonusRightQty: 0, bonusType: "bonus"
+            units: units, meroShareUnits: units,
+            buyRate: 100, // Default IPO cost when no trade book exists yet
+            prevClose: finalPrev, ltp: finalLtp,
+            netTradedQty: 0, avgTradeBuyRate: 0, netBuyCost: 0, bonusRightQty: 0, bonusType: "bonus", sourceNote: "MeroShare Only"
           });
         }
         count++;
@@ -642,12 +668,16 @@
 
       if (count > 0) {
         saveUserWorkspace(); renderPortfolio();
-        alert(`✅ MeroShare बाट ${count} वटा सेयर/Mutual Fund को वास्तविक कित्ता लोड भयो!\nअब Trade Book (Bimal Data.csv वा Excel) अपलोड गर्नुहोस्।`);
+        alert(`✅ MeroShare बाट ${count} वटा सेयरको वास्तविक कित्ता लोड भयो!\nअब 'Bimal Data.csv' (Trade Book) अपलोड गर्नुहोस्।`);
       } else {
         alert("⚠️ MeroShare डेटा भेटिएन।");
       }
     }
 
+    // 2. Trade Book Parser + Exact User Reconciliation Rule:
+    // - Same scrip code: Add Buy, Subtract Sell -> Net Traded Qty & Avg Buy Rate
+    // - If MeroShare has MORE than Net Trade Qty -> Take MeroShare Qty, extra = Bonus (Rs 0) / Right (Rs 100) -> Real WACC
+    // - If MeroShare has LESS than Net Trade Qty -> Take MeroShare Qty with Trade Book Avg Purchase Rate
     function processTradeBookRows(rows) {
       const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
       let colIdx = { symbol: 2, tradeId: 3, side: 6, qty: 8, price: 9 };
@@ -678,7 +708,7 @@
         const qty = parseFloat((cells[colIdx.qty] || "").replace(/,/g, ""));
         const price = parseFloat((cells[colIdx.price] || "").replace(/,/g, ""));
 
-        if (!sym || !/^[A-Z]{2,10}$/.test(sym) || isNaN(qty) || qty <= 0 || isNaN(price)) return;
+        if (!sym || !/^[A-Z0-9]{2,10}$/.test(sym) || isNaN(qty) || qty <= 0 || isNaN(price)) return;
         if (tid && seenTradeIds.has(tid)) return;
         if (tid) seenTradeIds.add(tid);
 
@@ -693,51 +723,78 @@
         }
       });
 
-      let activeScripsUpdated = 0;
+      let matchedCount = 0;
       Object.entries(tradeSummary).forEach(([sym, tr]) => {
         const netTradedQty = Math.max(0, tr.buyQty - tr.sellQty);
-        const avgBuyPrice = tr.buyQty > 0 ? tr.buyCost / tr.buyQty : 0;
-        const remainingTradeCost = netTradedQty * avgBuyPrice;
+        const avgBuyRate = tr.buyQty > 0 ? tr.buyCost / tr.buyQty : 0;
         const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
-        const livePrice = latestMarketCache[sym]?.ltp || (listed ? listed.refPrice : avgBuyPrice);
+        const livePrice = latestMarketCache[sym]?.ltp || (listed ? listed.refPrice : avgBuyRate);
 
         const exIdx = holdingsData.findIndex(h => h.account === targetAcc && h.scrip === sym);
         if (exIdx >= 0) {
           const ex = holdingsData[exIdx];
-          const finalUnits = ex.units > netTradedQty ? ex.units : (netTradedQty || ex.units);
-          ex.units = finalUnits;
           ex.netTradedQty = netTradedQty;
-          ex.netBuyCost = remainingTradeCost;
+          ex.avgTradeBuyRate = +avgBuyRate.toFixed(2);
+          ex.netBuyCost = netTradedQty * avgBuyRate;
           ex.bonusType = ex.bonusType || "bonus";
-          recalculateHoldingWithBonusRight(ex);
-          activeScripsUpdated++;
+          reconcileHoldingWithMeroShareAndTradeBook(ex);
+          matchedCount++;
         } else if (netTradedQty > 0) {
+          // If MeroShare wasn't uploaded yet, show Net Trade Qty & Avg Buy Rate
           holdingsData.push({
             id: "TB" + Date.now() + sym, account: targetAcc, scrip: sym,
             sector: listed ? listed.sector : "Hydropower", name: listed ? listed.name : sym,
-            units: netTradedQty, buyRate: +avgBuyPrice.toFixed(2), prevClose: livePrice, ltp: livePrice,
-            netTradedQty, netBuyCost: remainingTradeCost, bonusRightQty: 0, bonusType: "bonus"
+            units: netTradedQty, meroShareUnits: 0,
+            buyRate: +avgBuyRate.toFixed(2), prevClose: livePrice, ltp: livePrice,
+            netTradedQty, avgTradeBuyRate: +avgBuyRate.toFixed(2), netBuyCost: netTradedQty * avgBuyRate,
+            bonusRightQty: 0, bonusType: "bonus", sourceNote: `Trade Net (${tr.buyQty} Buy - ${tr.sellQty} Sell)`
           });
-          activeScripsUpdated++;
+          matchedCount++;
         }
       });
 
       if (rowCount > 0) {
         saveUserWorkspace(); renderPortfolio();
-        alert(`✅ Trade Book का ${rowCount} कारोबार प्रोसेस भई ${activeScripsUpdated} सक्रिय सेयरको Real WACC & Bonus/Right हिसाब गरियो!`);
+        alert(`✅ Trade Book का ${rowCount} कारोबार (Buy जोडेर, Sell घटाएर) र MeroShare कित्तासँग मिलाइयो!`);
       } else {
         alert("⚠️ Trade Book मा Buy/Sell डेटा भेटिएन।");
       }
     }
 
-    function recalculateHoldingWithBonusRight(h) {
-      if (h.netTradedQty > 0 && h.units > h.netTradedQty) {
-        h.bonusRightQty = +(h.units - h.netTradedQty).toFixed(2);
-        const extraCost = h.bonusType === "right" ? h.bonusRightQty * 100 : 0;
-        h.buyRate = +((h.netBuyCost + extraCost) / h.units).toFixed(2);
-      } else if (h.netTradedQty > 0) {
+    // Core Reconciliation Engine per User's Exact Rule
+    function reconcileHoldingWithMeroShareAndTradeBook(h) {
+      const msQty = Number(h.meroShareUnits) || 0;
+      const netQty = Number(h.netTradedQty) || 0;
+      const avgRate = Number(h.avgTradeBuyRate) || 0;
+
+      if (msQty > 0 && netQty > 0) {
+        h.units = msQty; // Always trust MeroShare actual balance
+        if (msQty > netQty) {
+          // MeroShare has MORE -> Extra shares are Bonus (Rs 0) or Right (Rs 100)
+          h.bonusRightQty = +(msQty - netQty).toFixed(2);
+          const extraCost = h.bonusType === "right" ? h.bonusRightQty * 100 : 0;
+          h.buyRate = +(((netQty * avgRate) + extraCost) / msQty).toFixed(2);
+          h.sourceNote = `Trade ${netQty} + ${h.bonusRightQty} ${h.bonusType === 'right' ? 'Right' : 'Bonus'}`;
+        } else if (msQty < netQty) {
+          // MeroShare has LESS -> Take MeroShare Qty with Trade Book Purchase Rate
+          h.bonusRightQty = 0;
+          h.buyRate = +avgRate.toFixed(2);
+          h.sourceNote = `MeroShare Qty (${msQty} < Trade ${netQty}) @ Trade Rate`;
+        } else {
+          // Exact Match
+          h.bonusRightQty = 0;
+          h.buyRate = +avgRate.toFixed(2);
+          h.sourceNote = `Exact Match (${msQty} units)`;
+        }
+      } else if (msQty > 0 && netQty === 0) {
+        // Only in MeroShare (e.g., IPO or pre-existing holding)
+        h.units = msQty;
         h.bonusRightQty = 0;
-        h.buyRate = +(h.netBuyCost / h.units).toFixed(2);
+        if (!h.buyRate || h.buyRate <= 0) h.buyRate = 100;
+        h.sourceNote = "MeroShare Balance";
+      } else if (netQty > 0) {
+        h.units = netQty;
+        h.buyRate = +avgRate.toFixed(2);
       }
     }
 
@@ -745,7 +802,7 @@
       const h = holdingsData.find(x => String(x.id) === String(id));
       if (!h || !h.bonusRightQty) return;
       h.bonusType = h.bonusType === "right" ? "bonus" : "right";
-      recalculateHoldingWithBonusRight(h);
+      reconcileHoldingWithMeroShareAndTradeBook(h);
       saveUserWorkspace(); renderPortfolio();
     }
 
@@ -877,7 +934,7 @@
       else { fetchLiveNepsePrices(false); autoLiveInterval = setInterval(() => { updateMarketStatusUI(); fetchLiveNepsePrices(false); }, 60000); btn.textContent = "🟢 Auto-Live: ON"; }
     }
 
-    // ==================== TABLE HIGH/LOW SORTING & PORTFOLIO RENDERING ====================
+    // ==================== TABLE HIGH/LOW SORTING & RENDERING ====================
     function toggleSort(field) {
       if (sortField === field) sortDir = sortDir === "desc" ? "asc" : "desc";
       else { sortField = field; sortDir = field === "scrip" ? "asc" : "desc"; }
@@ -928,7 +985,7 @@
       tbody.innerHTML = "";
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 text-xs">"📂 Upload MeroShare / Trade Book (Excel .xlsx or CSV)" थिचेर आफ्नो फाइल अपलोड गर्नुहोस्।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 text-xs">"📂 Upload MeroShare / Trade Book (Excel or CSV)" थिचेर आफ्नो फाइल अपलोड गर्नुहोस्।</td></tr>`;
       }
 
       filtered.forEach(item => {
@@ -941,7 +998,7 @@
 
         const bonusBadge = item.bonusRightQty > 0
           ? `<button type="button" onclick="event.stopPropagation(); toggleBonusRightType('${item.id}')" class="mt-0.5 inline-block px-1.5 py-0.5 rounded bg-indigo-500/25 text-indigo-200 border border-indigo-500/40 text-[10px] font-semibold cursor-pointer">🎁 +${item.bonusRightQty} ${item.bonusType === 'right' ? 'Right @100' : 'Bonus @0'}</button>`
-          : "";
+          : (item.sourceNote ? `<div class="text-[10px] text-slate-400">${escapeHtml(item.sourceNote)}</div>` : "");
 
         const tr = document.createElement("tr");
         tr.className = "long-press-target hover:bg-slate-800/40 cursor-pointer";
@@ -1023,8 +1080,7 @@
 
     function selectCandleScrip(sym) {
       if (!sym) return;
-      activeCandleSymbol = sym;
-      customCandleOHLC = null;
+      activeCandleSymbol = sym; customCandleOHLC = null;
       const holding = holdingsData.find(h => h.scrip === sym);
       const live = latestMarketCache[sym];
       const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
@@ -1080,7 +1136,6 @@
       const latest = customCandleOHLC || { o: 250, h: 255, l: 246, c: 252 };
       const count = 28;
       const mult = activeCandleTimeframe === "1W" ? 0.032 : activeCandleTimeframe === "1M" ? 0.055 : 0.018;
-
       let seed = activeCandleSymbol.split("").reduce((a, ch) => a + ch.charCodeAt(0), 0);
       const rand = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
 
@@ -1187,7 +1242,7 @@
 
       const st = getNepseMarketStatus();
       const liveHoldingsBlock = holdingsData.length > 0
-        ? holdingsData.map(h => `- ${h.scrip} (${h.sector}): Total Units=${h.units}, Bonus/Right=${h.bonusRightQty || 0}, Real WACC=Rs ${h.buyRate}, PrevClose=Rs ${h.prevClose}, Current Live LTP=Rs ${h.ltp}, Real P/L=Rs ${((h.ltp - h.buyRate) * h.units).toFixed(2)}`).join("\n")
+        ? holdingsData.map(h => `- ${h.scrip} (${h.sector}): Total Units=${h.units}, Bonus/Right=${h.bonusRightQty || 0}, Purchase WACC=Rs ${h.buyRate}, PrevClose=Rs ${h.prevClose}, Live LTP=Rs ${h.ltp}, Real P/L=Rs ${((h.ltp - h.buyRate) * h.units).toFixed(2)}`).join("\n")
         : "No holdings uploaded yet.";
 
       const liveMarketFeed = Object.entries(latestMarketCache).slice(0, 50)
@@ -1297,7 +1352,7 @@ ${userQuery}`;
       const id = document.getElementById("edit-holding-id").value;
       const it = holdingsData.find(h => String(h.id) === String(id)); if (!it) return;
       it.bonusType = document.getElementById("bonus-type-select").value;
-      recalculateHoldingWithBonusRight(it);
+      reconcileHoldingWithMeroShareAndTradeBook(it);
       document.getElementById("hold-buy").value = it.buyRate;
     }
     function startHoldingLongPress(id) { cancelLongPress(); longPressTimer = setTimeout(() => openEditHoldingModal(id), 550); }
