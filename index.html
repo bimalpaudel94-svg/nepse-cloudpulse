@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>NEPSE CloudPulse AI — Accurate WACC & Candlestick Terminal</title>
+  <title>NEPSE CloudPulse AI — Real-Time WACC & Report Terminal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -53,7 +55,7 @@
       <div class="flex items-center justify-between mb-4">
         <div>
           <h1 class="text-xl font-bold text-white">NEPSE CloudPulse <span class="text-emerald-400">AI</span></h1>
-          <p class="text-xs text-slate-400">Exact MeroShare + Trade Book WACC Engine</p>
+          <p class="text-xs text-slate-400">All-Scrips Loader • Exact WACC • Excel & PDF Export</p>
         </div>
         <span id="login-market-badge" class="px-2.5 py-1 text-[10px] font-bold rounded-full bg-slate-800 text-emerald-300 border border-slate-700">NPT</span>
       </div>
@@ -120,7 +122,6 @@
 
   <!-- ==================== 2. MAIN APP DASHBOARD ==================== -->
   <div id="app-shell" class="hidden max-w-6xl mx-auto pb-16">
-    <!-- Top Live Market Status Strip -->
     <div class="bg-slate-950/95 border-b border-slate-800 px-4 py-2 flex flex-wrap items-center justify-between gap-2 sticky top-0 z-30 backdrop-blur-md">
       <div class="flex items-center gap-2 text-xs">
         <span id="market-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
@@ -137,7 +138,6 @@
       </div>
     </div>
 
-    <!-- Header -->
     <header class="px-4 pt-3 pb-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
       <div class="flex items-center justify-between">
         <div>
@@ -163,23 +163,22 @@
       </div>
     </header>
 
-    <!-- Navigation Tabs -->
     <div class="px-4 mt-1">
       <div class="flex gap-2 overflow-x-auto no-scrollbar border-b border-slate-800 pb-2">
-        <button onclick="switchTab('portfolio')" id="tab-btn-portfolio" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border shrink-0 cursor-pointer">📊 Portfolio & WACC</button>
+        <button onclick="switchTab('portfolio')" id="tab-btn-portfolio" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border shrink-0 cursor-pointer">📊 Portfolio & Reports</button>
         <button onclick="switchTab('candlestick')" id="tab-btn-candlestick" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">🕯️ NEPSE Candlestick & Technical</button>
         <button onclick="switchTab('ai-agent')" id="tab-btn-ai-agent" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">✨ Gemini AI Analyst (Live)</button>
         <button onclick="switchTab('nepse-directory')" id="tab-btn-nepse-directory" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">🏛️ All NEPSE Scrips</button>
       </div>
     </div>
 
-    <!-- ==================== TAB 1: PORTFOLIO & ACCURATE RECONCILIATION ==================== -->
+    <!-- ==================== TAB 1: PORTFOLIO & REPORTS ==================== -->
     <main id="tab-portfolio" class="px-4 pt-4 space-y-4">
       <section class="dynamic-banner rounded-2xl p-5">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div class="flex items-center gap-2 mb-1">
-              <span class="text-xs text-slate-300 uppercase">Total Portfolio Value</span>
+              <span class="text-xs text-slate-300 uppercase">Total Portfolio Value (<span id="total-scrips-count">0</span> Scrips)</span>
               <span id="account-badge" class="px-2 py-0.5 rounded bg-black/30 text-[11px] font-semibold text-white">All Accounts</span>
             </div>
             <div class="flex flex-wrap items-baseline gap-3">
@@ -207,28 +206,33 @@
         </div>
       </section>
 
-      <!-- Universal Excel (.xlsx/.xls) & CSV Action Toolbar -->
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="openHoldingModal()" class="px-3 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">+ Add Stock</button>
-          <label class="px-3.5 py-2.5 rounded-xl bg-indigo-600/35 hover:bg-indigo-600/50 text-xs font-bold text-indigo-200 border border-indigo-500/50 cursor-pointer flex items-center gap-1.5">
-            <span>📂 Upload MeroShare / Trade Book (Excel or CSV)</span>
+          <label class="px-3 py-2.5 rounded-xl bg-indigo-600/35 hover:bg-indigo-600/50 text-xs font-bold text-indigo-200 border border-indigo-500/50 cursor-pointer flex items-center gap-1">
+            <span>📂 Import MeroShare / Trade Book</span>
             <input type="file" accept="*/*" class="hidden" onchange="handleSmartSpreadsheetUpload(event)" />
           </label>
           <button onclick="openBulkPasteModal()" class="px-3 py-2.5 rounded-xl bg-purple-500/20 text-xs font-bold text-purple-200 border border-purple-500/40 cursor-pointer">⚡ Paste Live LTP</button>
+          <button id="fetch-live-btn" onclick="fetchLiveNepsePrices(true)" class="px-3 py-2.5 rounded-xl bg-emerald-500/20 text-xs font-bold text-emerald-300 border border-emerald-500/40 cursor-pointer">📡 Sync Live NEPSE</button>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="clearAccountHoldings()" class="px-3 py-2 rounded-xl bg-slate-900 text-xs font-semibold text-red-400 border border-slate-800 cursor-pointer">🗑️ Clear</button>
-          <button id="fetch-live-btn" onclick="fetchLiveNepsePrices(true)" class="px-3 py-2 rounded-xl bg-emerald-500/20 text-xs font-bold text-emerald-300 border border-emerald-500/40 cursor-pointer">📡 Live Sync</button>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="exportPortfolioToExcel()" class="px-3 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/45 text-xs font-bold text-emerald-200 border border-emerald-500/40 cursor-pointer">
+            📗 Export Excel (.xlsx)
+          </button>
+          <button onclick="exportPortfolioToPDF()" class="px-3 py-2 rounded-xl bg-rose-600/30 hover:bg-rose-600/45 text-xs font-bold text-rose-200 border border-rose-500/40 cursor-pointer">
+            📕 Export PDF Report
+          </button>
+          <button onclick="clearAccountHoldings()" class="px-2.5 py-2 rounded-xl bg-slate-900 text-xs font-semibold text-red-400 border border-slate-800 cursor-pointer">🗑️</button>
         </div>
       </div>
 
-      <!-- Holdings Table -->
       <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
         <div class="p-3.5 border-b border-slate-800 flex flex-wrap justify-between items-center gap-2">
           <div>
-            <h3 class="text-sm font-bold text-white">Holdings — Exact MeroShare Units & Real Purchase WACC</h3>
-            <p class="text-[11px] text-slate-400">💡 पहिले Clear थिचेर सफा गर्नुहोस्, अनि MeroShare CSV र Bimal Data.csv अपलोड गर्नुहोस्</p>
+            <h3 class="text-sm font-bold text-white">Holdings — All Loaded Scrips & Real WACC</h3>
+            <p class="text-[11px] text-slate-400">💡 हेडर थिचेर High ↔ Low सर्ट गर्नुहोस् • जुनसुकै सेयर सच्याउन Long-Press वा ✏️ थिच्नुहोस्</p>
           </div>
           <div class="flex items-center gap-2">
             <select id="mobile-sort-select" onchange="setSortFromDropdown(this.value)" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-[11px] text-emerald-300 font-semibold">
@@ -243,16 +247,16 @@
               <option value="daypl-asc">Today P/L: Low → High</option>
               <option value="scrip-asc">Scrip: A → Z</option>
             </select>
-            <span id="live-source-pill" class="text-[10px] px-2 py-1 rounded bg-slate-800 text-slate-300">Source: Local</span>
+            <span id="live-source-pill" class="text-[10px] px-2 py-1 rounded bg-slate-800 text-slate-300">Source: Ready</span>
           </div>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-900/95 text-[11px] uppercase text-slate-300 border-b border-slate-800 select-none">
-                <th onclick="toggleSort('scrip')" class="py-3 px-4 cursor-pointer hover:text-emerald-300">Scrip & Reconciliation <span id="sort-ind-scrip">⇅</span></th>
-                <th onclick="toggleSort('units')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">MeroShare Qty <span id="sort-ind-units">⇅</span></th>
-                <th onclick="toggleSort('buyRate')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Purchase WACC <span id="sort-ind-buyRate">⇅</span></th>
+                <th onclick="toggleSort('scrip')" class="py-3 px-4 cursor-pointer hover:text-emerald-300">Scrip & Status <span id="sort-ind-scrip">⇅</span></th>
+                <th onclick="toggleSort('units')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Units <span id="sort-ind-units">⇅</span></th>
+                <th onclick="toggleSort('buyRate')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Buy WACC <span id="sort-ind-buyRate">⇅</span></th>
                 <th onclick="toggleSort('prevClose')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Prev Close <span id="sort-ind-prevClose">⇅</span></th>
                 <th onclick="toggleSort('ltp')" class="py-3 px-3 text-right text-emerald-300 cursor-pointer hover:text-white">Live LTP / Unit <span id="sort-ind-ltp">⇅</span></th>
                 <th onclick="toggleSort('val')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Total Value <span id="sort-ind-val">⇅</span></th>
@@ -273,7 +277,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div>
             <h3 class="text-base font-bold text-white">🕯️ NEPSE Interactive Candlestick & Technical Analysis</h3>
-            <p class="text-xs text-slate-400">NEPSE का सबै सूचीकृत कम्पनी (NGPL, LEC, SSHL, AHPC, API, NABIL, Mutual Funds आदि) को Candlestick, EMA, SMA र RSI</p>
+            <p class="text-xs text-slate-400">NEPSE का सबै सूचीकृत कम्पनी (AHPC, SSHL, LEC, MBL, NGPL, NIBLSF आदि) को Candlestick, EMA, SMA र RSI</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <input id="candle-search" type="text" oninput="filterCandleScrips()" placeholder="Search Symbol..." class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white w-32" />
@@ -287,7 +291,7 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-xs">
-          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Symbol & Sector</span><strong id="c-title" class="text-white">NGPL</strong></div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Symbol & Sector</span><strong id="c-title" class="text-white">AHPC</strong></div>
           <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Open / Prev</span><strong id="c-open" class="text-slate-200">—</strong></div>
           <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Day High</span><strong id="c-high" class="text-emerald-300">—</strong></div>
           <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Day Low</span><strong id="c-low" class="text-red-300">—</strong></div>
@@ -353,7 +357,7 @@
         </div>
 
         <div class="px-3.5 py-2 bg-slate-950/60 border-b border-slate-800 flex gap-2 overflow-x-auto no-scrollbar">
-          <button onclick="askMyPortfolioAnalysis()" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">💼 मेरो Real WACC र Live नाफा/नोक्सान विश्लेषण</button>
+          <button onclick="askMyPortfolioAnalysis()" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">💼 मेरो ३३ वटै सेयरको Live विश्लेषण</button>
           <button onclick="sendMessageToGeminiAgent('मेरो पोर्टफोलियोमा कुन स्टकमा Bonus/Right शेयर छ र Real WACC अनुसार कुन बेच्दा राम्रो हुन्छ?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-purple-300 border border-purple-500/30 shrink-0 cursor-pointer">🎁 Bonus/Right & Profit Strategy</button>
           <button onclick="sendMessageToGeminiAgent('NEPSE का Hydropower र Commercial Bank सेक्टरको अहिलेको प्राविधिक अवस्था के छ?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">📈 Sector Outlook</button>
         </div>
@@ -409,13 +413,13 @@
         <input type="hidden" id="edit-holding-id" value="" />
         <select id="hold-account" required class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"></select>
         <div class="grid grid-cols-2 gap-2">
-          <input id="hold-scrip" list="nepse-scrip-datalist" type="text" required oninput="onScripInput(this.value)" placeholder="Symbol (e.g. NGPL)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase" />
+          <input id="hold-scrip" list="nepse-scrip-datalist" type="text" required oninput="onScripInput(this.value)" placeholder="Symbol (e.g. AHPC)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase" />
           <input id="hold-sector" type="text" required placeholder="Sector" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         </div>
         <datalist id="nepse-scrip-datalist"></datalist>
         <input id="hold-name" type="text" required placeholder="Company / Mutual Fund Name" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         <div class="grid grid-cols-2 gap-2">
-          <div><label class="text-[10px] text-slate-400">Total MeroShare Units</label><input id="hold-units" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
+          <div><label class="text-[10px] text-slate-400">Total Units</label><input id="hold-units" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
           <div><label class="text-[10px] text-slate-400">Purchase WACC (Rs)</label><input id="hold-buy" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
         </div>
         <div id="bonus-reconcile-box" class="hidden p-2.5 rounded-xl bg-indigo-950/50 border border-indigo-500/40 space-y-1.5 text-xs">
@@ -487,7 +491,7 @@
         <input id="gemini-key-input" type="text" placeholder="Paste Gemini API Key..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono" />
       </div>
       <div>
-        <label class="block text-[11px] text-emerald-300 mb-1">Google Apps Script Live NEPSE URL (Optional)</label>
+        <label class="block text-[11px] text-emerald-300 mb-1">Google Apps Script Live NEPSE URL (१००% Real-Time का लागि)</label>
         <input id="live-proxy-url-input" type="text" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono" />
       </div>
       <button onclick="saveAppSettings()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">Save & Sync</button>
@@ -501,62 +505,74 @@
     let currentUser = null, holdingsData = [], connectedAccounts = [], activeAccountFilter = "ALL";
     let manualThemeOverride = null, longPressTimer = null, autoLiveInterval = null;
     let sortField = "default", sortDir = "desc", latestMarketCache = {};
-    let activeCandleSymbol = "NGPL", activeCandleTimeframe = "1D", customCandleOHLC = null;
+    let activeCandleSymbol = "AHPC", activeCandleTimeframe = "1D", customCandleOHLC = null;
 
     const NEPSE_LISTED_SCRIPS = [
-      { symbol: "NGPL", name: "Ngadi Group Power Ltd.", sector: "Hydropower", refPrice: 486.0 },
-      { symbol: "LEC", name: "Liberty Energy Company Ltd.", sector: "Hydropower", refPrice: 258.0 },
-      { symbol: "AKJCL", name: "Ankhu Khola Jalvidhyut Co.", sector: "Hydropower", refPrice: 314.0 },
+      { symbol: "AHPC", name: "Arun Valley Hydropower Dev.", sector: "Hydropower", refPrice: 250.0 },
       { symbol: "SSHL", name: "Shiva Shree Hydropower Ltd.", sector: "Hydropower", refPrice: 195.0 },
-      { symbol: "RHPL", name: "Rasuwagadhi Hydropower Co.", sector: "Hydropower", refPrice: 290.0 },
+      { symbol: "LEC", name: "Liberty Energy Company Ltd.", sector: "Hydropower", refPrice: 258.0 },
+      { symbol: "NGPL", name: "Ngadi Group Power Ltd.", sector: "Hydropower", refPrice: 380.0 },
+      { symbol: "API", name: "Api Power Company Ltd.", sector: "Hydropower", refPrice: 320.0 },
+      { symbol: "RHPL", name: "RasuwaGadhi Hydropower Co.", sector: "Hydropower", refPrice: 155.0 },
+      { symbol: "UMHL", name: "United Modi Hydropower Ltd.", sector: "Hydropower", refPrice: 520.0 },
+      { symbol: "SPDL", name: "Syange Hydropower Ltd.", sector: "Hydropower", refPrice: 330.0 },
+      { symbol: "GHL", name: "Ghalemdi Hydro Ltd.", sector: "Hydropower", refPrice: 230.0 },
+      { symbol: "SJCL", name: "Sanjen Jalvidhyut Co.", sector: "Hydropower", refPrice: 225.0 },
+      { symbol: "MBJC", name: "Madhya Bhotekoshi Jalavidyut", sector: "Hydropower", refPrice: 270.0 },
+      { symbol: "AKPL", name: "Arun Kabeli Power Ltd.", sector: "Hydropower", refPrice: 245.0 },
+      { symbol: "MHNL", name: "Mountain Hydro Nepal Ltd.", sector: "Hydropower", refPrice: 245.0 },
+      { symbol: "JOSHI", name: "Joshi Hydropower Dev.", sector: "Hydropower", refPrice: 240.0 },
+      { symbol: "TVCL", name: "Trishuli Jal Vidhyut Co.", sector: "Hydropower", refPrice: 280.0 },
+      { symbol: "HPPL", name: "Himalayan Power Partner", sector: "Hydropower", refPrice: 360.0 },
+      { symbol: "AKJCL", name: "Ankhu Khola Jalvidhyut Co.", sector: "Hydropower", refPrice: 314.0 },
       { symbol: "BPCL", name: "Butwal Power Company", sector: "Hydropower", refPrice: 382.0 },
-      { symbol: "API", name: "Api Power Company", sector: "Hydropower", refPrice: 250.0 },
-      { symbol: "AHPC", name: "Arun Valley Hydropower", sector: "Hydropower", refPrice: 325.0 },
-      { symbol: "UMHL", name: "United Modi Hydropower", sector: "Hydropower", refPrice: 510.0 },
-      { symbol: "SJCL", name: "Sanjen Jalavidhyut Co.", sector: "Hydropower", refPrice: 260.0 },
       { symbol: "CHCL", name: "Chilime Hydropower", sector: "Hydropower", refPrice: 545.0 },
       { symbol: "SHPC", name: "Sanima Mai Hydropower", sector: "Hydropower", refPrice: 445.0 },
       { symbol: "UPPER", name: "Upper Tamakoshi", sector: "Hydropower", refPrice: 228.0 },
-      { symbol: "AKPL", name: "Arun Kabeli Power", sector: "Hydropower", refPrice: 248.0 },
       { symbol: "SAHAS", name: "Sahas Urja Limited", sector: "Hydropower", refPrice: 492.0 },
-      { symbol: "MBL", name: "Machhapuchchhre Bank Ltd.", sector: "Commercial Banks", refPrice: 265.0 },
-      { symbol: "CZBIL", name: "Citizens Bank International", sector: "Commercial Banks", refPrice: 198.0 },
-      { symbol: "SBL", name: "Siddhartha Bank Limited", sector: "Commercial Banks", refPrice: 315.0 },
+      { symbol: "MBL", name: "Machhapuchchhre Bank Ltd.", sector: "Commercial Banks", refPrice: 240.0 },
+      { symbol: "SBL", name: "Siddhartha Bank Ltd.", sector: "Commercial Banks", refPrice: 395.0 },
+      { symbol: "KBL", name: "Kumari Bank Ltd.", sector: "Commercial Banks", refPrice: 205.0 },
+      { symbol: "NMB", name: "NMB Bank Ltd.", sector: "Commercial Banks", refPrice: 235.0 },
+      { symbol: "CZBIL", name: "Citizens Bank International", sector: "Commercial Banks", refPrice: 195.0 },
+      { symbol: "HBL", name: "Himalayan Bank Ltd.", sector: "Commercial Banks", refPrice: 185.0 },
+      { symbol: "PRVU", name: "Prabhu Bank Ltd.", sector: "Commercial Banks", refPrice: 180.0 },
       { symbol: "NABIL", name: "Nabil Bank Limited", sector: "Commercial Banks", refPrice: 544.0 },
       { symbol: "NICA", name: "NIC Asia Bank Limited", sector: "Commercial Banks", refPrice: 438.0 },
       { symbol: "SCB", name: "Standard Chartered Bank", sector: "Commercial Banks", refPrice: 635.0 },
       { symbol: "EBL", name: "Everest Bank Limited", sector: "Commercial Banks", refPrice: 618.0 },
       { symbol: "GBIME", name: "Global IME Bank Limited", sector: "Commercial Banks", refPrice: 236.0 },
-      { symbol: "HBL", name: "Himalayan Bank Limited", sector: "Commercial Banks", refPrice: 224.0 },
-      { symbol: "NMB", name: "NMB Bank Limited", sector: "Commercial Banks", refPrice: 248.0 },
-      { symbol: "PRVU", name: "Prabhu Bank Limited", sector: "Commercial Banks", refPrice: 215.0 },
       { symbol: "SANIMA", name: "Sanima Bank Limited", sector: "Commercial Banks", refPrice: 298.0 },
       { symbol: "PCBL", name: "Prime Commercial Bank", sector: "Commercial Banks", refPrice: 242.0 },
-      { symbol: "KBL", name: "Kumari Bank Limited", sector: "Commercial Banks", refPrice: 196.0 },
       { symbol: "LSL", name: "Laxmi Sunrise Bank", sector: "Commercial Banks", refPrice: 228.0 },
       { symbol: "ADBL", name: "Agricultural Dev. Bank", sector: "Commercial Banks", refPrice: 312.0 },
       { symbol: "NIMB", name: "Nepal Investment Mega Bank", sector: "Commercial Banks", refPrice: 212.0 },
-      { symbol: "SHINE", name: "Shine Resunga Dev. Bank", sector: "Development Banks", refPrice: 267.0 },
+      { symbol: "SHINE", name: "Shine Resunga Development Bank", sector: "Development Banks", refPrice: 400.0 },
       { symbol: "MNBBL", name: "Muktinath Bikas Bank", sector: "Development Banks", refPrice: 425.0 },
       { symbol: "GBBL", name: "Garima Bikas Bank", sector: "Development Banks", refPrice: 432.0 },
-      { symbol: "RLFL", name: "Reliance Finance Limited", sector: "Finance", refPrice: 416.0 },
+      { symbol: "RLFL", name: "Reliance Finance Ltd.", sector: "Finance", refPrice: 410.0 },
+      { symbol: "PFL", name: "Pokhara Finance Ltd.", sector: "Finance", refPrice: 350.0 },
       { symbol: "ICFC", name: "ICFC Finance Limited", sector: "Finance", refPrice: 645.0 },
       { symbol: "MFIL", name: "Manjushree Finance", sector: "Finance", refPrice: 690.0 },
-      { symbol: "NLIC", name: "Nepal Life Insurance", sector: "Life Insurance", refPrice: 1748.0 },
+      { symbol: "NLIC", name: "Nepal Life Insurance Co.", sector: "Life Insurance", refPrice: 680.0 },
+      { symbol: "SPIL", name: "SuryaJyoti Life Insurance", sector: "Life Insurance", refPrice: 580.0 },
       { symbol: "LICN", name: "Life Insurance Corp. Nepal", sector: "Life Insurance", refPrice: 1090.0 },
       { symbol: "SICL", name: "Shikhar Insurance", sector: "Non-Life Insurance", refPrice: 845.0 },
-      { symbol: "NIFRA", name: "Nepal Infrastructure Bank", sector: "Investment", refPrice: 565.0 },
+      { symbol: "NIFRA", name: "Nepal Infrastructure Bank", sector: "Investment", refPrice: 235.0 },
       { symbol: "NRIC", name: "Nepal Reinsurance Co.", sector: "Investment", refPrice: 760.0 },
       { symbol: "HRL", name: "Himalayan Reinsurance", sector: "Investment", refPrice: 835.0 },
       { symbol: "HIDCL", name: "Hydroelectricity Inv. & Dev.", sector: "Investment", refPrice: 239.0 },
       { symbol: "HIDCLP", name: "HIDCL Promoter Share", sector: "Investment", refPrice: 185.0 },
       { symbol: "CIT", name: "Citizen Investment Trust", sector: "Investment", refPrice: 2180.0 },
+      { symbol: "NIBLSF", name: "NIBL Samriddhi Fund 1/2", sector: "Mutual Fund", refPrice: 9.80 },
       { symbol: "NIBLPF", name: "NIBL Pragati Fund", sector: "Mutual Fund", refPrice: 10.45 },
-      { symbol: "NIBLSF", name: "NIBL Sahabhagita Fund", sector: "Mutual Fund", refPrice: 10.62 },
       { symbol: "NMB50", name: "NMB 50", sector: "Mutual Fund", refPrice: 11.20 },
       { symbol: "NICGF", name: "NIC Asia Growth Fund", sector: "Mutual Fund", refPrice: 10.70 },
       { symbol: "SFMF", name: "Sunrise First Mutual Fund", sector: "Mutual Fund", refPrice: 11.05 },
       { symbol: "SEF", name: "Siddhartha Equity Fund", sector: "Mutual Fund", refPrice: 10.60 },
+      { symbol: "ACLBSL", name: "Aarambha Chautari Laghubitta", sector: "Microfinance", refPrice: 840.0 },
+      { symbol: "GBLBS", name: "Grameen Bikas Laghubitta", sector: "Microfinance", refPrice: 620.0 },
+      { symbol: "KMCDB", name: "Kalika Microcredit Dev Bank", sector: "Microfinance", refPrice: 780.0 },
       { symbol: "CBBL", name: "Chhimek Laghubitta", sector: "Microfinance", refPrice: 1045.0 },
       { symbol: "DDBL", name: "Deprosc Laghubitta", sector: "Microfinance", refPrice: 910.0 },
       { symbol: "SHIVM", name: "Shivam Cements", sector: "Manufacturing & Processing", refPrice: 592.0 },
@@ -564,7 +580,92 @@
       { symbol: "NTC", name: "Nepal Telecom", sector: "Manufacturing & Processing", refPrice: 918.0 }
     ];
 
-    // ==================== ACCURATE SPREADSHEET UPLOADER (MEROSHARE + TRADE BOOK) ====================
+    // ==================== EXPORT REPORTS TO EXCEL (.xlsx) & PDF ====================
+    function getActiveHoldingsList() {
+      const base = activeAccountFilter === "ALL" ? holdingsData : holdingsData.filter(h => h.account === activeAccountFilter);
+      return getSortedHoldings(base);
+    }
+
+    function exportPortfolioToExcel() {
+      const list = getActiveHoldingsList();
+      if (list.length === 0) { alert("⚠️ Export गर्न पहिले पोर्टफोलियोमा सेयर डेटा लोड गर्नुहोस्।"); return; }
+
+      const rows = list.map((h, i) => {
+        const inv = h.units * h.buyRate;
+        const val = h.units * h.ltp;
+        const pl = val - inv;
+        const plPct = inv > 0 ? ((pl / inv) * 100).toFixed(2) + "%" : "0.00%";
+        const dayPl = (h.ltp - h.prevClose) * h.units;
+        return {
+          "S.N.": i + 1,
+          "Scrip": h.scrip,
+          "Sector": h.sector || "Equity",
+          "Total Units": h.units,
+          "Bonus/Right Units": h.bonusRightQty || 0,
+          "Purchase WACC (NPR)": h.buyRate,
+          "Prev Close (NPR)": h.prevClose,
+          "Live LTP (NPR)": h.ltp,
+          "Total Investment (NPR)": +inv.toFixed(2),
+          "Current Value (NPR)": +val.toFixed(2),
+          "Overall Profit/Loss (NPR)": +pl.toFixed(2),
+          "Overall P/L %": plPct,
+          "Today P/L (NPR)": +dayPl.toFixed(2)
+        };
+      });
+
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "NEPSE_Portfolio");
+      const dateStr = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(wb, `NEPSE_Portfolio_Report_${dateStr}.xlsx`);
+    }
+
+    function exportPortfolioToPDF() {
+      const list = getActiveHoldingsList();
+      if (list.length === 0) { alert("⚠️ PDF बनाउनुअघि पोर्टफोलियोमा सेयर डेटा लोड गर्नुहोस्।"); return; }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "landscape" });
+      const st = getNepseMarketStatus();
+
+      doc.setFontSize(15);
+      doc.text("NEPSE CloudPulse AI — Portfolio & Real WACC Report", 14, 15);
+      doc.setFontSize(9);
+      doc.text(`User: ${currentUser?.fullName || "Investor"} | Date/Time: ${st.timeStr} | Account: ${document.getElementById("account-badge").textContent}`, 14, 21);
+
+      let totInv = 0, totVal = 0, totDay = 0;
+      const bodyRows = list.map((h, i) => {
+        const inv = h.units * h.buyRate, val = h.units * h.ltp, pl = val - inv, day = (h.ltp - h.prevClose) * h.units;
+        totInv += inv; totVal += val; totDay += day;
+        return [
+          i + 1, h.scrip, h.sector || "Equity",
+          formatNepaliNumber(h.units, 0),
+          formatNepaliNumber(h.buyRate, 2),
+          formatNepaliNumber(h.prevClose, 2),
+          formatNepaliNumber(h.ltp, 2),
+          formatNepaliNumber(val, 2),
+          formatNepaliNumber(pl, 2),
+          formatNepaliNumber(day, 2)
+        ];
+      });
+
+      const totPl = totVal - totInv;
+      bodyRows.push(["", "TOTAL", "", "", "", "", "", formatNepaliNumber(totVal, 2), formatNepaliNumber(totPl, 2), formatNepaliNumber(totDay, 2)]);
+
+      doc.autoTable({
+        startY: 26,
+        head: [["#", "Scrip", "Sector", "Units", "WACC", "Prev Close", "Live LTP", "Total Value", "Real P/L", "Today P/L"]],
+        body: bodyRows,
+        theme: "grid",
+        headStyles: { fillColor: [6, 78, 59] },
+        styles: { fontSize: 8 }
+      });
+
+      const dateStr = new Date().toISOString().slice(0, 10);
+      doc.save(`NEPSE_Portfolio_Report_${dateStr}.pdf`);
+    }
+
+    // ==================== 100% ROW-COMPLETE SPREADSHEET PARSER ====================
     function handleSmartSpreadsheetUpload(event) {
       const file = event.target.files?.[0];
       if (!file) return;
@@ -591,7 +692,6 @@
       reader.readAsArrayBuffer(file);
     }
 
-    // 1. Strict Header-Mapped MeroShare Parser (Fixes S.N. / Value column swap bug!)
     function processMeroShareRows(rows) {
       const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
       let colMap = null;
@@ -607,7 +707,6 @@
         const cells = cols.map(c => String(c).trim());
         const joined = cells.join("|").toLowerCase();
 
-        // Detect MeroShare Header Row accurately
         if (joined.includes("scrip") || joined.includes("current balance")) {
           colMap = { scrip: -1, units: -1, prevClose: -1, ltp: -1 };
           cells.forEach((h, i) => {
@@ -623,20 +722,18 @@
         if (joined.includes("total") || joined.includes("my portfolio") || joined.includes("as of")) return;
 
         let scrip = "", units = NaN, prev = NaN, ltp = NaN;
-
         if (colMap && colMap.scrip >= 0 && colMap.units >= 0) {
           scrip = (cells[colMap.scrip] || "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
           units = cleanNum(cells[colMap.units]);
           prev = colMap.prevClose >= 0 ? cleanNum(cells[colMap.prevClose]) : NaN;
           ltp = colMap.ltp >= 0 ? cleanNum(cells[colMap.ltp]) : NaN;
         } else {
-          // Standard MeroShare My Shares column order: [0: S.N., 1: Scrip, 2: Current Balance, 3: Prev Close, 4: Value Prev, 5: LTP, 6: Value LTP]
           const sIdx = cells.findIndex(c => /^[A-Za-z]{2,10}$/.test(c.replace(/[^A-Za-z0-9]/g, "")));
           if (sIdx < 0) return;
           scrip = cells[sIdx].replace(/[^A-Za-z0-9]/g, "").toUpperCase();
           units = cleanNum(cells[sIdx + 1]);
           prev = cleanNum(cells[sIdx + 2]);
-          ltp = cleanNum(cells[sIdx + 4]); // Skip Value as of Prev Close at sIdx + 3
+          ltp = cleanNum(cells[sIdx + 4]);
         }
 
         if (!scrip || !/^[A-Z0-9]{2,10}$/.test(scrip) || isNaN(units) || units <= 0) return;
@@ -655,12 +752,11 @@
           reconcileHoldingWithMeroShareAndTradeBook(ex);
         } else {
           holdingsData.push({
-            id: "MS" + Date.now() + "_" + idx, account: targetAcc, scrip,
+            id: "MS_" + idx + "_" + scrip + "_" + Date.now(), account: targetAcc, scrip,
             sector: listed ? listed.sector : "Equity", name: listed ? listed.name : scrip,
             units: units, meroShareUnits: units,
-            buyRate: 100, // Default IPO cost when no trade book exists yet
-            prevClose: finalPrev, ltp: finalLtp,
-            netTradedQty: 0, avgTradeBuyRate: 0, netBuyCost: 0, bonusRightQty: 0, bonusType: "bonus", sourceNote: "MeroShare Only"
+            buyRate: 100, prevClose: finalPrev, ltp: finalLtp,
+            netTradedQty: 0, avgTradeBuyRate: 0, netBuyCost: 0, bonusRightQty: 0, bonusType: "bonus", sourceNote: "MeroShare Balance"
           });
         }
         count++;
@@ -668,43 +764,45 @@
 
       if (count > 0) {
         saveUserWorkspace(); renderPortfolio();
-        alert(`✅ MeroShare बाट ${count} वटा सेयरको वास्तविक कित्ता लोड भयो!\nअब 'Bimal Data.csv' (Trade Book) अपलोड गर्नुहोस्।`);
+        alert(`✅ MeroShare बाट ${count} वटा सेयरको वास्तविक कित्ता लोड भयो!`);
       } else {
         alert("⚠️ MeroShare डेटा भेटिएन।");
       }
     }
 
-    // 2. Trade Book Parser + Exact User Reconciliation Rule:
-    // - Same scrip code: Add Buy, Subtract Sell -> Net Traded Qty & Avg Buy Rate
-    // - If MeroShare has MORE than Net Trade Qty -> Take MeroShare Qty, extra = Bonus (Rs 0) / Right (Rs 100) -> Real WACC
-    // - If MeroShare has LESS than Net Trade Qty -> Take MeroShare Qty with Trade Book Avg Purchase Rate
     function processTradeBookRows(rows) {
       const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
-      let colIdx = { symbol: 2, tradeId: 3, side: 6, qty: 8, price: 9 };
+      let colIdx = { symbol: -1, tradeId: -1, side: -1, qty: -1, price: -1 };
       const seenTradeIds = new Set();
       const tradeSummary = {};
       let rowCount = 0;
 
-      rows.forEach(cols => {
-        if (!Array.isArray(cols) || cols.length < 4) return;
+      rows.forEach((cols, rIdx) => {
+        if (!Array.isArray(cols) || cols.length < 3) return;
         const cells = cols.map(c => String(c).trim());
         const lowerLine = cells.join("|").toLowerCase();
 
-        if (lowerLine.includes("symbol") && (lowerLine.includes("buy/sell") || lowerLine.includes("trade qty"))) {
+        // Detect header row dynamically
+        if (lowerLine.includes("symbol") || lowerLine.includes("scrip")) {
           cells.forEach((h, i) => {
             const c = h.toLowerCase();
-            if (c.includes("symbol") || c.includes("scrip")) colIdx.symbol = i;
+            if (c === "symbol" || c.includes("symbol") || c.includes("scrip")) colIdx.symbol = i;
             else if (c.includes("trade id")) colIdx.tradeId = i;
-            else if (c.includes("buy/sell") || c.includes("type") || c.includes("side")) colIdx.side = i;
+            else if (c.includes("buy/sell") || c === "type" || c === "side") colIdx.side = i;
             else if (c.includes("qty") || c.includes("quantity")) colIdx.qty = i;
-            else if (c.includes("price")) colIdx.price = i;
+            else if (c.includes("price") || c.includes("rate") || c.includes("wacc")) colIdx.price = i;
           });
           return;
         }
 
+        // Fallback column detection if header row was missing
+        if (colIdx.symbol < 0) {
+          colIdx = { symbol: 2, tradeId: 3, side: 6, qty: 8, price: 9 };
+        }
+
         const sym = (cells[colIdx.symbol] || "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-        const tid = cells[colIdx.tradeId] || "";
-        const side = (cells[colIdx.side] || "").toLowerCase();
+        const tid = colIdx.tradeId >= 0 ? (cells[colIdx.tradeId] || "") : "";
+        const side = colIdx.side >= 0 ? (cells[colIdx.side] || "").toLowerCase() : "buy";
         const qty = parseFloat((cells[colIdx.qty] || "").replace(/,/g, ""));
         const price = parseFloat((cells[colIdx.price] || "").replace(/,/g, ""));
 
@@ -713,18 +811,18 @@
         if (tid) seenTradeIds.add(tid);
 
         if (!tradeSummary[sym]) tradeSummary[sym] = { buyQty: 0, buyCost: 0, sellQty: 0 };
-        if (side.includes("buy")) {
+        if (side.includes("sell")) {
+          tradeSummary[sym].sellQty += qty;
+          rowCount++;
+        } else {
           tradeSummary[sym].buyQty += qty;
           tradeSummary[sym].buyCost += qty * price;
-          rowCount++;
-        } else if (side.includes("sell")) {
-          tradeSummary[sym].sellQty += qty;
           rowCount++;
         }
       });
 
-      let matchedCount = 0;
-      Object.entries(tradeSummary).forEach(([sym, tr]) => {
+      let loadedScripsCount = 0;
+      Object.entries(tradeSummary).forEach(([sym, tr], sIdx) => {
         const netTradedQty = Math.max(0, tr.buyQty - tr.sellQty);
         const avgBuyRate = tr.buyQty > 0 ? tr.buyCost / tr.buyQty : 0;
         const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
@@ -738,56 +836,50 @@
           ex.netBuyCost = netTradedQty * avgBuyRate;
           ex.bonusType = ex.bonusType || "bonus";
           reconcileHoldingWithMeroShareAndTradeBook(ex);
-          matchedCount++;
+          loadedScripsCount++;
         } else if (netTradedQty > 0) {
-          // If MeroShare wasn't uploaded yet, show Net Trade Qty & Avg Buy Rate
           holdingsData.push({
-            id: "TB" + Date.now() + sym, account: targetAcc, scrip: sym,
-            sector: listed ? listed.sector : "Hydropower", name: listed ? listed.name : sym,
+            id: "TB_" + sIdx + "_" + sym + "_" + Date.now(), account: targetAcc, scrip: sym,
+            sector: listed ? listed.sector : "Equity", name: listed ? listed.name : sym,
             units: netTradedQty, meroShareUnits: 0,
             buyRate: +avgBuyRate.toFixed(2), prevClose: livePrice, ltp: livePrice,
             netTradedQty, avgTradeBuyRate: +avgBuyRate.toFixed(2), netBuyCost: netTradedQty * avgBuyRate,
             bonusRightQty: 0, bonusType: "bonus", sourceNote: `Trade Net (${tr.buyQty} Buy - ${tr.sellQty} Sell)`
           });
-          matchedCount++;
+          loadedScripsCount++;
         }
       });
 
       if (rowCount > 0) {
         saveUserWorkspace(); renderPortfolio();
-        alert(`✅ Trade Book का ${rowCount} कारोबार (Buy जोडेर, Sell घटाएर) र MeroShare कित्तासँग मिलाइयो!`);
+        alert(`✅ जम्मा ${loadedScripsCount} वटा कम्पनी (${rowCount} कारोबार) पूरै लोड भयो!`);
       } else {
-        alert("⚠️ Trade Book मा Buy/Sell डेटा भेटिएन।");
+        alert("⚠️ फाइलमा सेयर डेटा भेटिएन।");
       }
     }
 
-    // Core Reconciliation Engine per User's Exact Rule
     function reconcileHoldingWithMeroShareAndTradeBook(h) {
       const msQty = Number(h.meroShareUnits) || 0;
       const netQty = Number(h.netTradedQty) || 0;
       const avgRate = Number(h.avgTradeBuyRate) || 0;
 
       if (msQty > 0 && netQty > 0) {
-        h.units = msQty; // Always trust MeroShare actual balance
+        h.units = msQty;
         if (msQty > netQty) {
-          // MeroShare has MORE -> Extra shares are Bonus (Rs 0) or Right (Rs 100)
           h.bonusRightQty = +(msQty - netQty).toFixed(2);
           const extraCost = h.bonusType === "right" ? h.bonusRightQty * 100 : 0;
           h.buyRate = +(((netQty * avgRate) + extraCost) / msQty).toFixed(2);
           h.sourceNote = `Trade ${netQty} + ${h.bonusRightQty} ${h.bonusType === 'right' ? 'Right' : 'Bonus'}`;
         } else if (msQty < netQty) {
-          // MeroShare has LESS -> Take MeroShare Qty with Trade Book Purchase Rate
           h.bonusRightQty = 0;
           h.buyRate = +avgRate.toFixed(2);
-          h.sourceNote = `MeroShare Qty (${msQty} < Trade ${netQty}) @ Trade Rate`;
+          h.sourceNote = `MeroShare Qty (${msQty} < Trade ${netQty})`;
         } else {
-          // Exact Match
           h.bonusRightQty = 0;
           h.buyRate = +avgRate.toFixed(2);
           h.sourceNote = `Exact Match (${msQty} units)`;
         }
       } else if (msQty > 0 && netQty === 0) {
-        // Only in MeroShare (e.g., IPO or pre-existing holding)
         h.units = msQty;
         h.bonusRightQty = 0;
         if (!h.buyRate || h.buyRate <= 0) h.buyRate = 100;
@@ -806,7 +898,7 @@
       saveUserWorkspace(); renderPortfolio();
     }
 
-    // ==================== NEPSE MARKET SCHEDULE & LIVE FETCHER ====================
+    // ==================== MULTI-SOURCE LIVE NEPSE PRICE ENGINE ====================
     function getNepseMarketStatus() {
       const now = new Date();
       const npt = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + (5 * 60 + 45) * 60000);
@@ -841,18 +933,24 @@
       const srcPill = document.getElementById("live-source-pill");
       if (btn) btn.textContent = "⏳ Syncing...";
 
+      const ts = Date.now();
       const endpoints = [];
-      if (customLiveUrl && customLiveUrl.startsWith("http")) endpoints.push(customLiveUrl);
+      if (customLiveUrl && customLiveUrl.startsWith("http")) {
+        endpoints.push(customLiveUrl + (customLiveUrl.includes("?") ? "&" : "?") + "t=" + ts);
+      }
       endpoints.push(
-        "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market"),
-        "https://corsproxy.io/?" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market"),
-        "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.sharesansar.com/live-trading")
+        "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market?_=" + ts),
+        "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market?_=" + ts),
+        "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://www.sharesansar.com/live-trading?_=" + ts)
       );
 
       let updatedCount = 0;
       for (const url of endpoints) {
         try {
-          const res = await fetch(url);
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 7000);
+          const res = await fetch(url, { signal: controller.signal, cache: "no-store" });
+          clearTimeout(timer);
           if (!res.ok) continue;
           const map = extractPricesFromText(await res.text());
           if (Object.keys(map).length > 5) {
@@ -872,12 +970,13 @@
 
       if (Object.keys(latestMarketCache).length > 5) {
         saveUserWorkspace(); renderPortfolio();
-        syncLabel.textContent = `Live Synced (${updatedCount} updated)`;
-        srcPill.textContent = customLiveUrl ? "Source: Google Live Server" : "Source: Auto Live Web";
+        const t = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        syncLabel.textContent = `Live Synced (${updatedCount} updated @ ${t})`;
+        srcPill.textContent = customLiveUrl ? "Source: Google Live Server" : "Source: Live NEPSE Web";
       } else if (isManual) {
-        syncLabel.textContent = "Use 🔑 Google Live URL or ⚡ Paste Live LTP";
+        syncLabel.textContent = "Set Google Live URL in 🔑 or ⚡ Paste Live LTP";
       }
-      if (btn) btn.textContent = "📡 Live Sync";
+      if (btn) btn.textContent = "📡 Sync Live NEPSE";
     }
 
     function extractPricesFromText(rawText) {
@@ -979,13 +1078,14 @@
 
       const baseFiltered = activeAccountFilter === "ALL" ? holdingsData : holdingsData.filter(h => h.account === activeAccountFilter);
       const filtered = getSortedHoldings(baseFiltered);
+      document.getElementById("total-scrips-count").textContent = filtered.length;
 
       let totalInv = 0, totalCur = 0, totalPrev = 0;
       const tbody = document.getElementById("holdings-tbody");
       tbody.innerHTML = "";
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 text-xs">"📂 Upload MeroShare / Trade Book (Excel or CSV)" थिचेर आफ्नो फाइल अपलोड गर्नुहोस्।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 text-xs">"📂 Import MeroShare / Trade Book" थिचेर आफ्नो फाइल अपलोड गर्नुहोस्।</td></tr>`;
       }
 
       filtered.forEach(item => {
@@ -1364,7 +1464,7 @@ ${userQuery}`;
       const existing = holdingsData.find(h => String(h.id) === String(editId));
       const obj = {
         ...(existing || {}),
-        id: editId || "H" + Date.now(), account: document.getElementById("hold-account").value,
+        id: editId || "H_" + Date.now(), account: document.getElementById("hold-account").value,
         scrip: document.getElementById("hold-scrip").value.trim().toUpperCase(),
         sector: document.getElementById("hold-sector").value.trim(), name: document.getElementById("hold-name").value.trim(),
         units: parseFloat(document.getElementById("hold-units").value), buyRate: parseFloat(document.getElementById("hold-buy").value),
