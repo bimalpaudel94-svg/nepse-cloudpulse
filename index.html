@@ -3,19 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>NEPSE CloudPulse AI — Live Market & Technical Portfolio Terminal</title>
+  <title>NEPSE CloudPulse AI — Real-Time Terminal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-base: #090d16;
-      --bg-card: rgba(17, 24, 39, 0.92);
-      --accent-primary: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.25);
-      --accent-border: rgba(16, 185, 129, 0.45);
-      --banner-grad-start: #064e3b;
-      --banner-grad-end: #0f172a;
-      --text-accent: #34d399;
+      --bg-base: #090d16; --bg-card: rgba(17, 24, 39, 0.92);
+      --accent-primary: #10b981; --accent-glow: rgba(16, 185, 129, 0.25);
+      --accent-border: rgba(16, 185, 129, 0.45); --banner-grad-start: #064e3b;
+      --banner-grad-end: #0f172a; --text-accent: #34d399;
     }
     body.theme-profit {
       --accent-primary: #10b981; --accent-glow: rgba(16, 185, 129, 0.28); --accent-border: rgba(16, 185, 129, 0.55);
@@ -125,7 +121,7 @@
 
   <!-- ==================== 2. MAIN APP DASHBOARD ==================== -->
   <div id="app-shell" class="hidden max-w-6xl mx-auto pb-16">
-    <!-- Top Live Market Status Strip (Mon-Fri 11:00-15:00 NPT; Sat-Sun Closed) -->
+    <!-- Top Live Market Status Strip -->
     <div class="bg-slate-950/95 border-b border-slate-800 px-4 py-2 flex flex-wrap items-center justify-between gap-2 sticky top-0 z-30 backdrop-blur-md">
       <div class="flex items-center gap-2 text-xs">
         <span id="market-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse-slow"></span>
@@ -153,7 +149,7 @@
           <p class="text-xs text-slate-400">User: <span id="active-user-label" class="text-white font-semibold"></span></p>
         </div>
         <div class="flex items-center gap-1.5 sm:hidden">
-          <button onclick="openApiKeyModal()" class="px-2 py-1.5 rounded-lg bg-amber-500/20 text-xs text-amber-300 border border-amber-500/40 font-bold">🔑</button>
+          <button onclick="openSettingsModal()" class="px-2 py-1.5 rounded-lg bg-amber-500/20 text-xs text-amber-300 border border-amber-500/40 font-bold">🔑</button>
           <button onclick="emailCurrentUserCredentials()" class="px-2 py-1.5 rounded-lg bg-slate-800 text-xs text-emerald-300 border border-slate-700">📧</button>
           <button id="logout-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 border border-slate-700">Lock</button>
         </div>
@@ -161,8 +157,8 @@
 
       <div class="flex items-center gap-2">
         <select id="account-selector" class="flex-1 sm:w-48 px-3 py-2 rounded-xl bg-slate-900 border dynamic-border text-xs font-semibold text-white cursor-pointer"></select>
-        <button onclick="openVaultModal()" class="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-semibold text-white shrink-0 cursor-pointer">+ Demat</button>
-        <button onclick="openApiKeyModal()" class="hidden sm:flex px-2.5 py-2 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs font-bold text-amber-300 cursor-pointer shrink-0">🔑 API Key</button>
+        <button onclick="openVaultModal()" class="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-semibold text-white shrink-0 cursor-pointer">👥 Demat</button>
+        <button onclick="openSettingsModal()" class="hidden sm:flex px-2.5 py-2 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs font-bold text-amber-300 cursor-pointer shrink-0">🔑 API & Live URL</button>
         <button onclick="emailCurrentUserCredentials()" class="hidden sm:flex px-2.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-emerald-300 cursor-pointer">📧 ID/Pass</button>
         <button id="logout-btn-desktop" class="hidden sm:flex px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-white cursor-pointer">Lock</button>
       </div>
@@ -173,7 +169,7 @@
       <div class="flex gap-2 overflow-x-auto no-scrollbar border-b border-slate-800 pb-2">
         <button onclick="switchTab('portfolio')" id="tab-btn-portfolio" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border shrink-0 cursor-pointer">📊 Portfolio & Live LTP</button>
         <button onclick="switchTab('technical')" id="tab-btn-technical" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">📈 Technical & Advanced Analysis</button>
-        <button onclick="switchTab('ai-agent')" id="tab-btn-ai-agent" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">✨ Gemini AI Analyst (3.5 Lite)</button>
+        <button onclick="switchTab('ai-agent')" id="tab-btn-ai-agent" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">✨ Gemini AI Analyst (Live Context)</button>
         <button onclick="switchTab('nepse-directory')" id="tab-btn-nepse-directory" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">🏛️ NEPSE Scrips & Mutual Funds</button>
       </div>
     </div>
@@ -232,27 +228,41 @@
         </div>
       </div>
 
-      <!-- Holdings Table -->
+      <!-- Holdings Table with Clickable High/Low Column Header Filters -->
       <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
         <div class="p-3.5 border-b border-slate-800 flex flex-wrap justify-between items-center gap-2">
           <div>
-            <h3 class="text-sm font-bold text-white">Holdings — Live Per-Unit Transaction Rate (LTP)</h3>
-            <p class="text-[11px] text-slate-400">💡 सच्याउन पङ्क्तिमा <strong>Long-Press (थिचिराख्नुहोस्)</strong> वा ✏️ थिच्नुहोस्</p>
+            <h3 class="text-sm font-bold text-white">Holdings — Click Any Header Below to Sort High / Low</h3>
+            <p class="text-[11px] text-slate-400">💡 तालिकाको हेडर (Scrip, Units, LTP, Total Value, P/L) थिचेर High ↔ Low क्रमबद्ध गर्नुहोस् • सच्याउन Long-Press वा ✏️ थिच्नुहोस्</p>
           </div>
-          <span id="live-source-pill" class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300">Source: Local / CSV</span>
+          <div class="flex items-center gap-2">
+            <select id="mobile-sort-select" onchange="setSortFromDropdown(this.value)" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-[11px] text-emerald-300 font-semibold">
+              <option value="default">Sort: Default Order</option>
+              <option value="ltp-desc">Live LTP: High → Low</option>
+              <option value="ltp-asc">Live LTP: Low → High</option>
+              <option value="val-desc">Total Value: High → Low</option>
+              <option value="val-asc">Total Value: Low → High</option>
+              <option value="buypl-desc">Overall P/L: High → Low</option>
+              <option value="buypl-asc">Overall P/L: Low → High</option>
+              <option value="daypl-desc">Today P/L: High → Low</option>
+              <option value="daypl-asc">Today P/L: Low → High</option>
+              <option value="scrip-asc">Scrip Name: A → Z</option>
+            </select>
+            <span id="live-source-pill" class="text-[10px] px-2 py-1 rounded bg-slate-800 text-slate-300">Source: Local</span>
+          </div>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
-              <tr class="bg-slate-900/90 text-[11px] uppercase text-slate-400 border-b border-slate-800">
-                <th class="py-3 px-4">Scrip</th>
-                <th class="py-3 px-3 text-right">Units</th>
-                <th class="py-3 px-3 text-right">Buy Rate</th>
-                <th class="py-3 px-3 text-right">Prev Close</th>
-                <th class="py-3 px-3 text-right text-emerald-300">Live LTP / Unit</th>
-                <th class="py-3 px-3 text-right">Total Value</th>
-                <th class="py-3 px-3 text-right">vs Purchase Rate</th>
-                <th class="py-3 px-3 text-right">vs Prev Day</th>
+              <tr class="bg-slate-900/95 text-[11px] uppercase text-slate-300 border-b border-slate-800 select-none">
+                <th onclick="toggleSort('scrip')" class="py-3 px-4 cursor-pointer hover:text-emerald-300">Scrip <span id="sort-ind-scrip" class="text-emerald-400">⇅</span></th>
+                <th onclick="toggleSort('units')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Units <span id="sort-ind-units" class="text-slate-500">⇅</span></th>
+                <th onclick="toggleSort('buyRate')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Buy Rate <span id="sort-ind-buyRate" class="text-slate-500">⇅</span></th>
+                <th onclick="toggleSort('prevClose')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Prev Close <span id="sort-ind-prevClose" class="text-slate-500">⇅</span></th>
+                <th onclick="toggleSort('ltp')" class="py-3 px-3 text-right text-emerald-300 cursor-pointer hover:text-white">Live LTP / Unit <span id="sort-ind-ltp" class="text-emerald-400">⇅</span></th>
+                <th onclick="toggleSort('val')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Total Value <span id="sort-ind-val" class="text-slate-500">⇅</span></th>
+                <th onclick="toggleSort('buypl')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">vs Purchase <span id="sort-ind-buypl" class="text-slate-500">⇅</span></th>
+                <th onclick="toggleSort('daypl')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">vs Prev Day <span id="sort-ind-daypl" class="text-slate-500">⇅</span></th>
                 <th class="py-3 px-3 text-right">Edit</th>
               </tr>
             </thead>
@@ -336,13 +346,13 @@
       </section>
     </main>
 
-    <!-- ==================== TAB 3: GEMINI AI ANALYST ==================== -->
+    <!-- ==================== TAB 3: GEMINI AI ANALYST (INJECTED REAL-TIME CONTEXT) ==================== -->
     <main id="tab-ai-agent" class="hidden px-4 pt-4">
       <div class="glass-card rounded-2xl border dynamic-border overflow-hidden flex flex-col h-[72vh] min-h-[500px]">
         <div class="p-3.5 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h3 class="text-sm font-bold text-white">✨ Gemini NEPSE Analyst <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">gemini-3.5-flash-lite</span></h3>
-            <p class="text-[11px] text-slate-400">Free-Tier Safe Technical & Portfolio Advisor</p>
+            <h3 class="text-sm font-bold text-white">✨ Gemini NEPSE Analyst <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Real-Time Portfolio & Market Grounded</span></h3>
+            <p class="text-[11px] text-slate-400">तपाईंको अहिलेको Live LTP, मिति/समय र मार्केट डेटा स्वतः विश्लेषण गर्छ</p>
           </div>
           <select id="agent-lang" class="px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white">
             <option value="Nepali (Devanagari)">नेपाली (Devanagari)</option>
@@ -352,14 +362,14 @@
         </div>
 
         <div class="px-3.5 py-2 bg-slate-950/60 border-b border-slate-800 flex gap-2 overflow-x-auto no-scrollbar">
-          <button onclick="askMyPortfolioAnalysis()" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">💼 मेरो पोर्टफोलियो विश्लेषण</button>
-          <button onclick="sendMessageToGeminiAgent('NEPSE मा RSI, MACD र Support/Resistance हेरेर किन्ने/बेच्ने रणनीति बुझाइदिनुहोस्।')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-purple-300 border border-purple-500/30 shrink-0 cursor-pointer">📈 Technical Guide</button>
-          <button onclick="sendMessageToGeminiAgent('नेपालका Mutual Funds (Open-Ended vs Close-Ended) को NAV र लाभांश रणनीति के हो?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">📊 Mutual Fund NAV</button>
+          <button onclick="askMyPortfolioAnalysis()" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">💼 मेरो अहिलेको Live पोर्टफोलियो विश्लेषण</button>
+          <button onclick="sendMessageToGeminiAgent('अहिलेको NEPSE बजार र मेरो होल्डिङ्सको Live LTP अनुसार कुन स्टकमा नाफा बुक गर्ने र कुन होल्ड गर्ने?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-purple-300 border border-purple-500/30 shrink-0 cursor-pointer">📈 Buy/Sell/Hold सुझाव</button>
+          <button onclick="sendMessageToGeminiAgent('नेपालका Mutual Funds को NAV र लाभांश रणनीति के हो?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">📊 Mutual Fund NAV</button>
         </div>
 
         <div id="agent-chat-box" class="flex-1 overflow-y-auto p-4 space-y-3 text-xs sm:text-sm">
           <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 text-slate-200">
-            नमस्ते! माथिको <strong>🔑 API Key</strong> मा आफ्नो Key सेभ गरी NEPSE, Mutual Funds वा Technical Analysis बारे प्रश्न सोध्नुहोस्।
+            नमस्ते! मसँग अहिलेको मिति, NEPSE मार्केट समय र तपाईंको पोर्टफोलियोको <strong>Live LTP डेटा</strong> सिधै जोडिएको छ। कुनै पनि प्रश्न सोध्नुहोस्!
           </div>
         </div>
 
@@ -397,7 +407,7 @@
     </main>
   </div>
 
-  <!-- ==================== MODALS (HOLDING, VAULT, BULK PASTE, API KEY) ==================== -->
+  <!-- ==================== MODALS (HOLDING, VAULT WITH DELETE, BULK PASTE, API & LIVE URL) ==================== -->
   <div id="holding-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -429,17 +439,25 @@
     </div>
   </div>
 
+  <!-- Demat Vault Modal WITH Edit & Delete Buttons -->
   <div id="vault-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-        <h3 class="text-sm font-bold text-white">Member Demat Accounts</h3>
+        <div>
+          <h3 class="text-sm font-bold text-white">👥 Member Demat / MeroShare Accounts</h3>
+          <p class="text-[11px] text-slate-400">कुनै अकाउन्ट सच्याउन ✏️ वा हटाउन 🗑️ थिच्नुहोस्</p>
+        </div>
         <button onclick="document.getElementById('vault-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
       </div>
-      <div id="vault-accounts-list" class="space-y-2 max-h-44 overflow-y-auto"></div>
+      <div id="vault-accounts-list" class="space-y-2 max-h-48 overflow-y-auto"></div>
       <form id="add-account-form" class="space-y-2 pt-2 border-t border-slate-800">
         <input type="hidden" id="edit-acc-id" value="" />
+        <div class="flex justify-between items-center">
+          <span id="acc-form-title" class="text-[11px] text-slate-300 font-semibold">+ Add New Demat Account</span>
+          <button type="button" id="cancel-acc-edit-btn" onclick="cancelEditAccount()" class="hidden text-[11px] text-amber-400 cursor-pointer">Cancel</button>
+        </div>
         <div class="grid grid-cols-2 gap-2">
-          <input id="new-acc-name" type="text" required placeholder="Member Name" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+          <input id="new-acc-name" type="text" required placeholder="Member Name (e.g. Father)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
           <input id="new-acc-dp" type="text" required placeholder="Demat / BOID" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         </div>
         <button type="submit" id="save-acc-submit-btn" class="w-full py-2 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">+ Save Member</button>
@@ -454,29 +472,39 @@
         <h3 class="text-sm font-bold text-white">⚡ Quick Bulk Live LTP Sync</h3>
         <button onclick="document.getElementById('bulkpaste-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
       </div>
-      <p class="text-xs text-slate-300">ShareSansar, MeroLagani वा NEPSE लाइव मार्केट पेजबाट Copy गरिएको टेक्स्ट/तालिका तल पेस्ट गर्नुहोस्—तपाईंका सेयरहरूको LTP आफैँ अपडेट हुनेछ:</p>
+      <p class="text-xs text-slate-300">ShareSansar, MeroLagani वा NEPSE लाइभ मार्केट पेजबाट Copy गरिएको टेक्स्ट तल पेस्ट गर्नुहोस्:</p>
       <textarea id="bulk-paste-text" rows="5" placeholder="उदाहरण: NABIL 548.50 544.00 वा पूरा मार्केट टेबल पेस्ट गर्नुहोस्..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"></textarea>
       <button onclick="processBulkMarketPaste()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">Update Matching Portfolio LTPs</button>
     </div>
   </div>
 
-  <!-- Gemini API Key Modal -->
-  <div id="apikey-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+  <!-- API Key & Custom Live NEPSE Proxy URL Settings Modal -->
+  <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-        <h3 class="text-sm font-bold text-white">🔑 Gemini API Key Setup</h3>
-        <button onclick="document.getElementById('apikey-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
+        <h3 class="text-sm font-bold text-white">🔑 Gemini API Key & Live NEPSE URL</h3>
+        <button onclick="document.getElementById('settings-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
       </div>
-      <input id="gemini-key-input" type="text" placeholder="Paste Gemini API Key..." class="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono" />
-      <button onclick="saveGeminiApiKey()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">Save & Activate</button>
+      <div>
+        <label class="block text-[11px] text-slate-300 mb-1">Gemini API Key (AI Chat का लागि)</label>
+        <input id="gemini-key-input" type="text" placeholder="Paste Gemini API Key..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono" />
+      </div>
+      <div>
+        <label class="block text-[11px] text-emerald-300 mb-1">Google Apps Script Live NEPSE URL (Optional — १००% Real-Time का लागि)</label>
+        <input id="live-proxy-url-input" type="text" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono" />
+      </div>
+      <button onclick="saveAppSettings()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">Save & Sync Live Data</button>
     </div>
   </div>
 
   <script>
     let apiKey = localStorage.getItem("nepse_gemini_api_key") || "";
+    let customLiveUrl = localStorage.getItem("nepse_custom_live_url") || "";
     const USERS_REGISTRY_KEY = "nepse_cloudpulse_users_v3";
     let currentUser = null, holdingsData = [], connectedAccounts = [], activeAccountFilter = "ALL";
     let manualThemeOverride = null, longPressTimer = null, autoLiveInterval = null;
+    let sortField = "default", sortDir = "desc";
+    let latestMarketCache = {};
 
     const NEPSE_LISTED_SCRIPS = [
       { symbol: "NIBLPF", name: "NIBL Pragati Fund", sector: "Mutual Fund", refPrice: 10.45 },
@@ -536,12 +564,13 @@
       const now = new Date();
       const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
       const npt = new Date(utcMs + (5 * 60 + 45) * 60000);
-      const day = npt.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
+      const day = npt.getDay(); // 0=Sun, 1=Mon...5=Fri, 6=Sat
       const mins = npt.getHours() * 60 + npt.getMinutes();
       const isWeekend = (day === 0 || day === 6);
-      const isOpen = !isWeekend && mins >= 660 && mins < 900; // 11:00 AM (660) to 3:00 PM (900)
+      const isOpen = !isWeekend && mins >= 660 && mins < 900;
       const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      const timeStr = `${days[day]} ${String(npt.getHours()).padStart(2, "0")}:${String(npt.getMinutes()).padStart(2, "0")} NPT`;
+      const dateStr = npt.toISOString().slice(0, 10);
+      const timeStr = `${dateStr} (${days[day]}) ${String(npt.getHours()).padStart(2, "0")}:${String(npt.getMinutes()).padStart(2, "0")} NPT`;
       return { isOpen, isWeekend, timeStr };
     }
 
@@ -564,21 +593,20 @@
       }
     }
 
-    // ==================== AUTOMATIC LIVE NEPSE FETCHER + BULK PASTE ====================
+    // ==================== 100% LIVE NEPSE FETCHER (GOOGLE APPS SCRIPT + CORS PROXIES) ====================
     async function fetchLiveNepsePrices(isManual = false) {
-      if (holdingsData.length === 0) return;
-      const st = getNepseMarketStatus();
-      if (!isManual && !st.isOpen) return;
-
       const btn = document.getElementById("fetch-live-btn");
       const syncLabel = document.getElementById("last-rate-sync-label");
       const srcPill = document.getElementById("live-source-pill");
       if (btn) btn.textContent = "⏳ Syncing...";
 
-      const endpoints = [
+      const endpoints = [];
+      if (customLiveUrl && customLiveUrl.startsWith("http")) endpoints.push(customLiveUrl);
+      endpoints.push(
         "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market"),
-        "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.nepalstock.com.np/api/nots/nepse-data/today-price")
-      ];
+        "https://corsproxy.io/?" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market"),
+        "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.sharesansar.com/live-trading")
+      );
 
       let updatedCount = 0;
       for (const url of endpoints) {
@@ -587,7 +615,8 @@
           if (!res.ok) continue;
           const rawText = await res.text();
           const map = extractPricesFromText(rawText);
-          if (Object.keys(map).length > 0) {
+          if (Object.keys(map).length > 5) {
+            latestMarketCache = map;
             holdingsData = holdingsData.map(h => {
               const found = map[h.scrip];
               if (found && found.ltp > 0) {
@@ -596,19 +625,19 @@
               }
               return h;
             });
-            if (updatedCount > 0) break;
+            break;
           }
         } catch (e) {}
       }
 
-      if (updatedCount > 0) {
+      if (Object.keys(latestMarketCache).length > 5) {
         saveUserWorkspace();
         renderPortfolio();
         const t = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-        syncLabel.textContent = `Synced ${updatedCount} scrips @ ${t}`;
-        srcPill.textContent = "Source: Auto Live Web";
+        syncLabel.textContent = `Live Synced (${updatedCount} updated) @ ${t}`;
+        srcPill.textContent = customLiveUrl ? "Source: Google Live Server" : "Source: Auto Live Web";
       } else if (isManual) {
-        syncLabel.textContent = "Web blocked by CORS — Use ⚡ Paste Live Data";
+        syncLabel.textContent = "Set Google Live URL in 🔑 or use ⚡ Paste";
       }
       if (btn) btn.textContent = "📡 Fetch Live NEPSE";
     }
@@ -628,17 +657,30 @@
         }
       } catch (e) {}
 
-      const lines = rawText.split(/\r?\n/);
-      lines.forEach(line => {
-        const symMatch = line.match(/\b([A-Z]{2,10})\b/);
-        if (symMatch) {
-          const sym = symMatch[1];
-          const nums = (line.slice(line.indexOf(sym) + sym.length).match(/\d[\d,]*\.?\d*/g) || [])
-            .map(n => parseFloat(n.replace(/,/g, "")))
-            .filter(n => !isNaN(n) && n > 1 && n < 100000);
-          if (nums.length >= 1 && !priceMap[sym]) {
-            priceMap[sym] = { ltp: nums[0], prevClose: nums[1] || 0 };
+      // Also parse HTML table rows from ShareSansar / MeroLagani
+      const trMatches = rawText.match(/<tr[\s\S]*?<\/tr>/gi) || [];
+      trMatches.forEach(tr => {
+        const cells = (tr.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || [])
+          .map(td => td.replace(/<[^>]+>/g, "").trim());
+        if (cells.length >= 3) {
+          const symIdx = cells.findIndex(c => /^[A-Z]{2,10}$/.test(c));
+          if (symIdx >= 0) {
+            const sym = cells[symIdx];
+            const nums = cells.slice(symIdx + 1).map(v => parseFloat(v.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 1 && n < 100000);
+            if (nums.length >= 1 && !priceMap[sym]) {
+              priceMap[sym] = { ltp: nums[0], prevClose: nums[nums.length - 1] || 0 };
+            }
           }
+        }
+      });
+
+      // Plain text fallback
+      rawText.split(/\r?\n/).forEach(line => {
+        const m = line.match(/\b([A-Z]{2,10})\b/);
+        if (m && !priceMap[m[1]]) {
+          const nums = (line.slice(line.indexOf(m[1]) + m[1].length).match(/\d[\d,]*\.?\d*/g) || [])
+            .map(n => parseFloat(n.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 1 && n < 100000);
+          if (nums.length >= 1) priceMap[m[1]] = { ltp: nums[0], prevClose: nums[1] || 0 };
         }
       });
       return priceMap;
@@ -649,6 +691,7 @@
     function processBulkMarketPaste() {
       const txt = document.getElementById("bulk-paste-text").value || "";
       const map = extractPricesFromText(txt);
+      latestMarketCache = { ...latestMarketCache, ...map };
       let count = 0;
       holdingsData = holdingsData.map(h => {
         const found = map[h.scrip];
@@ -661,18 +704,17 @@
       document.getElementById("bulkpaste-modal").classList.add("hidden");
       if (count > 0) {
         saveUserWorkspace(); renderPortfolio();
-        document.getElementById("live-source-pill").textContent = "Source: Bulk Market Paste";
+        document.getElementById("live-source-pill").textContent = "Source: Live Market Paste";
         alert(`✅ ${count} वटा सेयरको Live LTP अपडेट भयो!`);
       } else {
-        alert("⚠️ पेस्ट गरिएको टेक्स्टमा तपाईंको पोर्टफोलियोका Symbol हरू भेटिएनन्।");
+        alert("⚠️ पेस्ट गरिएको टेक्स्टमा पोर्टफोलियोका Symbol हरू भेटिएनन्।");
       }
     }
 
     function toggleAutoLiveFeed() {
       const btn = document.getElementById("auto-live-toggle-btn");
       if (autoLiveInterval) {
-        clearInterval(autoLiveInterval);
-        autoLiveInterval = null;
+        clearInterval(autoLiveInterval); autoLiveInterval = null;
         btn.textContent = "⏱️ Auto-Live: OFF";
         btn.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer";
       } else {
@@ -681,6 +723,45 @@
         btn.textContent = "🟢 Auto-Live: ON";
         btn.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-pointer";
       }
+    }
+
+    // ==================== HIGH / LOW SORTING FILTER ON TABLE HEADERS ====================
+    function toggleSort(field) {
+      if (sortField === field) {
+        sortDir = sortDir === "desc" ? "asc" : "desc";
+      } else {
+        sortField = field;
+        sortDir = field === "scrip" ? "asc" : "desc";
+      }
+      renderPortfolio();
+    }
+
+    function setSortFromDropdown(val) {
+      if (val === "default") { sortField = "default"; sortDir = "desc"; }
+      else {
+        const [f, d] = val.split("-");
+        sortField = f; sortDir = d;
+      }
+      renderPortfolio();
+    }
+
+    function getSortedHoldings(list) {
+      const arr = [...list];
+      if (sortField === "default") return arr;
+      arr.sort((a, b) => {
+        let vA, vB;
+        if (sortField === "scrip") {
+          return sortDir === "asc" ? a.scrip.localeCompare(b.scrip) : b.scrip.localeCompare(a.scrip);
+        } else if (sortField === "units") { vA = a.units; vB = b.units; }
+        else if (sortField === "buyRate") { vA = a.buyRate; vB = b.buyRate; }
+        else if (sortField === "prevClose") { vA = a.prevClose; vB = b.prevClose; }
+        else if (sortField === "ltp") { vA = a.ltp; vB = b.ltp; }
+        else if (sortField === "val") { vA = a.units * a.ltp; vB = b.units * b.ltp; }
+        else if (sortField === "buypl") { vA = (a.ltp - a.buyRate) * a.units; vB = (b.ltp - b.buyRate) * b.units; }
+        else if (sortField === "daypl") { vA = (a.ltp - a.prevClose) * a.units; vB = (b.ltp - b.prevClose) * b.units; }
+        return sortDir === "desc" ? vB - vA : vA - vB;
+      });
+      return arr;
     }
 
     // ==================== NEPALI NUMBER FORMATTER (00,00,000) ====================
@@ -698,14 +779,20 @@
     const formatSignedNPR = (n) => (n > 0 ? "+" : n < 0 ? "-" : "") + "NPR " + formatNepaliNumber(Math.abs(n), 2);
     const formatRateDiff = (d) => (d > 0 ? "+" : d < 0 ? "-" : "") + "Rs " + formatNepaliNumber(Math.abs(d), 2) + "/unit";
 
-    // ==================== AUTH & EMAIL CREDENTIALS ====================
-    function openApiKeyModal() { document.getElementById("gemini-key-input").value = apiKey; document.getElementById("apikey-modal").classList.remove("hidden"); }
-    function saveGeminiApiKey() {
-      const val = document.getElementById("gemini-key-input").value.trim();
-      if (!val) return;
-      apiKey = val; localStorage.setItem("nepse_gemini_api_key", val);
-      document.getElementById("apikey-modal").classList.add("hidden");
-      alert("✅ Gemini API Key सेभ भयो!");
+    // ==================== SETTINGS & AUTH ====================
+    function openSettingsModal() {
+      document.getElementById("gemini-key-input").value = apiKey;
+      document.getElementById("live-proxy-url-input").value = customLiveUrl;
+      document.getElementById("settings-modal").classList.remove("hidden");
+    }
+    function saveAppSettings() {
+      apiKey = document.getElementById("gemini-key-input").value.trim();
+      customLiveUrl = document.getElementById("live-proxy-url-input").value.trim();
+      localStorage.setItem("nepse_gemini_api_key", apiKey);
+      localStorage.setItem("nepse_custom_live_url", customLiveUrl);
+      document.getElementById("settings-modal").classList.add("hidden");
+      fetchLiveNepsePrices(true);
+      alert("✅ Settings सेभ भयो!");
     }
 
     function triggerEmailCredentials(u) {
@@ -824,7 +911,9 @@
       const sel = document.getElementById("account-selector");
       sel.innerHTML = `<option value="ALL">All Demat Accounts (${connectedAccounts.length})</option>` +
         connectedAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)} (${escapeHtml(a.dp)})</option>`).join("");
-      sel.value = activeAccountFilter;
+      if ([...sel.options].some(o => o.value === activeAccountFilter)) sel.value = activeAccountFilter;
+      else { activeAccountFilter = "ALL"; sel.value = "ALL"; }
+      document.getElementById("account-badge").textContent = sel.options[sel.selectedIndex]?.text || "All Accounts";
     }
 
     document.getElementById("account-selector").addEventListener("change", function (e) {
@@ -834,7 +923,17 @@
     });
 
     function renderPortfolio() {
-      const filtered = activeAccountFilter === "ALL" ? holdingsData : holdingsData.filter(h => h.account === activeAccountFilter);
+      ["scrip", "units", "buyRate", "prevClose", "ltp", "val", "buypl", "daypl"].forEach(f => {
+        const ind = document.getElementById("sort-ind-" + f);
+        if (ind) {
+          ind.textContent = sortField === f ? (sortDir === "desc" ? "▼" : "▲") : "⇅";
+          ind.className = sortField === f ? "text-emerald-400 font-bold" : "text-slate-500";
+        }
+      });
+
+      const baseFiltered = activeAccountFilter === "ALL" ? holdingsData : holdingsData.filter(h => h.account === activeAccountFilter);
+      const filtered = getSortedHoldings(baseFiltered);
+
       let totalInv = 0, totalCur = 0, totalPrev = 0;
       const tbody = document.getElementById("holdings-tbody");
       tbody.innerHTML = "";
@@ -844,6 +943,7 @@
       }
 
       filtered.forEach(item => {
+        const accObj = connectedAccounts.find(a => a.id === item.account);
         const inv = item.units * item.buyRate, cur = item.units * item.ltp, prev = item.units * item.prevClose;
         totalInv += inv; totalCur += cur; totalPrev += prev;
         const buyDiff = item.ltp - item.buyRate, buyPL = cur - inv, buyPct = inv > 0 ? (buyPL / inv) * 100 : 0;
@@ -858,7 +958,7 @@
         tr.setAttribute("ontouchstart", `startHoldingLongPress('${item.id}')`);
         tr.setAttribute("ontouchend", "cancelLongPress()");
         tr.innerHTML = `
-          <td class="py-3 px-4"><div class="font-bold text-white">${escapeHtml(item.scrip)}</div><div class="text-[11px] text-slate-400">${escapeHtml(item.sector || "Equity")}</div></td>
+          <td class="py-3 px-4"><div class="font-bold text-white">${escapeHtml(item.scrip)}</div><div class="text-[11px] text-slate-400">${escapeHtml(accObj ? accObj.name : "Primary")} • ${escapeHtml(item.sector || "Equity")}</div></td>
           <td class="py-3 px-3 text-right text-slate-200">${formatNepaliNumber(item.units, Number.isInteger(item.units) ? 0 : 2)}</td>
           <td class="py-3 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(item.buyRate, 2)}</td>
           <td class="py-3 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(item.prevClose, 2)}</td>
@@ -915,11 +1015,7 @@
 
       const bars = document.getElementById("sector-allocation-bars");
       const mBody = document.getElementById("tech-matrix-tbody");
-      if (filtered.length === 0) {
-        bars.innerHTML = `<p class="text-slate-400 text-xs">No holdings yet.</p>`;
-        mBody.innerHTML = "";
-        return;
-      }
+      if (filtered.length === 0) { bars.innerHTML = `<p class="text-slate-400 text-xs">No holdings yet.</p>`; mBody.innerHTML = ""; return; }
 
       let totalVal = 0, wins = 0, losses = 0, best = { s: "—", p: -Infinity }, worst = { s: "—", p: Infinity };
       const secTotals = {};
@@ -983,13 +1079,88 @@
       if (item) sendMessageToGeminiAgent(`${item.scrip} (Buy Rs ${item.buyRate}, LTP Rs ${item.ltp}, Pivot ${document.getElementById("out-pp").textContent}, RSI ${document.getElementById("tech-rsi").value}) को Technical Strategy दिनुहोस्।`);
     }
 
-    // ==================== CRUD & UNIVERSAL CSV PARSER ====================
+    // ==================== DEMAT VAULT WITH EDIT & DELETE ====================
+    function openVaultModal() {
+      cancelEditAccount();
+      renderVaultAccounts();
+      document.getElementById("vault-modal").classList.remove("hidden");
+    }
+
+    function renderVaultAccounts() {
+      document.getElementById("vault-accounts-list").innerHTML = connectedAccounts.map(a => `
+        <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+          <div class="min-w-0 pr-2">
+            <div class="font-bold text-white truncate">${escapeHtml(a.name)}</div>
+            <div class="text-[11px] text-slate-400 font-mono truncate">${escapeHtml(a.dp)}</div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="startEditAccount('${a.id}')" class="px-2 py-1 rounded bg-slate-800 text-amber-300 border border-slate-700 cursor-pointer">✏️ Edit</button>
+            <button type="button" onclick="deleteDematAccount('${a.id}')" class="px-2 py-1 rounded bg-red-500/20 text-red-300 border border-red-500/40 cursor-pointer">🗑️ Delete</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function startEditAccount(id) {
+      const acc = connectedAccounts.find(a => a.id === id);
+      if (!acc) return;
+      document.getElementById("edit-acc-id").value = acc.id;
+      document.getElementById("new-acc-name").value = acc.name;
+      document.getElementById("new-acc-dp").value = acc.dp;
+      document.getElementById("acc-form-title").textContent = `✏️ Editing: ${acc.name}`;
+      document.getElementById("cancel-acc-edit-btn").classList.remove("hidden");
+      document.getElementById("save-acc-submit-btn").textContent = "✔ Update Member";
+    }
+
+    function cancelEditAccount() {
+      document.getElementById("edit-acc-id").value = "";
+      document.getElementById("new-acc-name").value = "";
+      document.getElementById("new-acc-dp").value = "";
+      document.getElementById("acc-form-title").textContent = "+ Add New Demat Account";
+      document.getElementById("cancel-acc-edit-btn").classList.add("hidden");
+      document.getElementById("save-acc-submit-btn").textContent = "+ Save Member";
+    }
+
+    function deleteDematAccount(id) {
+      if (connectedAccounts.length <= 1) {
+        alert("⚠️ कम्तीमा १ वटा मुख्य Demat अकाउन्ट रहनुपर्छ।");
+        return;
+      }
+      const acc = connectedAccounts.find(a => a.id === id);
+      if (!confirm(`के तपाईं "${acc?.name || id}" Demat अकाउन्ट र यसभित्रका सेयरहरू हटाउन चाहनुहुन्छ?`)) return;
+      connectedAccounts = connectedAccounts.filter(a => a.id !== id);
+      holdingsData = holdingsData.filter(h => h.account !== id);
+      if (activeAccountFilter === id) activeAccountFilter = "ALL";
+      saveUserWorkspace(); refreshAccountDropdown(); renderVaultAccounts(); renderPortfolio();
+    }
+
+    document.getElementById("add-account-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const editId = document.getElementById("edit-acc-id").value;
+      const name = document.getElementById("new-acc-name").value.trim();
+      const dp = document.getElementById("new-acc-dp").value.trim();
+      if (!name || !dp) return;
+      if (editId) {
+        connectedAccounts = connectedAccounts.map(a => a.id === editId ? { ...a, name, dp } : a);
+      } else {
+        connectedAccounts.push({ id: "ACC" + Date.now().toString().slice(-4), name, dp });
+      }
+      saveUserWorkspace(); refreshAccountDropdown(); cancelEditAccount(); renderVaultAccounts(); renderPortfolio();
+    });
+
+    // ==================== CRUD & CSV PARSER ====================
     function populateScripDatalist() {
       document.getElementById("nepse-scrip-datalist").innerHTML = NEPSE_LISTED_SCRIPS.map(s => `<option value="${s.symbol}">${s.name}</option>`).join("");
     }
     function onScripInput(v) {
-      const f = NEPSE_LISTED_SCRIPS.find(s => s.symbol === v.trim().toUpperCase());
+      const sym = v.trim().toUpperCase();
+      const f = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
+      const live = latestMarketCache[sym];
       if (f) { document.getElementById("hold-name").value = f.name; document.getElementById("hold-sector").value = f.sector; }
+      if (live && live.ltp > 0) {
+        document.getElementById("hold-ltp").value = live.ltp;
+        if (live.prevClose > 0) document.getElementById("hold-prev").value = live.prevClose;
+      }
     }
     function openHoldingModal(sym = "") {
       document.getElementById("edit-holding-id").value = "";
@@ -1077,7 +1248,7 @@
 
           const units = nums[0];
           const prev = nums[1] || 100;
-          const ltp = nums[3] || nums[2] || prev;
+          const ltp = (latestMarketCache[scrip]?.ltp) || nums[3] || nums[2] || prev;
           const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === scrip);
 
           const exIdx = holdingsData.findIndex(h => h.account === targetAcc && h.scrip === scrip);
@@ -1103,21 +1274,6 @@
       reader.readAsText(file);
     }
 
-    // ==================== VAULT & DIRECTORY ====================
-    function openVaultModal() {
-      document.getElementById("vault-accounts-list").innerHTML = connectedAccounts.map(a =>
-        `<div class="flex justify-between items-center p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs"><span><strong>${escapeHtml(a.name)}</strong> (${escapeHtml(a.dp)})</span></div>`
-      ).join("");
-      document.getElementById("vault-modal").classList.remove("hidden");
-    }
-
-    document.getElementById("add-account-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      connectedAccounts.push({ id: "ACC" + Date.now().toString().slice(-4), name: document.getElementById("new-acc-name").value.trim(), dp: document.getElementById("new-acc-dp").value.trim() });
-      saveUserWorkspace(); refreshAccountDropdown(); openVaultModal();
-      document.getElementById("new-acc-name").value = ""; document.getElementById("new-acc-dp").value = "";
-    });
-
     function renderDirectory() {
       const q = (document.getElementById("dir-search").value || "").toLowerCase();
       const sec = document.getElementById("dir-sector").value;
@@ -1126,7 +1282,7 @@
         .map(s => `<div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center text-xs"><div><strong>${s.symbol}</strong><div class="text-[11px] text-slate-400">${s.name}</div></div><button onclick="switchTab('portfolio'); openHoldingModal('${s.symbol}')" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold cursor-pointer">+ Add</button></div>`).join("");
     }
 
-    // ==================== GEMINI AI ANALYST (gemini-3.5-flash-lite) ====================
+    // ==================== GEMINI AI ANALYST WITH LIVE REAL-TIME CONTEXT INJECTION ====================
     document.getElementById("agent-chat-form").addEventListener("submit", function (e) {
       e.preventDefault();
       const inp = document.getElementById("agent-input");
@@ -1136,8 +1292,7 @@
     });
 
     function askMyPortfolioAnalysis() {
-      const summary = holdingsData.map(h => `${h.scrip} (${h.units} units, Buy Rs ${h.buyRate}, LTP Rs ${h.ltp})`).join("; ");
-      sendMessageToGeminiAgent(summary ? `मेरो पोर्टफोलियोको Technical र Risk विश्लेषण गरिदिनुहोस्: ${summary}` : "NEPSE मा सन्तुलित पोर्टफोलियो कसरी बनाउने?");
+      sendMessageToGeminiAgent("मेरो अहिलेको Live पोर्टफोलियो, हर सेयरको Live LTP र नाफा/नोक्सान अनुसार विस्तृत सुझाव दिनुहोस्।");
     }
 
     async function sendMessageToGeminiAgent(userQuery) {
@@ -1147,13 +1302,27 @@
       box.scrollTop = box.scrollHeight;
 
       if (!apiKey || apiKey.length < 10) {
-        box.innerHTML += `<div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3 text-xs text-amber-200">पहिले माथिको <strong>🔑 API Key</strong> बटनमा आफ्नो Key सेभ गर्नुहोस्।</div>`;
+        box.innerHTML += `<div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3 text-xs text-amber-200">पहिले माथिको <strong>🔑 API & Live URL</strong> बटनमा आफ्नो Gemini API Key सेभ गर्नुहोस्।</div>`;
         return;
       }
 
       const loadId = "ld-" + Date.now();
-      box.innerHTML += `<div id="${loadId}" class="text-xs text-slate-400">Analyzing with Gemini 3.5 Flash-Lite...</div>`;
+      box.innerHTML += `<div id="${loadId}" class="text-xs text-slate-400">Analyzing Real-Time Portfolio & NEPSE Data...</div>`;
       box.scrollTop = box.scrollHeight;
+
+      const marketSt = getNepseMarketStatus();
+      const liveHoldingsContext = holdingsData.length > 0
+        ? holdingsData.map(h => `${h.scrip} (${h.sector}): ${h.units} units, Buy/WACC=Rs ${h.buyRate}, PrevClose=Rs ${h.prevClose}, Current Live LTP=Rs ${h.ltp}, Unrealized P/L=Rs ${((h.ltp - h.buyRate) * h.units).toFixed(2)}`).join("\n")
+        : "No holdings added yet.";
+
+      const liveMarketSample = Object.entries(latestMarketCache).slice(0, 40)
+        .map(([sym, d]) => `${sym}: LTP Rs ${d.ltp} (Prev Rs ${d.prevClose})`).join(", ");
+
+      const systemPrompt = `You are a senior NEPSE & Mutual Fund Analyst. You HAVE real-time market and portfolio data injected below — NEVER say you lack real-time data. Use the exact Live LTP numbers provided below. Respond strictly in ${lang}.
+Current Nepal Time & Market Status: ${marketSt.timeStr} (${marketSt.isOpen ? "Market Open" : "Market Closed"}).
+User's Live Portfolio Holdings:
+${liveHoldingsContext}
+${liveMarketSample ? "Latest Live NEPSE Market Feed: " + liveMarketSample : ""}`;
 
       try {
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${encodeURIComponent(apiKey)}`, {
@@ -1161,7 +1330,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             contents: [{ parts: [{ text: userQuery }] }],
-            systemInstruction: { parts: [{ text: `You are an expert NEPSE & Mutual Fund Technical Analyst. Reply strictly in ${lang}.` }] }
+            systemInstruction: { parts: [{ text: systemPrompt }] }
           })
         });
         const data = await res.json();
