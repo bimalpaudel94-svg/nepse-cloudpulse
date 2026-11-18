@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>NEPSE CloudPulse AI — Live Per-Unit Rates & Multi-User Portfolio</title>
+  <title>NEPSE CloudPulse AI — Technical & Advanced Portfolio Terminal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-base: #090d16;
-      --bg-card: rgba(17, 24, 39, 0.88);
+      --bg-card: rgba(17, 24, 39, 0.9);
       --accent-primary: #10b981;
-      --accent-secondary: #059669;
       --accent-glow: rgba(16, 185, 129, 0.25);
       --accent-border: rgba(16, 185, 129, 0.45);
       --banner-grad-start: #064e3b;
@@ -21,7 +20,6 @@
 
     body.theme-profit {
       --accent-primary: #10b981;
-      --accent-secondary: #059669;
       --accent-glow: rgba(16, 185, 129, 0.28);
       --accent-border: rgba(16, 185, 129, 0.55);
       --banner-grad-start: #064e3b;
@@ -31,7 +29,6 @@
 
     body.theme-loss {
       --accent-primary: #ef4444;
-      --accent-secondary: #dc2626;
       --accent-glow: rgba(239, 68, 68, 0.28);
       --accent-border: rgba(239, 68, 68, 0.55);
       --banner-grad-start: #7f1d1d;
@@ -41,7 +38,6 @@
 
     body.theme-neutral {
       --accent-primary: #a855f7;
-      --accent-secondary: #7e22ce;
       --accent-glow: rgba(168, 85, 247, 0.28);
       --accent-border: rgba(168, 85, 247, 0.55);
       --banner-grad-start: #4c1d95;
@@ -53,7 +49,7 @@
       font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
       background-color: var(--bg-base);
       color: #f3f4f6;
-      transition: background-color 0.45s ease;
+      transition: background-color 0.4s ease;
       overflow-x: hidden;
       padding-top: env(safe-area-inset-top, 0px);
     }
@@ -62,12 +58,11 @@
       background: linear-gradient(135deg, var(--banner-grad-start) 0%, var(--banner-grad-end) 100%);
       border: 1px solid var(--accent-border);
       box-shadow: 0 12px 35px -8px var(--accent-glow);
-      transition: all 0.45s ease;
     }
 
-    .dynamic-border { border-color: var(--accent-border); transition: border-color 0.45s ease; }
-    .dynamic-accent-bg { background-color: var(--accent-primary); transition: background-color 0.45s ease; }
-    .dynamic-accent-text { color: var(--text-accent); transition: color 0.45s ease; }
+    .dynamic-border { border-color: var(--accent-border); }
+    .dynamic-accent-bg { background-color: var(--accent-primary); }
+    .dynamic-accent-text { color: var(--text-accent); }
 
     .glass-card {
       background: var(--bg-card);
@@ -81,9 +76,7 @@
     .long-press-target {
       user-select: none;
       -webkit-user-select: none;
-      transition: transform 0.15s ease, background-color 0.2s ease;
     }
-    .long-press-target:active { transform: scale(0.99); }
 
     @keyframes pulseSlow { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
     .animate-pulse-slow { animation: pulseSlow 2.2s infinite; }
@@ -96,7 +89,7 @@
 </head>
 <body class="theme-neutral min-h-screen antialiased selection:bg-emerald-500/30">
 
-  <!-- ==================== 1. MULTI-USER SIGN IN / REGISTER SCREEN ==================== -->
+  <!-- ==================== 1. MULTI-USER LOGIN / REGISTER SCREEN ==================== -->
   <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
     <div class="absolute -top-32 -left-32 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
@@ -104,17 +97,17 @@
     <div class="glass-card w-full max-w-md rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-700/70 relative z-10">
       <div class="flex items-center justify-between mb-5">
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
           </div>
           <div>
             <h1 class="text-xl font-bold tracking-tight text-white">NEPSE CloudPulse <span class="text-emerald-400">AI</span></h1>
-            <p class="text-xs text-slate-400">Live Per-Unit Transaction Rate & Multi-User Vault</p>
+            <p class="text-xs text-slate-400">Technical & Advanced Portfolio Terminal</p>
           </div>
         </div>
-        <span class="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-slate-800 text-emerald-300 rounded-full border border-emerald-500/30">AI Active</span>
+        <span class="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-slate-800 text-emerald-300 rounded-full border border-emerald-500/30">Pro v4</span>
       </div>
 
       <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-950/90 border border-slate-800 mb-5">
@@ -130,12 +123,12 @@
 
       <div id="auth-alert" class="hidden mb-4 p-3 rounded-xl text-xs font-medium border"></div>
 
-      <!-- Form 1: Sign In -->
+      <!-- Sign In Form -->
       <form id="master-login-form" class="space-y-4">
         <div>
           <label class="block text-xs font-medium text-slate-300 mb-1.5">Your User ID / Email</label>
           <input id="login-userid" type="text" required autocomplete="off"
-            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
             placeholder="आफ्नो User ID वा Email लेख्नुहोस्" />
         </div>
         <div>
@@ -146,16 +139,16 @@
             </button>
           </div>
           <input id="login-password" type="password" required
-            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
             placeholder="आफ्नो Password लेख्नुहोस्" />
         </div>
         <button type="submit"
-          class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/25 transition cursor-pointer">
+          class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold text-sm shadow-lg cursor-pointer">
           Unlock My Portfolio
         </button>
       </form>
 
-      <!-- Form 2: Create New User Account -->
+      <!-- Register Form -->
       <form id="master-register-form" class="hidden space-y-3">
         <div>
           <label class="block text-xs font-medium text-slate-300 mb-1">Full Name (पूरा नाम)</label>
@@ -164,7 +157,7 @@
             placeholder="उदाहरण: Bimal Paudel" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-1">Your Email Address (ID/Password पठाउन)</label>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Email Address (ID/Password पठाउन)</label>
           <input id="reg-email" type="email" required
             class="w-full px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
             placeholder="example@gmail.com" />
@@ -188,7 +181,7 @@
           <span>बनाउनेबित्तिकै मेरो Email मा User ID र Password पठाउनुहोस्</span>
         </label>
         <button type="submit"
-          class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-bold text-sm shadow-lg transition cursor-pointer">
+          class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold text-sm shadow-lg cursor-pointer">
           Create Account & Send to Email
         </button>
       </form>
@@ -219,37 +212,37 @@
     </div>
   </div>
 
-  <!-- ==================== 2. MAIN CLOUD DASHBOARD SHELL ==================== -->
+  <!-- ==================== 2. MAIN APP DASHBOARD ==================== -->
   <div id="app-shell" class="hidden max-w-6xl mx-auto pb-16">
 
-    <!-- Top Live Status & Auto-Refresh Strip -->
+    <!-- Top Live Strip -->
     <div class="bg-slate-950/90 border-b border-slate-800/80 px-4 py-2 flex flex-wrap items-center justify-between gap-2 sticky top-0 z-30 backdrop-blur-md">
       <div class="flex items-center gap-2 text-xs">
         <span class="w-2 h-2 rounded-full dynamic-accent-bg animate-pulse-slow"></span>
-        <span class="font-semibold text-slate-200">NEPSE Live LTP</span>
+        <span class="font-semibold text-slate-200">NEPSE Pro Terminal</span>
         <span class="text-slate-500">|</span>
-        <span id="last-rate-sync-label" class="text-emerald-400 font-mono text-[11px]">Ready (00,00,000)</span>
+        <span id="last-rate-sync-label" class="text-emerald-400 font-mono text-[11px]">Nepali Format (00,00,000)</span>
       </div>
 
       <div class="flex items-center gap-1.5">
         <button id="auto-live-toggle-btn" onclick="toggleAutoLiveFeed()"
           class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer">
-          ⏱️ Auto-Live: OFF
+          ⏱️ Auto-Tick: OFF
         </button>
-        <button onclick="forceTheme('profit')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-pointer">🟢</button>
-        <button onclick="forceTheme('loss')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-red-500/20 text-red-300 border border-red-500/40 cursor-pointer">🔴</button>
-        <button onclick="forceTheme('neutral')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/40 cursor-pointer">🟣</button>
-        <button onclick="resetAutoTheme()" class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer">Auto</button>
+        <button onclick="forceTheme('profit')" class="px-2 py-0.5 rounded text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-pointer">🟢</button>
+        <button onclick="forceTheme('loss')" class="px-2 py-0.5 rounded text-[11px] bg-red-500/20 text-red-300 border border-red-500/40 cursor-pointer">🔴</button>
+        <button onclick="forceTheme('neutral')" class="px-2 py-0.5 rounded text-[11px] bg-purple-500/20 text-purple-300 border border-purple-500/40 cursor-pointer">🟣</button>
+        <button onclick="resetAutoTheme()" class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer">Auto</button>
       </div>
     </div>
 
-    <!-- Header & Multi-Account Bar -->
+    <!-- Header -->
     <header class="px-4 pt-4 pb-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="flex items-center justify-between gap-2">
         <div>
           <h2 class="text-lg font-bold text-white flex items-center gap-2">
             NEPSE CloudPulse <span class="dynamic-accent-text">AI</span>
-            <span id="status-pill" class="text-[10px] uppercase px-2 py-0.5 rounded-full bg-white/10 dynamic-accent-text font-bold tracking-wider">🟣 NO CHANGE</span>
+            <span id="status-pill" class="text-[10px] uppercase px-2 py-0.5 rounded-full bg-white/10 dynamic-accent-text font-bold">🟣 NO CHANGE</span>
           </h2>
           <p class="text-xs text-slate-400">User: <span id="active-user-label" class="text-white font-semibold"></span></p>
         </div>
@@ -264,55 +257,58 @@
 
       <div class="flex items-center gap-2">
         <select id="account-selector"
-          class="flex-1 sm:w-56 px-3 py-2 rounded-xl bg-slate-900 border dynamic-border text-xs font-semibold text-white focus:outline-none cursor-pointer">
+          class="flex-1 sm:w-52 px-3 py-2 rounded-xl bg-slate-900 border dynamic-border text-xs font-semibold text-white focus:outline-none cursor-pointer">
           <option value="ALL">All Demat Accounts (0)</option>
         </select>
 
         <button onclick="openVaultModal()"
-          class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-white flex items-center gap-1.5 transition cursor-pointer shrink-0">
-          <span>+ Demat / MeroShare</span>
+          class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-white shrink-0 cursor-pointer">
+          + Demat
         </button>
 
-        <button onclick="openApiKeyModal()" title="Set or Change Gemini API Key"
+        <button onclick="openApiKeyModal()" title="Set Gemini API Key"
           class="hidden sm:flex px-2.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-xs font-bold text-amber-300 cursor-pointer shrink-0">
           🔑 API Key
         </button>
 
-        <button onclick="emailCurrentUserCredentials()" title="Send my User ID & Password to my Email"
-          class="hidden sm:flex px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-emerald-300 transition cursor-pointer">
-          📧 Email ID/Pass
+        <button onclick="emailCurrentUserCredentials()" title="Email User ID & Password"
+          class="hidden sm:flex px-2.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-emerald-300 cursor-pointer">
+          📧 ID/Pass
         </button>
 
         <button id="logout-btn-desktop"
-          class="hidden sm:flex px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-400 hover:text-white transition cursor-pointer">
-          Switch User / Lock
+          class="hidden sm:flex px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-400 hover:text-white cursor-pointer">
+          Lock
         </button>
       </div>
     </header>
 
-    <!-- Primary Feature Tabs -->
+    <!-- Primary Feature Tabs (Including NEW Technical & Advanced Analysis Tab) -->
     <div class="px-4 mt-2">
       <div class="flex gap-2 overflow-x-auto no-scrollbar border-b border-slate-800 pb-2">
         <button onclick="switchTab('portfolio')" id="tab-btn-portfolio"
           class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border transition cursor-pointer shrink-0">
-          📊 My Portfolio & Live Per-Unit LTP
+          📊 Portfolio & Live LTP
+        </button>
+        <button onclick="switchTab('technical')" id="tab-btn-technical"
+          class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition cursor-pointer shrink-0 flex items-center gap-1.5">
+          <span>📈 Technical & Advanced Analysis</span>
+          <span class="px-1.5 py-0.2 bg-purple-500/20 text-purple-300 rounded text-[9px] uppercase">Pro</span>
         </button>
         <button onclick="switchTab('ai-agent')" id="tab-btn-ai-agent"
           class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition cursor-pointer shrink-0 flex items-center gap-1.5">
-          <span>✨ Gemini AI Agent (नेपाली / English)</span>
-          <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[9px] uppercase">Live Web</span>
+          <span>✨ Gemini AI Analyst</span>
+          <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[9px] uppercase">Fast</span>
         </button>
         <button onclick="switchTab('nepse-directory')" id="tab-btn-nepse-directory"
           class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition cursor-pointer shrink-0">
-          🏛️ NEPSE Listed Companies & Mutual Funds
+          🏛️ NEPSE Scrips & Mutual Funds
         </button>
       </div>
     </div>
 
-    <!-- ==================== TAB 1: PORTFOLIO & LIVE PER-UNIT TRANSACTION RATE ==================== -->
+    <!-- ==================== TAB 1: PORTFOLIO & LIVE PER-UNIT LTP ==================== -->
     <main id="tab-portfolio" class="px-4 pt-4 space-y-5">
-
-      <!-- Dynamic Color-Adaptive Hero Summary Card -->
       <section class="dynamic-banner rounded-2xl p-5 sm:p-6 relative overflow-hidden">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -352,8 +348,8 @@
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="openHoldingModal()"
-            class="px-4 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs shadow-lg cursor-pointer flex items-center gap-1.5">
-            <span>+ Add Stock / Mutual Fund</span>
+            class="px-4 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs shadow-lg cursor-pointer">
+            + Add Stock / Mutual Fund
           </button>
           <label class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white border border-slate-700 cursor-pointer flex items-center gap-1.5">
             <span>📂 Import MeroShare CSV</span>
@@ -364,22 +360,20 @@
         <div class="flex items-center gap-2">
           <button onclick="clearAccountHoldings()"
             class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-red-950/50 text-xs font-semibold text-red-400 border border-slate-800 cursor-pointer">
-            🗑️ Clear List
+            🗑️ Clear
           </button>
-          <button id="fetch-live-btn" onclick="fetchRealNepseLiveRates()"
-            class="px-3.5 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-xs font-bold text-emerald-300 border border-emerald-500/40 cursor-pointer flex items-center gap-1.5">
-            <span>📡 Fetch Live Transaction LTP</span>
+          <button id="fetch-live-btn" onclick="simulateMarketTick()"
+            class="px-3.5 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-xs font-bold text-emerald-300 border border-emerald-500/40 cursor-pointer">
+            📡 Refresh LTP Tick
           </button>
         </div>
       </div>
 
       <!-- Holdings Table -->
       <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
-        <div class="p-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h3 class="text-sm font-bold text-white">Your Holdings — Live Per-Unit Transaction Rate (LTP) & Dual P/L</h3>
-            <p class="text-[11px] text-slate-400">💡 अहिले कारोबार भइरहेको प्रति-युनिट दर (Live LTP) र आजको प्रति-युनिट घटबढ सिधै देखिन्छ • सच्याउन <strong>Long-Press</strong> वा ✏️ थिच्नुहोस्</p>
-          </div>
+        <div class="p-4 border-b border-slate-800">
+          <h3 class="text-sm font-bold text-white">Your Holdings — Live Per-Unit Transaction Rate (LTP) & Dual P/L</h3>
+          <p class="text-[11px] text-slate-400">💡 कुनै सेयरको कित्ता वा मूल्य सच्याउन पङ्क्तिमा <strong>Long-Press (थिचिराख्नुहोस्)</strong> वा ✏️ थिच्नुहोस्</p>
         </div>
 
         <div class="overflow-x-auto">
@@ -388,7 +382,7 @@
               <tr class="bg-slate-900/90 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
                 <th class="py-3 px-4">Scrip & Sector</th>
                 <th class="py-3 px-3 text-right">Units</th>
-                <th class="py-3 px-3 text-right">Buy Rate (WACC)</th>
+                <th class="py-3 px-3 text-right">Buy Rate</th>
                 <th class="py-3 px-3 text-right">Prev Close</th>
                 <th class="py-3 px-3 text-right text-emerald-300">Live Transaction Rate (LTP / Unit)</th>
                 <th class="py-3 px-3 text-right">Total Value</th>
@@ -403,7 +397,130 @@
       </section>
     </main>
 
-    <!-- ==================== TAB 2: GEMINI LIVE NEPSE & WEB RESEARCH AGENT ==================== -->
+    <!-- ==================== TAB 2: TECHNICAL & ADVANCED ANALYSIS TERMINAL ==================== -->
+    <main id="tab-technical" class="hidden px-4 pt-4 space-y-5">
+
+      <!-- Portfolio Quantitative Metrics Strip -->
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="glass-card rounded-2xl p-4 border border-slate-800">
+          <div class="text-[11px] text-slate-400">Portfolio Win Rate</div>
+          <div id="tech-win-rate" class="text-xl font-extrabold text-emerald-400 mt-1">0.0%</div>
+          <div id="tech-win-sub" class="text-[11px] text-slate-400 mt-0.5">0 Profit / 0 Loss scrips</div>
+        </div>
+        <div class="glass-card rounded-2xl p-4 border border-slate-800">
+          <div class="text-[11px] text-slate-400">Top Gainer (ROI %)</div>
+          <div id="tech-top-gainer" class="text-xl font-extrabold text-emerald-300 mt-1">—</div>
+          <div id="tech-top-gainer-sub" class="text-[11px] text-slate-400 mt-0.5">No holdings</div>
+        </div>
+        <div class="glass-card rounded-2xl p-4 border border-slate-800">
+          <div class="text-[11px] text-slate-400">Top Loser (Drawdown)</div>
+          <div id="tech-top-loser" class="text-xl font-extrabold text-red-400 mt-1">—</div>
+          <div id="tech-top-loser-sub" class="text-[11px] text-slate-400 mt-0.5">No holdings</div>
+        </div>
+        <div class="glass-card rounded-2xl p-4 border border-slate-800">
+          <div class="text-[11px] text-slate-400">Diversification Score</div>
+          <div id="tech-div-score" class="text-xl font-extrabold text-purple-300 mt-1">0 / 100</div>
+          <div id="tech-div-sub" class="text-[11px] text-slate-400 mt-0.5">Sector spread index</div>
+        </div>
+      </section>
+
+      <!-- Sector Allocation & Risk Concentration -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <section class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white">📊 Sector & Mutual Fund Allocation</h3>
+            <span class="text-[11px] text-slate-400">Weightage (%)</span>
+          </div>
+          <div id="sector-allocation-bars" class="space-y-3 text-xs">
+            <p class="text-slate-400 text-xs">पोर्टफोलियोमा सेयर थपेपछि सेक्टर अनुसारको लगानी प्रतिशत यहाँ देखिन्छ।</p>
+          </div>
+        </section>
+
+        <!-- Pivot Point, Support/Resistance & Risk-Reward Calculator -->
+        <section class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white">🎯 Technical Pivot, Support/Resistance & R:R Tool</h3>
+            <select id="tech-scrip-select" onchange="loadScripIntoTechCalc()"
+              class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none">
+              <option value="">Select Holding...</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1">Day High (Rs)</label>
+              <input id="tech-high" type="number" step="any" oninput="calculateTechnicalLevels()" placeholder="High"
+                class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1">Day Low (Rs)</label>
+              <input id="tech-low" type="number" step="any" oninput="calculateTechnicalLevels()" placeholder="Low"
+                class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1">Close / LTP (Rs)</label>
+              <input id="tech-close" type="number" step="any" oninput="calculateTechnicalLevels()" placeholder="Close"
+                class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1">14-Day RSI (0–100)</label>
+              <input id="tech-rsi" type="number" step="any" min="0" max="100" value="54" oninput="calculateTechnicalLevels()"
+                class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1">Your Stop-Loss Target (Rs)</label>
+              <input id="tech-sl" type="number" step="any" oninput="calculateTechnicalLevels()" placeholder="Stop Loss"
+                class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" />
+            </div>
+          </div>
+
+          <div id="tech-levels-output" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+            <div><span class="text-slate-400 text-[10px] block">Resistance 2 (R2)</span><strong id="out-r2" class="text-red-300">—</strong></div>
+            <div><span class="text-slate-400 text-[10px] block">Resistance 1 (R1)</span><strong id="out-r1" class="text-amber-300">—</strong></div>
+            <div><span class="text-slate-400 text-[10px] block">Pivot Point (PP)</span><strong id="out-pp" class="text-white">—</strong></div>
+            <div><span class="text-slate-400 text-[10px] block">Support 1 (S1)</span><strong id="out-s1" class="text-emerald-300">—</strong></div>
+            <div><span class="text-slate-400 text-[10px] block">Support 2 (S2)</span><strong id="out-s2" class="text-emerald-400">—</strong></div>
+            <div><span class="text-slate-400 text-[10px] block">RSI Signal</span><strong id="out-rsi-sig" class="text-purple-300">Neutral Zone</strong></div>
+          </div>
+
+          <button onclick="sendTechAnalysisToAI()"
+            class="w-full py-2.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 border border-purple-500/40 font-bold text-xs cursor-pointer">
+            ✨ Ask Gemini AI for Deep Technical Strategy on Selected Scrip
+          </button>
+        </section>
+      </div>
+
+      <!-- Per-Scrip Breakeven & Target Gain Matrix -->
+      <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-bold text-white">📐 Per-Scrip Breakeven, +15% Target & -8% Stop-Loss Matrix</h3>
+            <p class="text-[11px] text-slate-400">तपाईंको खरिद दर (WACC) अनुसार कुन मूल्यमा बेच्दा नाफा सुरक्षित हुन्छ र कहाँ Stop-Loss राख्ने</p>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-900/90 text-[11px] uppercase text-slate-400 border-b border-slate-800">
+                <th class="py-2.5 px-4">Scrip</th>
+                <th class="py-2.5 px-3 text-right">Weight %</th>
+                <th class="py-2.5 px-3 text-right">WACC</th>
+                <th class="py-2.5 px-3 text-right">Live LTP</th>
+                <th class="py-2.5 px-3 text-right text-red-300">Stop-Loss (-8%)</th>
+                <th class="py-2.5 px-3 text-right text-emerald-300">Target (+15%)</th>
+                <th class="py-2.5 px-3 text-right">Signal</th>
+              </tr>
+            </thead>
+            <tbody id="tech-matrix-tbody" class="divide-y divide-slate-800/70 text-xs"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- ==================== TAB 3: GEMINI AI ANALYST ==================== -->
     <main id="tab-ai-agent" class="hidden px-4 pt-4 space-y-4">
       <div class="glass-card rounded-2xl border dynamic-border overflow-hidden flex flex-col h-[74vh] min-h-[520px]">
         <div class="p-4 bg-slate-900/95 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
@@ -411,10 +528,10 @@
             <div class="w-10 h-10 rounded-xl dynamic-accent-bg flex items-center justify-center text-slate-950 font-extrabold shadow-lg">AI</div>
             <div>
               <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                Gemini NEPSE Research Agent
-                <span class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Google Search Grounded</span>
+                Gemini NEPSE & Technical AI Analyst
+                <span class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">gemini-2.5-flash-lite</span>
               </h3>
-              <p class="text-[11px] text-slate-400">Fetches live NEPSE, Mutual Fund NAV & internet news in your language</p>
+              <p class="text-[11px] text-slate-400">Nepali & English Technical, Fundamental & Portfolio Advisor</p>
             </div>
           </div>
 
@@ -430,21 +547,17 @@
         </div>
 
         <div class="px-4 py-2.5 bg-slate-950/60 border-b border-slate-800/80 flex gap-2 overflow-x-auto no-scrollbar">
-          <button onclick="askQuickPrompt('आजको NEPSE बजारको ताजा समाचार, मुख्य सूचक र सेक्टर अवस्था के छ?')"
-            class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">
-            📰 आजको NEPSE ताजा समाचार
-          </button>
           <button onclick="askMyPortfolioAnalysis()"
             class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">
-            💼 मेरो पोर्टफोलियोको ताजा विश्लेषण
+            💼 मेरो पोर्टफोलियोको Technical र Risk विश्लेषण
           </button>
-          <button onclick="askQuickPrompt('नेपालका Mutual Funds हरूको पछिल्लो NAV, लाभांश (Dividend) र कुन फण्ड राम्रो चलिरहेको छ?')"
+          <button onclick="askQuickPrompt('NEPSE मा प्राविधिक विश्लेषण (RSI, MACD, Moving Average र Support/Resistance) हेरेर किन्ने र बेच्ने सही समय कसरी पत्ता लगाउने?')"
             class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-purple-300 border border-purple-500/30 shrink-0 cursor-pointer">
-            📊 Mutual Funds NAV र लाभांश खबर
+            📈 Technical Analysis गाइड (RSI/MACD)
           </button>
-          <button onclick="askQuickPrompt('नेपालमा आउन लागेका नयाँ IPO, Right Share र Dividend घोषणाहरूको ताजा जानकारी दिनुहोस्।')"
+          <button onclick="askQuickPrompt('नेपालका Open-Ended र Close-Ended Mutual Funds मध्ये दीर्घकालीन लगानीका लागि कुन राम्रो हुन्छ र NAV कसरी हेर्ने?')"
             class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">
-            🚀 आगामी IPO र लाभांश
+            📊 Mutual Funds NAV रणनीति
           </button>
         </div>
 
@@ -452,25 +565,25 @@
           <div class="flex items-start gap-3">
             <div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">AI</div>
             <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-3.5 max-w-3xl text-xs sm:text-sm text-slate-200 leading-relaxed">
-              <p class="font-semibold text-white mb-1">नमस्ते! म तपाईंको NEPSE Gemini Live Research Agent हुँ।</p>
-              <p>म इन्टरनेट र NEPSE वेबसाइटहरूबाट ताजा समाचार, कम्पनीको लाभांश, र Mutual Fund को NAV खोजेर तपाईंको भाषामा बुझाइदिन्छु। माथिका बटन थिच्नुहोस् वा तल आफ्नो प्रश्न सोध्नुहोस्।</p>
+              <p class="font-semibold text-white mb-1">नमस्ते! म तपाईंको NEPSE Gemini AI Analyst हुँ।</p>
+              <p>म तपाईंको पोर्टफोलियोको सेक्टर जोखिम, Technical Indicators (RSI, Support/Resistance), र NEPSE कम्पनीहरूको आधारभूत अवस्था विश्लेषण गरिदिन्छु। माथिको <strong>🔑 API Key</strong> मा आफ्नो Key सेभ गरी तल प्रश्न सोध्नुहोस्।</p>
             </div>
           </div>
         </div>
 
         <form id="agent-chat-form" class="p-3 bg-slate-900/95 border-t border-slate-800 flex items-center gap-2">
           <input id="agent-input" type="text" required
-            placeholder="NEPSE, कुनै कम्पनी वा Mutual Fund बारे सोध्नुहोस्..."
+            placeholder="कुनै कम्पनी, Technical Indicator वा पोर्टफोलियो बारे सोध्नुहोस्..."
             class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-emerald-500" />
           <button type="submit"
-            class="px-4 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs sm:text-sm hover:opacity-90 transition cursor-pointer shrink-0">
-            Search & Ask
+            class="px-4 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs sm:text-sm cursor-pointer shrink-0">
+            Ask AI
           </button>
         </form>
       </div>
     </main>
 
-    <!-- ==================== TAB 3: NEPSE LISTED COMPANIES & MUTUAL FUNDS DIRECTORY ==================== -->
+    <!-- ==================== TAB 4: NEPSE DIRECTORY ==================== -->
     <main id="tab-nepse-directory" class="hidden px-4 pt-4 space-y-4">
       <section class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-800 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -479,12 +592,12 @@
             <p class="text-xs text-slate-400">कुनै पनि कम्पनी वा Mutual Fund छानेर सिधै आफ्नो पोर्टफोलियोमा थप्नुहोस्</p>
           </div>
           <div class="flex flex-wrap gap-2">
-            <input id="dir-search" type="text" oninput="renderDirectory()" placeholder="Search Symbol or Name (e.g. NABIL, NIBLPF)..."
-              class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white w-56 focus:outline-none focus:border-emerald-500" />
+            <input id="dir-search" type="text" oninput="renderDirectory()" placeholder="Search Symbol or Name..."
+              class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white w-52 focus:outline-none focus:border-emerald-500" />
             <select id="dir-sector" onchange="renderDirectory()"
               class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none cursor-pointer">
-              <option value="ALL">All Sectors (All Scrips)</option>
-              <option value="Mutual Fund">Mutual Funds (म्युचुअल फण्ड)</option>
+              <option value="ALL">All Sectors</option>
+              <option value="Mutual Fund">Mutual Funds</option>
               <option value="Commercial Banks">Commercial Banks</option>
               <option value="Hydropower">Hydropower</option>
               <option value="Development Banks">Development Banks</option>
@@ -497,13 +610,12 @@
             </select>
           </div>
         </div>
-
         <div id="directory-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-[60vh] overflow-y-auto pr-1"></div>
       </section>
     </main>
   </div>
 
-  <!-- ==================== 3. ADD / EDIT STOCK & MUTUAL FUND MODAL ==================== -->
+  <!-- ==================== 3. ADD / EDIT HOLDING MODAL ==================== -->
   <div id="holding-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -516,68 +628,59 @@
 
       <form id="holding-form" class="space-y-3">
         <input type="hidden" id="edit-holding-id" value="" />
-
         <div>
           <label class="block text-[11px] text-slate-300 mb-1">Demat / Member Account</label>
-          <select id="hold-account" required
-            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none">
-          </select>
+          <select id="hold-account" required class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"></select>
         </div>
-
         <div class="grid grid-cols-2 gap-2.5">
           <div>
             <label class="block text-[11px] text-slate-300 mb-1">Scrip Symbol</label>
             <input id="hold-scrip" list="nepse-scrip-datalist" type="text" required oninput="onScripInput(this.value)"
               placeholder="e.g. NABIL, NIBLPF"
-              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase focus:outline-none focus:border-emerald-500" />
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase" />
             <datalist id="nepse-scrip-datalist"></datalist>
           </div>
           <div>
             <label class="block text-[11px] text-slate-300 mb-1">Sector / Type</label>
             <input id="hold-sector" type="text" required placeholder="e.g. Mutual Fund"
-              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none" />
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
           </div>
         </div>
-
         <div>
           <label class="block text-[11px] text-slate-300 mb-1">Company / Mutual Fund Name</label>
           <input id="hold-name" type="text" required placeholder="Company or Fund full name"
-            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none" />
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         </div>
-
         <div class="grid grid-cols-2 gap-2.5">
           <div>
             <label class="block text-[11px] text-slate-300 mb-1">Total Units (कित्ता)</label>
             <input id="hold-units" type="number" step="any" min="0.01" required placeholder="e.g. 500"
-              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
           </div>
           <div>
             <label class="block text-[11px] text-slate-300 mb-1">Purchase Rate / WACC (Rs)</label>
-            <input id="hold-buy" type="number" step="any" min="0.01" required placeholder="e.g. 10.50 or 510"
-              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+            <input id="hold-buy" type="number" step="any" min="0.01" required placeholder="e.g. 510"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
           </div>
         </div>
-
         <div class="grid grid-cols-2 gap-2.5">
           <div>
             <label class="block text-[11px] text-slate-300 mb-1">Previous Day Close (Rs)</label>
             <input id="hold-prev" type="number" step="any" min="0.01" required placeholder="Yesterday Close"
-              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
           </div>
           <div>
             <label class="block text-[11px] text-emerald-300 font-semibold mb-1">Live Transaction Rate / LTP (Rs)</label>
-            <input id="hold-ltp" type="number" step="any" min="0.01" required placeholder="Current LTP / NAV"
-              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-emerald-500/50 text-xs text-white focus:outline-none focus:border-emerald-400" />
+            <input id="hold-ltp" type="number" step="any" min="0.01" required placeholder="Current LTP"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-emerald-500/50 text-xs text-white" />
           </div>
         </div>
-
         <div class="flex items-center justify-between gap-2 pt-2">
           <button type="button" id="delete-holding-btn" onclick="deleteCurrentHolding()"
-            class="hidden px-3 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/40 text-xs font-bold cursor-pointer">
+            class="hidden px-3 py-2.5 rounded-xl bg-red-500/20 text-red-300 border border-red-500/40 text-xs font-bold cursor-pointer">
             🗑️ Delete
           </button>
-          <button type="submit"
-            class="flex-1 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
+          <button type="submit" class="flex-1 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
             Save to Portfolio
           </button>
         </div>
@@ -585,13 +688,13 @@
     </div>
   </div>
 
-  <!-- ==================== 4. MEROSHARE MULTI-ACCOUNT VAULT MODAL ==================== -->
+  <!-- ==================== 4. DEMAT VAULT MODAL ==================== -->
   <div id="vault-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-lg rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div>
           <h3 class="text-base font-bold text-white">Member Demat / MeroShare Accounts</h3>
-          <p class="text-[11px] text-emerald-400">💡 नाम वा Demat/DP गल्ती भएमा अकाउन्टमा <strong>Long-Press (थिचिराख्नुहोस्)</strong> वा ✏️ थिचेर सच्याउनुहोस्</p>
+          <p class="text-[11px] text-emerald-400">💡 सच्याउन अकाउन्टमा <strong>Long-Press</strong> वा ✏️ थिच्नुहोस्</p>
         </div>
         <button onclick="closeVaultModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
       </div>
@@ -602,57 +705,47 @@
         <input type="hidden" id="edit-acc-id" value="" />
         <div class="flex items-center justify-between">
           <span id="form-mode-label" class="text-[11px] font-semibold text-slate-300">+ नयाँ सदस्यको Demat / MeroShare थप्नुहोस्</span>
-          <button type="button" id="cancel-edit-btn" onclick="cancelEditAccount()" class="hidden text-[11px] text-amber-400 hover:underline cursor-pointer">
-            Cancel Edit
-          </button>
+          <button type="button" id="cancel-edit-btn" onclick="cancelEditAccount()" class="hidden text-[11px] text-amber-400 hover:underline cursor-pointer">Cancel Edit</button>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <input id="new-acc-name" type="text" required placeholder="Member Name (e.g. Self / Father / Spouse)"
-            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          <input id="new-acc-name" type="text" required placeholder="Member Name (e.g. Self / Father)"
+            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
           <input id="new-acc-dp" type="text" required placeholder="Demat / BOID (e.g. 1301370000124581)"
-            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <input id="new-acc-user" type="text" placeholder="MeroShare Username"
-            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-          <input id="new-acc-pass" type="password" placeholder="Password (Encrypted)"
-            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-          <button type="submit" id="save-acc-submit-btn"
-            class="px-3 py-2 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
+            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+          <input id="new-acc-pass" type="password" placeholder="Password"
+            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+          <button type="submit" id="save-acc-submit-btn" class="px-3 py-2 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
             + Save Member
           </button>
         </div>
       </form>
-
       <p id="vault-status-msg" class="text-[11px] text-emerald-400 hidden"></p>
     </div>
   </div>
 
-  <!-- ==================== 5. GEMINI API KEY SETUP MODAL ==================== -->
+  <!-- ==================== 5. GEMINI API KEY MODAL ==================== -->
   <div id="apikey-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-        <h3 class="text-sm font-bold text-white">🔑 Gemini Live API Key Settings</h3>
+        <h3 class="text-sm font-bold text-white">🔑 Gemini API Key Setup</h3>
         <button onclick="document.getElementById('apikey-modal').classList.add('hidden')" class="text-slate-400 hover:text-white font-bold px-2 cursor-pointer">✕</button>
       </div>
-      <p class="text-xs text-slate-300">तपाईंको API Key पहिले नै सक्रिय छ। यदि भविष्यमा अर्को नयाँ Google AI Studio API Key (<code class="text-emerald-300">AIzaSy...</code>) बदल्नुपरेमा तल पेस्ट गर्नुहोस्:</p>
-      <input id="gemini-key-input" type="text" placeholder="Paste Gemini API Key..."
+      <p class="text-xs text-slate-300">Google AI Studio बाट लिनुभएको Gemini API Key तल पेस्ट गर्नुहोस् (यो तपाईंको फोनमा मात्र सुरक्षित रहन्छ):</p>
+      <input id="gemini-key-input" type="text" placeholder="Paste your Gemini API Key..."
         class="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono focus:outline-none focus:border-emerald-500" />
-      <div class="flex gap-2">
-        <button onclick="resetDefaultApiKey()" class="px-3 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700 cursor-pointer">
-          Reset Default
-        </button>
-        <button onclick="saveGeminiApiKey()" class="flex-1 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">
-          Save & Activate Key
-        </button>
-      </div>
+      <button onclick="saveGeminiApiKey()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">
+        Save & Activate API Key
+      </button>
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <!-- ==================== CLEAN, BUG-FREE JAVASCRIPT ==================== -->
   <script>
-    const DEFAULT_KEY_PARTS = ["AQ.Ab8RN6KvjEpqJBWT7gARsUAGRNYujrK1sG5IOpxnQOT", "-JCkEuw"];
-    let apiKey = localStorage.getItem("nepse_gemini_api_key") || DEFAULT_KEY_PARTS.join("");
+    let apiKey = localStorage.getItem("nepse_gemini_api_key") || "";
 
     function openApiKeyModal() {
       document.getElementById("gemini-key-input").value = apiKey;
@@ -665,50 +758,28 @@
       apiKey = val;
       localStorage.setItem("nepse_gemini_api_key", val);
       document.getElementById("apikey-modal").classList.add("hidden");
-      alert("✅ नयाँ Gemini API Key सेभ भयो!");
-    }
-
-    function resetDefaultApiKey() {
-      apiKey = DEFAULT_KEY_PARTS.join("");
-      localStorage.removeItem("nepse_gemini_api_key");
-      document.getElementById("gemini-key-input").value = apiKey;
-      alert("✅ Default API Key पुनर्स्थापित भयो!");
+      alert("✅ Gemini API Key सुरक्षित रूपमा सेभ भयो!");
     }
 
     const NEPSE_LISTED_SCRIPS = [
-      // Mutual Funds
       { symbol: "NIBLPF", name: "NIBL Pragati Fund", sector: "Mutual Fund", refPrice: 10.45 },
-      { symbol: "NIBLSF", name: "NIBL Sahabhagita Fund (Open-Ended)", sector: "Mutual Fund", refPrice: 10.62 },
+      { symbol: "NIBLSF", name: "NIBL Sahabhagita Fund", sector: "Mutual Fund", refPrice: 10.62 },
       { symbol: "NIBLGF", name: "NIBL Growth Fund", sector: "Mutual Fund", refPrice: 10.15 },
       { symbol: "NMB50", name: "NMB 50", sector: "Mutual Fund", refPrice: 11.20 },
       { symbol: "NMBHF1", name: "NMB Hybrid Fund L-1", sector: "Mutual Fund", refPrice: 10.85 },
       { symbol: "NMBSBF", name: "NMB Saral Bachat Fund-E", sector: "Mutual Fund", refPrice: 10.40 },
       { symbol: "NICGF", name: "NIC Asia Growth Fund", sector: "Mutual Fund", refPrice: 10.70 },
       { symbol: "NICBF", name: "NIC Asia Balanced Fund", sector: "Mutual Fund", refPrice: 10.35 },
-      { symbol: "NICSF", name: "NIC Asia Select-30 (Index Fund)", sector: "Mutual Fund", refPrice: 10.55 },
-      { symbol: "NICFC", name: "NIC Asia Flexi Cap Fund", sector: "Mutual Fund", refPrice: 10.28 },
+      { symbol: "NICSF", name: "NIC Asia Select-30", sector: "Mutual Fund", refPrice: 10.55 },
       { symbol: "SFMF", name: "Sunrise First Mutual Fund", sector: "Mutual Fund", refPrice: 11.05 },
-      { symbol: "SBF", name: "Sunrise Bluechip Fund", sector: "Mutual Fund", refPrice: 10.18 },
       { symbol: "SEF", name: "Siddhartha Equity Fund", sector: "Mutual Fund", refPrice: 10.60 },
       { symbol: "SIGS2", name: "Siddhartha Investment Growth Scheme 2", sector: "Mutual Fund", refPrice: 10.90 },
-      { symbol: "SIGS3", name: "Siddhartha Investment Growth Scheme 3", sector: "Mutual Fund", refPrice: 10.25 },
       { symbol: "CMF2", name: "Citizens Mutual Fund 2", sector: "Mutual Fund", refPrice: 10.50 },
-      { symbol: "CSY", name: "Citizens Super 30 Mutual Fund", sector: "Mutual Fund", refPrice: 10.12 },
       { symbol: "LVF2", name: "Laxmi Value Fund 2", sector: "Mutual Fund", refPrice: 10.48 },
-      { symbol: "LUK", name: "Laxmi Unnati Kosh", sector: "Mutual Fund", refPrice: 10.32 },
       { symbol: "KEF", name: "Kumari Equity Fund", sector: "Mutual Fund", refPrice: 10.22 },
-      { symbol: "KDBY", name: "Kumari Dhanabriddhi Yojana", sector: "Mutual Fund", refPrice: 10.10 },
-      { symbol: "GIBF1", name: "Global IME Balanced Fund-1", sector: "Mutual Fund", refPrice: 10.19 },
       { symbol: "PSF", name: "Prabhu Select Fund", sector: "Mutual Fund", refPrice: 10.42 },
       { symbol: "NSIF2", name: "Nabil Balanced Fund-2", sector: "Mutual Fund", refPrice: 10.65 },
-      { symbol: "NBF3", name: "Nabil Balanced Fund-3", sector: "Mutual Fund", refPrice: 10.14 },
-      { symbol: "RMF1", name: "RBB Mutual Fund 1", sector: "Mutual Fund", refPrice: 9.95 },
-      { symbol: "RMF2", name: "RBB Mutual Fund 2", sector: "Mutual Fund", refPrice: 10.05 },
-      { symbol: "MMF1", name: "Mega Mutual Fund-1", sector: "Mutual Fund", refPrice: 9.98 },
       { symbol: "SAGF", name: "Sanima Growth Fund", sector: "Mutual Fund", refPrice: 10.30 },
-      { symbol: "SLCF", name: "Sanima Large Cap Fund", sector: "Mutual Fund", refPrice: 10.24 },
-
-      // Commercial Banks
       { symbol: "NABIL", name: "Nabil Bank Limited", sector: "Commercial Banks", refPrice: 544.0 },
       { symbol: "NICA", name: "NIC Asia Bank Limited", sector: "Commercial Banks", refPrice: 438.0 },
       { symbol: "SCB", name: "Standard Chartered Bank Nepal", sector: "Commercial Banks", refPrice: 635.0 },
@@ -727,8 +798,6 @@
       { symbol: "ADBL", name: "Agricultural Development Bank", sector: "Commercial Banks", refPrice: 312.0 },
       { symbol: "NIMB", name: "Nepal Investment Mega Bank", sector: "Commercial Banks", refPrice: 212.0 },
       { symbol: "NBL", name: "Nepal Bank Limited", sector: "Commercial Banks", refPrice: 265.0 },
-
-      // Hydropower
       { symbol: "CHCL", name: "Chilime Hydropower Company", sector: "Hydropower", refPrice: 545.0 },
       { symbol: "BPCL", name: "Butwal Power Company Limited", sector: "Hydropower", refPrice: 382.0 },
       { symbol: "API", name: "Api Power Company Limited", sector: "Hydropower", refPrice: 262.0 },
@@ -743,51 +812,28 @@
       { symbol: "NHPC", name: "National Hydro Power Company", sector: "Hydropower", refPrice: 214.0 },
       { symbol: "RIDI", name: "Ridi Power Company Limited", sector: "Hydropower", refPrice: 238.0 },
       { symbol: "SAHAS", name: "Sahas Urja Limited", sector: "Hydropower", refPrice: 492.0 },
-      { symbol: "GHL", name: "Ghalemdi Hydro Limited", sector: "Hydropower", refPrice: 205.0 },
-
-      // Development Banks & Finance
       { symbol: "MNBBL", name: "Muktinath Bikas Bank Ltd.", sector: "Development Banks", refPrice: 425.0 },
       { symbol: "GBBL", name: "Garima Bikas Bank Limited", sector: "Development Banks", refPrice: 432.0 },
       { symbol: "JBBL", name: "Jyoti Bikas Bank Limited", sector: "Development Banks", refPrice: 368.0 },
       { symbol: "KSBBL", name: "Kamana Sewa Bikas Bank", sector: "Development Banks", refPrice: 448.0 },
       { symbol: "SHINE", name: "Shine Resunga Development Bank", sector: "Development Banks", refPrice: 455.0 },
-      { symbol: "MLBL", name: "Mahalaxmi Bikas Bank Ltd.", sector: "Development Banks", refPrice: 392.0 },
-      { symbol: "LBBL", name: "Lumbini Bikas Bank Ltd.", sector: "Development Banks", refPrice: 410.0 },
       { symbol: "ICFC", name: "ICFC Finance Limited", sector: "Finance", refPrice: 645.0 },
       { symbol: "MFIL", name: "Manjushree Finance Ltd.", sector: "Finance", refPrice: 690.0 },
-      { symbol: "GFCL", name: "Goodwill Finance Limited", sector: "Finance", refPrice: 615.0 },
-      { symbol: "NFS", name: "Nepal Finance Limited", sector: "Finance", refPrice: 820.0 },
-
-      // Microfinance
       { symbol: "CBBL", name: "Chhimek Laghubitta Bittiya Sanstha", sector: "Microfinance", refPrice: 1045.0 },
       { symbol: "DDBL", name: "Deprosc Laghubitta Bittiya Sanstha", sector: "Microfinance", refPrice: 910.0 },
       { symbol: "NUBL", name: "Nirdhan Utthan Laghubitta", sector: "Microfinance", refPrice: 865.0 },
-      { symbol: "SWBBL", name: "Swabalamban Laghubitta", sector: "Microfinance", refPrice: 980.0 },
       { symbol: "FOWAD", name: "Forward Microfinance Laghubitta", sector: "Microfinance", refPrice: 1290.0 },
       { symbol: "SKBBL", name: "Sana Kisan Bikas Laghubitta", sector: "Microfinance", refPrice: 935.0 },
-      { symbol: "JSLBB", name: "Janautthan Samudayic Laghubitta", sector: "Microfinance", refPrice: 1180.0 },
-
-      // Insurance
       { symbol: "NLIC", name: "Nepal Life Insurance Co. Ltd.", sector: "Life Insurance", refPrice: 745.0 },
       { symbol: "LICN", name: "Life Insurance Corporation (Nepal)", sector: "Life Insurance", refPrice: 1090.0 },
       { symbol: "ALICL", name: "Asian Life Insurance Co. Ltd.", sector: "Life Insurance", refPrice: 640.0 },
       { symbol: "NLICL", name: "National Life Insurance Co. Ltd.", sector: "Life Insurance", refPrice: 665.0 },
       { symbol: "SJLIC", name: "SuryaJyoti Life Insurance Co.", sector: "Life Insurance", refPrice: 540.0 },
-      { symbol: "HLI", name: "Himalayan Life Insurance Ltd.", sector: "Life Insurance", refPrice: 485.0 },
-      { symbol: "SNLI", name: "Sun Nepal Life Insurance Co.", sector: "Life Insurance", refPrice: 560.0 },
-      { symbol: "RNLI", name: "Reliable Nepal Life Insurance", sector: "Life Insurance", refPrice: 525.0 },
       { symbol: "NICL", name: "Nepal Insurance Co. Ltd.", sector: "Non-Life Insurance", refPrice: 780.0 },
       { symbol: "SICL", name: "Shikhar Insurance Co. Ltd.", sector: "Non-Life Insurance", refPrice: 845.0 },
       { symbol: "IGI", name: "IGI Prudential Insurance Ltd.", sector: "Non-Life Insurance", refPrice: 595.0 },
-      { symbol: "SALICO", name: "Sagarmatha Lumbini Insurance", sector: "Non-Life Insurance", refPrice: 740.0 },
-      { symbol: "HEI", name: "Himalayan Everest Insurance", sector: "Non-Life Insurance", refPrice: 615.0 },
-      { symbol: "RBCL", name: "Rastriya Beema Company Ltd.", sector: "Non-Life Insurance", refPrice: 14800.0 },
-
-      // Manufacturing, Investment & Others
       { symbol: "SHIVM", name: "Shivam Cements Limited", sector: "Manufacturing & Processing", refPrice: 592.0 },
       { symbol: "SONA", name: "Sonapur Minerals and Oil Ltd.", sector: "Manufacturing & Processing", refPrice: 445.0 },
-      { symbol: "GCIL", name: "Ghorahi Cement Industry Ltd.", sector: "Manufacturing & Processing", refPrice: 515.0 },
-      { symbol: "SARBTM", name: "Sarbottam Cement Limited", sector: "Manufacturing & Processing", refPrice: 785.0 },
       { symbol: "UNL", name: "Unilever Nepal Limited", sector: "Manufacturing & Processing", refPrice: 44500.0 },
       { symbol: "HDL", name: "Himalayan Distillery Limited", sector: "Manufacturing & Processing", refPrice: 1420.0 },
       { symbol: "NRIC", name: "Nepal Reinsurance Company Ltd.", sector: "Investment", refPrice: 760.0 },
@@ -795,10 +841,7 @@
       { symbol: "HIDCL", name: "Hydroelectricity Investment & Dev.", sector: "Investment", refPrice: 239.0 },
       { symbol: "CIT", name: "Citizen Investment Trust", sector: "Investment", refPrice: 2180.0 },
       { symbol: "NIFRA", name: "Nepal Infrastructure Bank Ltd.", sector: "Investment", refPrice: 268.0 },
-      { symbol: "NTC", name: "Nepal Doorsanchar Company (Nepal Telecom)", sector: "Manufacturing & Processing", refPrice: 918.0 },
-      { symbol: "STC", name: "Salt Trading Corporation", sector: "Manufacturing & Processing", refPrice: 5250.0 },
-      { symbol: "CGH", name: "Chandragiri Hills Limited", sector: "Manufacturing & Processing", refPrice: 985.0 },
-      { symbol: "SHL", name: "Soaltee Hotel Limited", sector: "Manufacturing & Processing", refPrice: 485.0 }
+      { symbol: "NTC", name: "Nepal Telecom", sector: "Manufacturing & Processing", refPrice: 918.0 }
     ];
 
     const USERS_REGISTRY_KEY = "nepse_cloudpulse_users_v3";
@@ -818,7 +861,6 @@
       const parts = fixed.split(".");
       let intPart = parts[0];
       const decPart = parts[1];
-
       if (intPart.length > 3) {
         const lastThree = intPart.slice(-3);
         const rest = intPart.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ",");
@@ -828,8 +870,7 @@
     }
 
     function formatNPR(num) {
-      const sign = num < 0 ? "-" : "";
-      return sign + "NPR " + formatNepaliNumber(Math.abs(num), 2);
+      return (num < 0 ? "-" : "") + "NPR " + formatNepaliNumber(Math.abs(num), 2);
     }
 
     function formatSignedNPR(num) {
@@ -848,15 +889,15 @@
         alert("यस अकाउन्टमा Email दर्ता गरिएको छैन।");
         return;
       }
-      const subject = encodeURIComponent(`NEPSE CloudPulse AI — Your Login User ID & Password (${userObj.fullName})`);
+      const subject = encodeURIComponent(`NEPSE CloudPulse AI — Your User ID & Password (${userObj.fullName})`);
       const body = encodeURIComponent(
         `Namaste ${userObj.fullName},\n\n` +
-        `Your NEPSE CloudPulse AI account details are saved below:\n\n` +
+        `Your NEPSE CloudPulse AI login details:\n` +
         `• Full Name: ${userObj.fullName}\n` +
-        `• Registered Email: ${userObj.email}\n` +
+        `• Email: ${userObj.email}\n` +
         `• User ID: ${userObj.userId}\n` +
         `• Password: ${userObj.password}\n\n` +
-        `Keep this email safe so you never lose access to your portfolio.`
+        `Keep this email safe.`
       );
       window.location.href = `mailto:${encodeURIComponent(userObj.email)}?subject=${subject}&body=${body}`;
     }
@@ -879,7 +920,7 @@
       const regForm = document.getElementById("master-register-form");
       const tabLogin = document.getElementById("auth-tab-login");
       const tabReg = document.getElementById("auth-tab-register");
-      hideAuthAlert();
+      document.getElementById("auth-alert").classList.add("hidden");
 
       if (mode === "register") {
         loginForm.classList.add("hidden");
@@ -894,16 +935,12 @@
       }
     }
 
-    function showAuthAlert(msg, isError = true) {
+    function showAuthAlert(msg) {
       const el = document.getElementById("auth-alert");
       el.textContent = msg;
-      el.className = isError
-        ? "mb-4 p-3 rounded-xl text-xs font-medium border bg-red-950/60 border-red-500/40 text-red-200"
-        : "mb-4 p-3 rounded-xl text-xs font-medium border bg-emerald-950/60 border-emerald-500/40 text-emerald-200";
+      el.className = "mb-4 p-3 rounded-xl text-xs font-medium border bg-red-950/60 border-red-500/40 text-red-200";
       el.classList.remove("hidden");
     }
-
-    function hideAuthAlert() { document.getElementById("auth-alert").classList.add("hidden"); }
 
     function renderExistingUsersPills() {
       const users = getRegisteredUsers();
@@ -952,11 +989,10 @@
       users.push(newUser);
       saveRegisteredUsers(users);
 
-      const initialWorkspace = {
+      localStorage.setItem("nepse_workspace_" + userId, JSON.stringify({
         accounts: [{ id: "ACC1", name: fullName, dp: "Primary Demat", username: "", status: "Active" }],
         holdings: []
-      };
-      localStorage.setItem("nepse_workspace_" + userId, JSON.stringify(initialWorkspace));
+      }));
 
       if (shouldSendEmail) triggerEmailCredentials(newUser);
       loginAsUser(newUser);
@@ -971,7 +1007,7 @@
       const matched = users.find(u => (u.userId === loginInput || u.email === loginInput) && u.password === password);
 
       if (!matched) {
-        showAuthAlert("User ID/Email वा Password मिलेन। बिर्सनुभएको भए 'Forgot ID / Password?' थिचेर Email मा मगाउनुहोस्।");
+        showAuthAlert("User ID/Email वा Password मिलेन। तलको हरियो बटनबाट आफ्नो User ID छान्नुहोस् वा 'Forgot ID / Password?' थिच्नुहोस्।");
         return;
       }
       loginAsUser(matched);
@@ -1003,7 +1039,7 @@
         <div>✅ अकाउन्ट भेटियो: <strong>${escapeHtml(found.fullName)}</strong></div>
         <div>User ID: <strong>${escapeHtml(found.userId)}</strong> | Password: <strong>${escapeHtml(found.password)}</strong></div>
         <button type="button" id="send-rec-mail-btn" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-[11px] cursor-pointer">
-          📧 Open Email App & Send to ${escapeHtml(found.email)}
+          📧 Send to ${escapeHtml(found.email)}
         </button>
       `;
       box.classList.remove("hidden");
@@ -1058,7 +1094,7 @@
       }));
     }
 
-    // ==================== PORTFOLIO RENDERING WITH PER-UNIT LIVE LTP ====================
+    // ==================== PORTFOLIO RENDERING ====================
     function refreshAccountDropdown() {
       const sel = document.getElementById("account-selector");
       const currentVal = sel.value;
@@ -1069,13 +1105,8 @@
         opt.textContent = `${acc.name} (${acc.dp})`;
         sel.appendChild(opt);
       });
-
-      if ([...sel.options].some(o => o.value === currentVal)) {
-        sel.value = currentVal;
-      } else {
-        sel.value = "ALL";
-        activeAccountFilter = "ALL";
-      }
+      if ([...sel.options].some(o => o.value === currentVal)) sel.value = currentVal;
+      else { sel.value = "ALL"; activeAccountFilter = "ALL"; }
       document.getElementById("account-badge").textContent = sel.options[sel.selectedIndex]?.text || "All Accounts";
     }
 
@@ -1096,7 +1127,7 @@
           <tr>
             <td colspan="9" class="py-10 px-4 text-center">
               <div class="text-sm font-bold text-white mb-1">तपाईंको पोर्टफोलियो अहिले खाली छ</div>
-              <p class="text-xs text-slate-400 mb-3">माथिको <strong>"+ Add Stock / Mutual Fund"</strong> वा <strong>"📂 Import MeroShare CSV"</strong> थिचेर आफ्नो सेयर डेटा लोड गर्नुहोस्।</p>
+              <p class="text-xs text-slate-400">माथिको <strong>"+ Add Stock / Mutual Fund"</strong> वा <strong>"📂 Import MeroShare CSV"</strong> थिचेर आफ्नो सेयर डेटा लोड गर्नुहोस्।</p>
             </td>
           </tr>`;
       }
@@ -1175,7 +1206,6 @@
 
       const overallPL = totalCurrent - totalInvested;
       const overallPct = totalInvested > 0 ? (overallPL / totalInvested) * 100 : 0;
-
       const dailyPL = totalCurrent - totalPrevValue;
       const dailyPct = totalPrevValue > 0 ? (dailyPL / totalPrevValue) * 100 : 0;
 
@@ -1200,6 +1230,8 @@
         else if (overallPL > 0) applyTheme("profit");
         else applyTheme("loss");
       }
+
+      renderTechnicalAnalytics();
     }
 
     function applyBoxColor(amtEl, pctEl, val) {
@@ -1210,16 +1242,9 @@
     function applyTheme(mode) {
       document.body.classList.remove("theme-profit", "theme-loss", "theme-neutral");
       const pill = document.getElementById("status-pill");
-      if (mode === "profit") {
-        document.body.classList.add("theme-profit");
-        pill.textContent = "🟢 PROFIT MODE";
-      } else if (mode === "loss") {
-        document.body.classList.add("theme-loss");
-        pill.textContent = "🔴 LOSS MODE";
-      } else {
-        document.body.classList.add("theme-neutral");
-        pill.textContent = "🟣 NO CHANGE";
-      }
+      if (mode === "profit") { document.body.classList.add("theme-profit"); pill.textContent = "🟢 PROFIT MODE"; }
+      else if (mode === "loss") { document.body.classList.add("theme-loss"); pill.textContent = "🔴 LOSS MODE"; }
+      else { document.body.classList.add("theme-neutral"); pill.textContent = "🟣 NO CHANGE"; }
     }
 
     function forceTheme(mode) { manualThemeOverride = mode; applyTheme(mode); }
@@ -1232,7 +1257,7 @@
     });
 
     function switchTab(tabName) {
-      ["portfolio", "ai-agent", "nepse-directory"].forEach(t => {
+      ["portfolio", "technical", "ai-agent", "nepse-directory"].forEach(t => {
         document.getElementById("tab-" + t).classList.add("hidden");
         const btn = document.getElementById("tab-btn-" + t);
         btn.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition cursor-pointer shrink-0";
@@ -1241,78 +1266,182 @@
       const activeBtn = document.getElementById("tab-btn-" + tabName);
       activeBtn.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border transition cursor-pointer shrink-0";
       if (tabName === "nepse-directory") renderDirectory();
+      if (tabName === "technical") renderTechnicalAnalytics();
     }
 
-    // ==================== FETCH LIVE NEPSE PER-UNIT TRANSACTION RATES ====================
-    async function fetchRealNepseLiveRates() {
-      if (holdingsData.length === 0) {
-        openHoldingModal();
+    // ==================== TECHNICAL & ADVANCED ANALYTICS ENGINE ====================
+    function renderTechnicalAnalytics() {
+      const filtered = activeAccountFilter === "ALL"
+        ? holdingsData
+        : holdingsData.filter(item => item.account === activeAccountFilter);
+
+      const sel = document.getElementById("tech-scrip-select");
+      const prevSel = sel.value;
+      sel.innerHTML = `<option value="">Select Holding...</option>` +
+        filtered.map(h => `<option value="${h.id}">${escapeHtml(h.scrip)} (Rs ${h.ltp})</option>`).join("");
+      if ([...sel.options].some(o => o.value === prevSel)) sel.value = prevSel;
+      else if (filtered.length > 0) { sel.value = filtered[0].id; loadScripIntoTechCalc(); }
+
+      const matrixBody = document.getElementById("tech-matrix-tbody");
+      const barsBox = document.getElementById("sector-allocation-bars");
+
+      if (filtered.length === 0) {
+        document.getElementById("tech-win-rate").textContent = "0.0%";
+        document.getElementById("tech-win-sub").textContent = "0 Profit / 0 Loss scrips";
+        document.getElementById("tech-top-gainer").textContent = "—";
+        document.getElementById("tech-top-loser").textContent = "—";
+        document.getElementById("tech-div-score").textContent = "0 / 100";
+        barsBox.innerHTML = `<p class="text-slate-400 text-xs">पोर्टफोलियोमा सेयर थपेपछि सेक्टर अनुसारको विश्लेषण यहाँ देखिन्छ।</p>`;
+        matrixBody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400 text-xs">No holdings available</td></tr>`;
         return;
       }
 
-      const btn = document.getElementById("fetch-live-btn");
-      const statusLabel = document.getElementById("last-rate-sync-label");
-      btn.disabled = true;
-      btn.innerHTML = `<span>⏳ Fetching Live LTP...</span>`;
+      let totalVal = 0;
+      let winCount = 0;
+      let lossCount = 0;
+      let topGain = { scrip: "—", pct: -Infinity };
+      let topLoss = { scrip: "—", pct: Infinity };
+      const sectorTotals = {};
 
-      const uniqueScrips = [...new Set(holdingsData.map(h => h.scrip))];
-
-      if (apiKey && apiKey.trim().length > 10) {
-        try {
-          const prompt = `Find the latest live NEPSE Last Transaction Price (LTP) and Previous Closing Price in NPR for these symbols: ${uniqueScrips.join(", ")}. Return ONLY a valid JSON object mapping each symbol to {"ltp": number, "prevClose": number}, with no markdown or extra text.`;
-          const res = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${encodeURIComponent(apiKey)}`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                tools: [{ google_search: {} }]
-              })
-            }
-          );
-          const data = await res.json();
-          const rawText = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("") || "";
-          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            const parsedRates = JSON.parse(jsonMatch[0]);
-            holdingsData = holdingsData.map(h => {
-              const info = parsedRates[h.scrip];
-              if (info && Number(info.ltp) > 0) {
-                return {
-                  ...h,
-                  ltp: Number(info.ltp),
-                  prevClose: Number(info.prevClose) > 0 ? Number(info.prevClose) : h.prevClose
-                };
-              }
-              return h;
-            });
-            saveUserWorkspace();
-            renderPortfolio();
-            const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            statusLabel.textContent = `Live NEPSE Synced @ ${nowTime}`;
-            btn.disabled = false;
-            btn.innerHTML = `<span>📡 Fetch Live Transaction LTP</span>`;
-            return;
-          }
-        } catch (err) {
-          console.warn("Live API fallback to local tick update:", err);
-        }
-      }
-
-      holdingsData = holdingsData.map(h => {
-        const base = Number(h.ltp) || 100;
-        const pctMove = (Math.random() - 0.46) * 0.016;
-        const newLtp = Math.max(5, +(base * (1 + pctMove)).toFixed(2));
-        return { ...h, ltp: newLtp };
+      filtered.forEach(h => {
+        const val = h.units * h.ltp;
+        const inv = h.units * h.buyRate;
+        const pct = inv > 0 ? ((val - inv) / inv) * 100 : 0;
+        totalVal += val;
+        if (val > inv) winCount++; else if (val < inv) lossCount++;
+        if (pct > topGain.pct) topGain = { scrip: h.scrip, pct };
+        if (pct < topLoss.pct) topLoss = { scrip: h.scrip, pct };
+        const sec = h.sector || "Other";
+        sectorTotals[sec] = (sectorTotals[sec] || 0) + val;
       });
 
+      const winRate = (winCount / filtered.length) * 100;
+      document.getElementById("tech-win-rate").textContent = `${winRate.toFixed(1)}%`;
+      document.getElementById("tech-win-sub").textContent = `${winCount} Profit / ${lossCount} Loss scrips`;
+
+      document.getElementById("tech-top-gainer").textContent = topGain.pct > -Infinity ? `${topGain.scrip} (${topGain.pct >= 0 ? "+" : ""}${topGain.pct.toFixed(1)}%)` : "—";
+      document.getElementById("tech-top-gainer-sub").textContent = "Best performing holding";
+
+      document.getElementById("tech-top-loser").textContent = topLoss.pct < Infinity ? `${topLoss.scrip} (${topLoss.pct.toFixed(1)}%)` : "—";
+      document.getElementById("tech-top-loser-sub").textContent = "Highest drawdown scrip";
+
+      const uniqueSectors = Object.keys(sectorTotals).length;
+      const divScore = Math.min(100, uniqueSectors * 18 + filtered.length * 4);
+      document.getElementById("tech-div-score").textContent = `${divScore} / 100`;
+      document.getElementById("tech-div-sub").textContent = `${uniqueSectors} Sectors • ${filtered.length} Scrips`;
+
+      barsBox.innerHTML = Object.entries(sectorTotals)
+        .sort((a, b) => b[1] - a[1])
+        .map(([sec, val]) => {
+          const pct = totalVal > 0 ? (val / totalVal) * 100 : 0;
+          const warn = pct > 35 ? `<span class="text-[10px] text-amber-400 ml-1">⚠️ High Risk (&gt;35%)</span>` : "";
+          return `
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="font-semibold text-slate-200">${escapeHtml(sec)} ${warn}</span>
+                <span class="text-slate-300 font-mono">Rs ${formatNepaliNumber(val, 0)} (${pct.toFixed(1)}%)</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full rounded-full ${pct > 35 ? 'bg-amber-400' : 'bg-emerald-400'}" style="width: ${Math.min(100, pct)}%"></div>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+      matrixBody.innerHTML = filtered.map(h => {
+        const val = h.units * h.ltp;
+        const weight = totalVal > 0 ? (val / totalVal) * 100 : 0;
+        const stopLoss = h.buyRate * 0.92;
+        const target15 = h.buyRate * 1.15;
+        let signal = `<span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px]">HOLD</span>`;
+        if (h.ltp >= target15) signal = `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">BOOK PROFIT</span>`;
+        else if (h.ltp <= stopLoss) signal = `<span class="px-2 py-0.5 rounded bg-red-500/20 text-red-300 text-[10px] font-bold">STOP-LOSS ALERT</span>`;
+        else if (h.ltp < h.buyRate) signal = `<span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[10px]">ACCUMULATE ZONE</span>`;
+
+        return `
+          <tr class="hover:bg-slate-800/40">
+            <td class="py-2.5 px-4 font-bold text-white">${escapeHtml(h.scrip)}</td>
+            <td class="py-2.5 px-3 text-right text-slate-300">${weight.toFixed(1)}%</td>
+            <td class="py-2.5 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(h.buyRate, 2)}</td>
+            <td class="py-2.5 px-3 text-right font-bold text-white">Rs ${formatNepaliNumber(h.ltp, 2)}</td>
+            <td class="py-2.5 px-3 text-right text-red-300">Rs ${formatNepaliNumber(stopLoss, 2)}</td>
+            <td class="py-2.5 px-3 text-right text-emerald-300">Rs ${formatNepaliNumber(target15, 2)}</td>
+            <td class="py-2.5 px-3 text-right">${signal}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function loadScripIntoTechCalc() {
+      const id = document.getElementById("tech-scrip-select").value;
+      const item = holdingsData.find(h => String(h.id) === String(id));
+      if (!item) return;
+      const base = Number(item.ltp) || 100;
+      const prev = Number(item.prevClose) || base;
+      document.getElementById("tech-high").value = +(Math.max(base, prev) * 1.018).toFixed(2);
+      document.getElementById("tech-low").value = +(Math.min(base, prev) * 0.982).toFixed(2);
+      document.getElementById("tech-close").value = base.toFixed(2);
+      document.getElementById("tech-sl").value = +(item.buyRate * 0.92).toFixed(2);
+      calculateTechnicalLevels();
+    }
+
+    function calculateTechnicalLevels() {
+      const h = parseFloat(document.getElementById("tech-high").value);
+      const l = parseFloat(document.getElementById("tech-low").value);
+      const c = parseFloat(document.getElementById("tech-close").value);
+      const rsi = parseFloat(document.getElementById("tech-rsi").value);
+
+      if (!isNaN(h) && !isNaN(l) && !isNaN(c)) {
+        const pp = (h + l + c) / 3;
+        const r1 = 2 * pp - l;
+        const s1 = 2 * pp - h;
+        const r2 = pp + (h - l);
+        const s2 = pp - (h - l);
+
+        document.getElementById("out-pp").textContent = "Rs " + formatNepaliNumber(pp, 2);
+        document.getElementById("out-r1").textContent = "Rs " + formatNepaliNumber(r1, 2);
+        document.getElementById("out-r2").textContent = "Rs " + formatNepaliNumber(r2, 2);
+        document.getElementById("out-s1").textContent = "Rs " + formatNepaliNumber(s1, 2);
+        document.getElementById("out-s2").textContent = "Rs " + formatNepaliNumber(s2, 2);
+      }
+
+      const rsiEl = document.getElementById("out-rsi-sig");
+      if (!isNaN(rsi)) {
+        if (rsi >= 70) { rsiEl.textContent = `Overbought (${rsi}) — Sell Alert`; rsiEl.className = "text-red-400 font-bold"; }
+        else if (rsi <= 30) { rsiEl.textContent = `Oversold (${rsi}) — Buy Zone`; rsiEl.className = "text-emerald-400 font-bold"; }
+        else { rsiEl.textContent = `Neutral (${rsi}) — Hold Trend`; rsiEl.className = "text-purple-300 font-bold"; }
+      }
+    }
+
+    function sendTechAnalysisToAI() {
+      const id = document.getElementById("tech-scrip-select").value;
+      const item = holdingsData.find(h => String(h.id) === String(id));
+      const pp = document.getElementById("out-pp").textContent;
+      const r1 = document.getElementById("out-r1").textContent;
+      const s1 = document.getElementById("out-s1").textContent;
+      const rsi = document.getElementById("tech-rsi").value;
+      switchTab("ai-agent");
+      if (item) {
+        sendMessageToGeminiAgent(
+          `मेरो ${item.scrip} (${item.units} units, Buy Rate: Rs ${item.buyRate}, Live LTP: Rs ${item.ltp}) को Technical Analysis गरिदिनुहोस्: Pivot Point ${pp}, Resistance R1 ${r1}, Support S1 ${s1}, र RSI ${rsi} छ। अब Hold गर्ने कि Profit Book गर्ने?`
+        );
+      } else {
+        askMyPortfolioAnalysis();
+      }
+    }
+
+    // ==================== LIVE TICK SIMULATION ====================
+    function simulateMarketTick() {
+      if (holdingsData.length === 0) { openHoldingModal(); return; }
+      holdingsData = holdingsData.map(h => {
+        const base = Number(h.ltp) || 100;
+        const pctMove = (Math.random() - 0.46) * 0.015;
+        return { ...h, ltp: Math.max(5, +(base * (1 + pctMove)).toFixed(2)) };
+      });
       saveUserWorkspace();
       renderPortfolio();
       const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      statusLabel.textContent = `Updated @ ${nowTime}`;
-      btn.disabled = false;
-      btn.innerHTML = `<span>📡 Fetch Live Transaction LTP</span>`;
+      document.getElementById("last-rate-sync-label").textContent = `Tick @ ${nowTime}`;
     }
 
     function toggleAutoLiveFeed() {
@@ -1320,20 +1449,20 @@
       if (autoLiveInterval) {
         clearInterval(autoLiveInterval);
         autoLiveInterval = null;
-        btn.textContent = "⏱️ Auto-Live: OFF";
+        btn.textContent = "⏱️ Auto-Tick: OFF";
         btn.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer";
       } else {
-        fetchRealNepseLiveRates();
-        autoLiveInterval = setInterval(fetchRealNepseLiveRates, 30000);
-        btn.textContent = "🟢 Auto-Live: ON (30s)";
+        simulateMarketTick();
+        autoLiveInterval = setInterval(simulateMarketTick, 15000);
+        btn.textContent = "🟢 Auto-Tick: ON (15s)";
         btn.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 cursor-pointer";
       }
     }
 
     // ==================== ADD / EDIT HOLDING MODAL ====================
     function populateScripDatalist() {
-      const dl = document.getElementById("nepse-scrip-datalist");
-      dl.innerHTML = NEPSE_LISTED_SCRIPS.map(s => `<option value="${s.symbol}">${s.name} (${s.sector})</option>`).join("");
+      document.getElementById("nepse-scrip-datalist").innerHTML = NEPSE_LISTED_SCRIPS
+        .map(s => `<option value="${s.symbol}">${s.name} (${s.sector})</option>`).join("");
     }
 
     function onScripInput(val) {
@@ -1348,8 +1477,8 @@
     }
 
     function populateHoldingAccountSelect() {
-      const sel = document.getElementById("hold-account");
-      sel.innerHTML = connectedAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)} (${escapeHtml(a.dp)})</option>`).join("");
+      document.getElementById("hold-account").innerHTML = connectedAccounts
+        .map(a => `<option value="${a.id}">${escapeHtml(a.name)} (${escapeHtml(a.dp)})</option>`).join("");
     }
 
     function openHoldingModal(prefillScrip = "") {
@@ -1358,10 +1487,7 @@
       document.getElementById("delete-holding-btn").classList.add("hidden");
       document.getElementById("holding-form").reset();
       populateHoldingAccountSelect();
-      if (prefillScrip) {
-        document.getElementById("hold-scrip").value = prefillScrip;
-        onScripInput(prefillScrip);
-      }
+      if (prefillScrip) { document.getElementById("hold-scrip").value = prefillScrip; onScripInput(prefillScrip); }
       document.getElementById("holding-modal").classList.remove("hidden");
     }
 
@@ -1387,15 +1513,10 @@
 
     function startHoldingLongPress(holdingId) {
       cancelLongPress();
-      longPressTimer = setTimeout(() => {
-        if (navigator.vibrate) navigator.vibrate(40);
-        openEditHoldingModal(holdingId);
-      }, 550);
+      longPressTimer = setTimeout(() => { if (navigator.vibrate) navigator.vibrate(40); openEditHoldingModal(holdingId); }, 550);
     }
 
-    function cancelLongPress() {
-      if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
-    }
+    function cancelLongPress() { if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; } }
 
     document.getElementById("holding-form").addEventListener("submit", function (e) {
       e.preventDefault();
@@ -1419,30 +1540,24 @@
           id: "H" + Date.now(), account, accountLabel: accObj ? accObj.name : "Primary", scrip, sector, name, units, buyRate, prevClose, ltp
         });
       }
-      saveUserWorkspace();
-      renderPortfolio();
-      closeHoldingModal();
+      saveUserWorkspace(); renderPortfolio(); closeHoldingModal();
     });
 
     function deleteCurrentHolding() {
       const editId = document.getElementById("edit-holding-id").value;
       if (!editId) return;
       holdingsData = holdingsData.filter(h => String(h.id) !== String(editId));
-      saveUserWorkspace();
-      renderPortfolio();
-      closeHoldingModal();
+      saveUserWorkspace(); renderPortfolio(); closeHoldingModal();
     }
 
     function clearAccountHoldings() {
       if (holdingsData.length === 0) return;
       if (!confirm("के तपाईं अहिलेको लिस्टमा भएका सबै सेयर हटाउन चाहनुहुन्छ?")) return;
-      if (activeAccountFilter === "ALL") holdingsData = [];
-      else holdingsData = holdingsData.filter(h => h.account !== activeAccountFilter);
-      saveUserWorkspace();
-      renderPortfolio();
+      holdingsData = activeAccountFilter === "ALL" ? [] : holdingsData.filter(h => h.account !== activeAccountFilter);
+      saveUserWorkspace(); renderPortfolio();
     }
 
-    // ==================== ACCURATE MEROSHARE CSV PARSER ====================
+    // ==================== MEROSHARE CSV PARSER ====================
     function handleCsvUpload(event) {
       const file = event.target.files?.[0];
       if (!file) return;
@@ -1473,14 +1588,13 @@
           return parseFloat(String(val).replace(/,/g, "").replace(/Rs\.?|NPR/gi, "").trim());
         };
 
-        let colMap = { scrip: 1, units: 2, prevClose: 3, prevVal: 4, ltp: 5, ltpVal: 6, buyRate: -1 };
+        let colMap = { scrip: 1, units: 2, prevClose: 3, ltp: 5, buyRate: -1 };
         let headerFound = false;
         let importedCount = 0;
 
         rawLines.forEach((line, idx) => {
           const cols = parseCsvLine(line);
           if (cols.length < 2) return;
-
           const joinedLower = cols.join("|").toLowerCase();
 
           if (joinedLower.includes("scrip") || joinedLower.includes("symbol")) {
@@ -1488,12 +1602,10 @@
             cols.forEach((colName, cIdx) => {
               const c = colName.toLowerCase();
               if (c.includes("scrip") || c.includes("symbol")) colMap.scrip = cIdx;
-              else if (c.includes("current balance") || c.includes("balance") || c.includes("unit") || c.includes("qty") || c.includes("kitta")) colMap.units = cIdx;
+              else if (c.includes("current balance") || c.includes("balance") || c.includes("unit") || c.includes("qty")) colMap.units = cIdx;
               else if (c.includes("previous closing price") || (c.includes("prev") && !c.includes("value"))) colMap.prevClose = cIdx;
-              else if (c.includes("value as of previous")) colMap.prevVal = cIdx;
               else if (c.includes("last transaction") || c.includes("ltp") || (c.includes("closing price") && !c.includes("previous"))) colMap.ltp = cIdx;
-              else if (c.includes("value as of ltp")) colMap.ltpVal = cIdx;
-              else if (c.includes("wacc") || c.includes("buy") || c.includes("purchase") || c.includes("cost")) colMap.buyRate = cIdx;
+              else if (c.includes("wacc") || c.includes("buy") || c.includes("purchase")) colMap.buyRate = cIdx;
             });
             return;
           }
@@ -1549,13 +1661,11 @@
         });
 
         event.target.value = "";
-
         if (importedCount > 0) {
-          saveUserWorkspace();
-          renderPortfolio();
+          saveUserWorkspace(); renderPortfolio();
           alert(`✅ MeroShare CSV बाट ${importedCount} वटा सेयर/Mutual Fund को वास्तविक डेटा लोड भयो!`);
         } else {
-          alert("⚠️ CSV फाइलमा सेयर डेटा भेटिएन। कृपया MeroShare को 'My Portfolio' बाट Export गरेको CSV फाइल छान्नुहोस्।");
+          alert("⚠️ CSV फाइलमा सेयर डेटा भेटिएन।");
         }
       };
       reader.readAsText(file);
@@ -1573,24 +1683,21 @@
         return matchSec && matchQ;
       });
 
-      grid.innerHTML = list.map(item => {
-        const isMF = item.sector === "Mutual Fund";
-        return `
-          <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 flex items-center justify-between gap-2">
-            <div class="min-w-0">
-              <div class="flex items-center gap-1.5">
-                <span class="font-bold text-white text-xs">${item.symbol}</span>
-                <span class="px-1.5 py-0.2 rounded text-[9px] font-semibold ${isMF ? 'bg-purple-500/20 text-purple-300' : 'bg-slate-800 text-slate-300'}">${item.sector}</span>
-              </div>
-              <div class="text-[11px] text-slate-400 truncate">${item.name}</div>
+      grid.innerHTML = list.map(item => `
+        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-white text-xs">${item.symbol}</span>
+              <span class="px-1.5 py-0.2 rounded text-[9px] bg-slate-800 text-slate-300">${item.sector}</span>
             </div>
-            <button onclick="addFromDirectory('${item.symbol}')"
-              class="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 font-bold text-[11px] border border-emerald-500/30 shrink-0 cursor-pointer transition">
-              + Add
-            </button>
+            <div class="text-[11px] text-slate-400 truncate">${item.name}</div>
           </div>
-        `;
-      }).join("");
+          <button onclick="addFromDirectory('${item.symbol}')"
+            class="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 font-bold text-[11px] border border-emerald-500/30 shrink-0 cursor-pointer">
+            + Add
+          </button>
+        </div>
+      `).join("");
     }
 
     function addFromDirectory(symbol) { switchTab("portfolio"); openHoldingModal(symbol); }
@@ -1599,26 +1706,19 @@
     function closeVaultModal() { cancelEditAccount(); document.getElementById("vault-modal").classList.add("hidden"); }
 
     function renderVaultAccounts() {
-      const container = document.getElementById("vault-accounts-list");
-      container.innerHTML = connectedAccounts.map(acc => `
-        <div
-          onmousedown="startAccountLongPress('${acc.id}')"
-          onmouseup="cancelLongPress()"
-          onmouseleave="cancelLongPress()"
-          ontouchstart="startAccountLongPress('${acc.id}')"
-          ontouchend="cancelLongPress()"
-          ontouchmove="cancelLongPress()"
-          oncontextmenu="event.preventDefault(); startEditAccount('${acc.id}');"
-          class="long-press-target flex items-center justify-between p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 text-xs cursor-pointer">
+      document.getElementById("vault-accounts-list").innerHTML = connectedAccounts.map(acc => `
+        <div onmousedown="startAccountLongPress('${acc.id}')" onmouseup="cancelLongPress()" onmouseleave="cancelLongPress()"
+          ontouchstart="startAccountLongPress('${acc.id}')" ontouchend="cancelLongPress()" ontouchmove="cancelLongPress()"
+          class="long-press-target flex items-center justify-between p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs cursor-pointer">
           <div class="min-w-0 pr-2">
             <div class="font-bold text-white truncate">${escapeHtml(acc.name)}</div>
             <div class="text-[11px] text-slate-400 font-mono truncate">Demat/DP: ${escapeHtml(acc.dp)}</div>
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             <button type="button" onclick="event.stopPropagation(); startEditAccount('${acc.id}')"
-              class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-amber-500/20 text-amber-300 border border-slate-700 text-[11px] font-semibold cursor-pointer">✏️ Edit</button>
+              class="px-2 py-1 rounded-lg bg-slate-800 text-amber-300 border border-slate-700 text-[11px] cursor-pointer">✏️ Edit</button>
             <button type="button" onclick="event.stopPropagation(); deleteAccount('${acc.id}')"
-              class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-red-500/20 text-red-400 border border-slate-700 text-[11px] font-semibold cursor-pointer">🗑️</button>
+              class="px-2 py-1 rounded-lg bg-slate-800 text-red-400 border border-slate-700 text-[11px] cursor-pointer">🗑️</button>
           </div>
         </div>
       `).join("");
@@ -1636,7 +1736,6 @@
       document.getElementById("new-acc-name").value = acc.name;
       document.getElementById("new-acc-dp").value = acc.dp;
       document.getElementById("new-acc-user").value = acc.username || "";
-      document.getElementById("new-acc-pass").value = "";
       document.getElementById("form-mode-label").innerHTML = `✏️ सच्याउँदै: <strong class="text-amber-300">${escapeHtml(acc.name)}</strong>`;
       document.getElementById("cancel-edit-btn").classList.remove("hidden");
       document.getElementById("save-acc-submit-btn").textContent = "✔ Update Details";
@@ -1656,7 +1755,6 @@
     function deleteAccount(accId) {
       if (connectedAccounts.length <= 1) return;
       connectedAccounts = connectedAccounts.filter(a => a.id !== accId);
-      if (document.getElementById("edit-acc-id").value === accId) cancelEditAccount();
       saveUserWorkspace(); refreshAccountDropdown(); renderVaultAccounts(); renderPortfolio();
     }
 
@@ -1674,16 +1772,14 @@
         holdingsData = holdingsData.map(h => h.account === editId ? { ...h, accountLabel: name } : h);
         msg.textContent = `✅ "${name}" को विवरण सच्याइयो!`;
       } else {
-        const newId = "ACC" + Date.now().toString().slice(-4);
-        connectedAccounts.push({ id: newId, name, dp, username, status: "Linked" });
+        connectedAccounts.push({ id: "ACC" + Date.now().toString().slice(-4), name, dp, username, status: "Linked" });
         msg.textContent = `✅ "${name}" (${dp}) थपियो!`;
       }
       msg.classList.remove("hidden");
-      cancelEditAccount();
-      saveUserWorkspace(); refreshAccountDropdown(); renderVaultAccounts(); renderPortfolio();
+      cancelEditAccount(); saveUserWorkspace(); refreshAccountDropdown(); renderVaultAccounts(); renderPortfolio();
     });
 
-    // ==================== GEMINI LIVE AGENT ====================
+    // ==================== GEMINI AI AGENT (FREE-TIER SAFE) ====================
     document.getElementById("agent-chat-form").addEventListener("submit", function (e) {
       e.preventDefault();
       const input = document.getElementById("agent-input");
@@ -1697,11 +1793,11 @@
 
     function askMyPortfolioAnalysis() {
       if (holdingsData.length === 0) {
-        sendMessageToGeminiAgent("आज NEPSE मा कुन सेक्टर र कुन Mutual Fund वा कम्पनीहरू राम्रो प्रदर्शन गरिरहेका छन्? ताजा समाचारसहित जानकारी दिनुहोस्।");
+        sendMessageToGeminiAgent("NEPSE मा सन्तुलित पोर्टफोलियो (Commercial Banks, Hydropower, Mutual Funds) कसरी बनाउने र जोखिम कसरी घटाउने?");
         return;
       }
-      const scrips = [...new Set(holdingsData.map(h => h.scrip))].join(", ");
-      sendMessageToGeminiAgent(`मेरो पोर्टफोलियोमा रहेका स्टक/Mutual Funds (${scrips}) बारे पछिल्लो NEPSE समाचार, लाभांश (Dividend/NAV) र अवस्था विश्लेषण गरिदिनुहोस्।`);
+      const scrips = holdingsData.map(h => `${h.scrip} (${h.units} units @ Buy Rs ${h.buyRate}, Live LTP Rs ${h.ltp})`).join("; ");
+      sendMessageToGeminiAgent(`मेरो पोर्टफोलियोको विस्तृत Technical र Risk विश्लेषण गरिदिनुहोस्: ${scrips}`);
     }
 
     async function sendMessageToGeminiAgent(userQuery) {
@@ -1713,11 +1809,20 @@
       userBubble.innerHTML = `<div class="dynamic-accent-bg text-slate-950 font-medium rounded-2xl rounded-tr-none px-4 py-2.5 max-w-2xl text-xs sm:text-sm shadow">${escapeHtml(userQuery)}</div>`;
       chatBox.appendChild(userBubble);
 
+      if (!apiKey || apiKey.trim().length < 10) {
+        const warnBubble = document.createElement("div");
+        warnBubble.className = "flex items-start gap-3";
+        warnBubble.innerHTML = `<div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center shrink-0">!</div><div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3.5 text-xs text-amber-200">पहिले माथिको <strong>🔑 API Key</strong> बटन थिचेर आफ्नो Gemini API Key सेभ गर्नुहोस्।</div>`;
+        chatBox.appendChild(warnBubble);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return;
+      }
+
       const typingId = "typing-" + Date.now();
       const typingBubble = document.createElement("div");
       typingBubble.id = typingId;
       typingBubble.className = "flex items-start gap-3";
-      typingBubble.innerHTML = `<div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0">AI</div><div class="bg-slate-800/90 border border-slate-700 rounded-2xl rounded-tl-none px-4 py-3 flex items-center gap-1.5"><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="text-[11px] text-slate-400 ml-2">Searching live NEPSE news...</span></div>`;
+      typingBubble.innerHTML = `<div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0">AI</div><div class="bg-slate-800/90 border border-slate-700 rounded-2xl rounded-tl-none px-4 py-3 flex items-center gap-1.5"><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="text-[11px] text-slate-400 ml-2">Analyzing...</span></div>`;
       chatBox.appendChild(typingBubble);
       chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -1731,55 +1836,41 @@
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({...})
+            body: JSON.stringify({
               contents: [{ parts: [{ text: userQuery }] }],
-              systemInstruction: { parts: [{ text: `You are an expert NEPSE & Mutual Fund analyst. Respond strictly in ${selectedLang}. Use Google Search grounding for live NEPSE/ShareSansar/MeroLagani/NRB news. Portfolio: ${portfolioSummary}` }] },
-              // tools: [{ google_search: {} }]            })
+              systemInstruction: {
+                parts: [{
+                  text: `You are an expert NEPSE & Mutual Fund Technical and Fundamental Analyst. Respond strictly in ${selectedLang}. Give clear actionable insights with bullet points. User Portfolio: ${portfolioSummary}`
+                }]
+              }
+            })
           }
         );
+
         const data = await response.json();
         document.getElementById(typingId)?.remove();
 
         if (data?.error) {
-          const errMsg = data.error.message || "API Key त्रुटि देखियो।";
           const errBubble = document.createElement("div");
           errBubble.className = "flex items-start gap-3";
-          errBubble.innerHTML = `<div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">!</div><div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3.5 max-w-3xl text-xs text-amber-200 leading-relaxed">⚠️ API सन्देश: ${escapeHtml(errMsg)}<br/><br/>यदि यो Key ले काम गरेन भने <a href="https://aistudio.google.com/apikey" target="_blank" class="underline font-bold">Google AI Studio</a> बाट <strong>AIzaSy...</strong> बाट सुरु हुने Key लिएर माथिको <strong>🔑 API Key</strong> बटनमा सेभ गर्नुहोस्।</div>`;
+          errBubble.innerHTML = `<div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center shrink-0">!</div><div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3.5 text-xs text-amber-200">⚠️ API सन्देश: ${escapeHtml(data.error.message || "Error")}</div>`;
           chatBox.appendChild(errBubble);
           chatBox.scrollTop = chatBox.scrollHeight;
           return;
         }
 
-        const candidate = data?.candidates?.[0];
-        const replyText = candidate?.content?.parts?.map(p => p.text).join("\n") ||
-          "माफ गर्नुहोस्, अहिले लाइभ डेटा तान्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।";
-
-        const chunks = candidate?.groundingMetadata?.groundingChunks || [];
-        const sources = chunks
-          .filter(c => c.web && c.web.uri)
-          .map(c => ({ title: c.web.title || "Source", uri: c.web.uri }))
-          .slice(0, 4);
-
-        let sourcesHtml = "";
-        if (sources.length > 0) {
-          sourcesHtml = `<div class="mt-3 pt-2.5 border-t border-slate-700/80 flex flex-wrap gap-1.5">
-            <span class="text-[10px] text-slate-400 w-full mb-0.5">Live Sources:</span>
-            ${sources.map(s => `<a href="${s.uri}" target="_blank" rel="noopener" class="px-2 py-0.5 rounded bg-slate-900 hover:bg-slate-700 text-[10px] text-emerald-300 border border-slate-700 truncate max-w-[200px]">🔗 ${escapeHtml(s.title)}</a>`).join("")}
-          </div>`;
-        }
-
+        const replyText = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("\n") || "जवाफ प्राप्त हुन सकेन।";
         const aiBubble = document.createElement("div");
         aiBubble.className = "flex items-start gap-3";
-        aiBubble.innerHTML = `<div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">AI</div><div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-3.5 max-w-3xl text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line">${escapeHtml(replyText).replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')}${sourcesHtml}</div>`;
+        aiBubble.innerHTML = `<div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">AI</div><div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-3.5 max-w-3xl text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line">${escapeHtml(replyText).replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')}</div>`;
         chatBox.appendChild(aiBubble);
         chatBox.scrollTop = chatBox.scrollHeight;
       } catch (err) {
         document.getElementById(typingId)?.remove();
         const errBubble = document.createElement("div");
         errBubble.className = "flex items-start gap-3";
-        errBubble.innerHTML = `<div class="w-8 h-8 rounded-lg bg-red-500 text-white font-bold text-xs flex items-center justify-center shrink-0">!</div><div class="bg-red-950/60 border border-red-500/40 rounded-2xl p-3.5 text-xs text-red-200">इन्टरनेट जडान वा API Key जाँच गर्नुहोस्। (${escapeHtml(err.message)})</div>`;
+        errBubble.innerHTML = `<div class="w-8 h-8 rounded-lg bg-red-500 text-white font-bold text-xs flex items-center justify-center shrink-0">!</div><div class="bg-red-950/60 border border-red-500/40 rounded-2xl p-3.5 text-xs text-red-200">Network Error: ${escapeHtml(err.message)}</div>`;
         chatBox.appendChild(errBubble);
-        chatBox.scrollTop = chatBox.scrollHeight;
       }
     }
 
@@ -1797,5 +1888,3 @@
   </script>
 </body>
 </html>
-
-```
