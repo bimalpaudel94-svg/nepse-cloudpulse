@@ -1,610 +1,633 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>NEPSE CloudPulse AI — Multi-User Portfolio & Gemini Analyst</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-          --bg-base: #090d16;
-          --bg-card: rgba(17, 24, 39, 0.88);
-          --accent-primary: #10b981;
-          --accent-secondary: #059669;
-          --accent-glow: rgba(16, 185, 129, 0.25);
-          --accent-border: rgba(16, 185, 129, 0.45);
-          --banner-grad-start: #064e3b;
-          --banner-grad-end: #0f172a;
-          --text-accent: #34d399;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>NEPSE CloudPulse AI — Multi-User Portfolio & Gemini Analyst</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-card: rgba(17, 24, 39, 0.88);
+      --accent-primary: #10b981;
+      --accent-secondary: #059669;
+      --accent-glow: rgba(16, 185, 129, 0.25);
+      --accent-border: rgba(16, 185, 129, 0.45);
+      --banner-grad-start: #064e3b;
+      --banner-grad-end: #0f172a;
+      --text-accent: #34d399;
+    }
 
-        body.theme-profit {
-          --accent-primary: #10b981;
-          --accent-secondary: #059669;
-          --accent-glow: rgba(16, 185, 129, 0.28);
-          --accent-border: rgba(16, 185, 129, 0.55);
-          --banner-grad-start: #064e3b;
-          --banner-grad-end: #09131d;
-          --text-accent: #34d399;
-        }
+    body.theme-profit {
+      --accent-primary: #10b981;
+      --accent-secondary: #059669;
+      --accent-glow: rgba(16, 185, 129, 0.28);
+      --accent-border: rgba(16, 185, 129, 0.55);
+      --banner-grad-start: #064e3b;
+      --banner-grad-end: #09131d;
+      --text-accent: #34d399;
+    }
 
-        body.theme-loss {
-          --accent-primary: #ef4444;
-          --accent-secondary: #dc2626;
-          --accent-glow: rgba(239, 68, 68, 0.28);
-          --accent-border: rgba(239, 68, 68, 0.55);
-          --banner-grad-start: #7f1d1d;
-          --banner-grad-end: #0f0d15;
-          --text-accent: #f87171;
-        }
+    body.theme-loss {
+      --accent-primary: #ef4444;
+      --accent-secondary: #dc2626;
+      --accent-glow: rgba(239, 68, 68, 0.28);
+      --accent-border: rgba(239, 68, 68, 0.55);
+      --banner-grad-start: #7f1d1d;
+      --banner-grad-end: #0f0d15;
+      --text-accent: #f87171;
+    }
 
-        body.theme-neutral {
-          --accent-primary: #a855f7;
-          --accent-secondary: #7e22ce;
-          --accent-glow: rgba(168, 85, 247, 0.28);
-          --accent-border: rgba(168, 85, 247, 0.55);
-          --banner-grad-start: #4c1d95;
-          --banner-grad-end: #0f0d1a;
-          --text-accent: #c084fc;
-        }
+    body.theme-neutral {
+      --accent-primary: #a855f7;
+      --accent-secondary: #7e22ce;
+      --accent-glow: rgba(168, 85, 247, 0.28);
+      --accent-border: rgba(168, 85, 247, 0.55);
+      --banner-grad-start: #4c1d95;
+      --banner-grad-end: #0f0d1a;
+      --text-accent: #c084fc;
+    }
 
-        body {
-          font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
-          background-color: var(--bg-base);
-          color: #f3f4f6;
-          transition: background-color 0.45s ease;
-          overflow-x: hidden;
-          padding-top: env(safe-area-inset-top, 0px);
-        }
+    body {
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      background-color: var(--bg-base);
+      color: #f3f4f6;
+      transition: background-color 0.45s ease;
+      overflow-x: hidden;
+      padding-top: env(safe-area-inset-top, 0px);
+    }
 
-        .dynamic-banner {
-          background: linear-gradient(135deg, var(--banner-grad-start) 0%, var(--banner-grad-end) 100%);
-          border: 1px solid var(--accent-border);
-          box-shadow: 0 12px 35px -8px var(--accent-glow);
-          transition: all 0.45s ease;
-        }
+    .dynamic-banner {
+      background: linear-gradient(135deg, var(--banner-grad-start) 0%, var(--banner-grad-end) 100%);
+      border: 1px solid var(--accent-border);
+      box-shadow: 0 12px 35px -8px var(--accent-glow);
+      transition: all 0.45s ease;
+    }
 
-        .dynamic-border {
-          border-color: var(--accent-border);
-          transition: border-color 0.45s ease;
-        }
+    .dynamic-border { border-color: var(--accent-border); transition: border-color 0.45s ease; }
+    .dynamic-accent-bg { background-color: var(--accent-primary); transition: background-color 0.45s ease; }
+    .dynamic-accent-text { color: var(--text-accent); transition: color 0.45s ease; }
 
-        .dynamic-accent-bg {
-          background-color: var(--accent-primary);
-          transition: background-color 0.45s ease;
-        }
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-        .dynamic-accent-text {
-          color: var(--text-accent);
-          transition: color 0.45s ease;
-        }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .glass-card {
-          background: var(--bg-card);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+    .long-press-target {
+      user-select: none;
+      -webkit-user-select: none;
+      transition: transform 0.15s ease, background-color 0.2s ease;
+    }
+    .long-press-target:active { transform: scale(0.99); }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulseSlow { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+    .animate-pulse-slow { animation: pulseSlow 2.2s infinite; }
 
-        .long-press-target {
-          user-select: none;
-          -webkit-user-select: none;
-          transition: transform 0.15s ease, background-color 0.2s ease;
-        }
-        .long-press-target:active {
-          transform: scale(0.99);
-        }
-
-        @keyframes pulseSlow {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.45; }
-        }
-        .animate-pulse-slow { animation: pulseSlow 2.2s infinite; }
-
-        .typing-dot {
-          animation: typingBounce 1.4s infinite ease-in-out both;
-        }
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes typingBounce {
-          0%, 80%, 100% { transform: scale(0); }
-          40% { transform: scale(1); }
-        }
-    </style>
+    .typing-dot { animation: typingBounce 1.4s infinite ease-in-out both; }
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes typingBounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+  </style>
 </head>
 <body class="theme-neutral min-h-screen antialiased selection:bg-emerald-500/30">
 
-<!-- ==================== 1. MULTI-USER SIGN IN / REGISTER SCREEN (NO DEFAULT CREDENTIALS) ==================== -->
-<div id="login-screen" class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+  <!-- ==================== 1. MULTI-USER SIGN IN / REGISTER SCREEN (WITH EMAIL RECOVERY) ==================== -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
     <div class="absolute -top-32 -left-32 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="glass-card w-full max-w-md rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-700/70 relative z-10">
-        <div class="flex items-center justify-between mb-5">
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-tight text-white">NEPSE CloudPulse <span class="text-emerald-400">AI</span></h1>
-                    <p class="text-xs text-slate-400">Multi-User NEPSE & Mutual Fund Tracker</p>
-                </div>
-            </div>
-            <span class="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-slate-800 text-purple-300 rounded-full border border-purple-500/30">Multi-User</span>
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold tracking-tight text-white">NEPSE CloudPulse <span class="text-emerald-400">AI</span></h1>
+            <p class="text-xs text-slate-400">Multi-User NEPSE & Mutual Fund Tracker</p>
+          </div>
         </div>
+        <span class="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-slate-800 text-purple-300 rounded-full border border-purple-500/30">Multi-User</span>
+      </div>
 
-        <!-- Auth Mode Switcher: Sign In vs Create New User -->
-        <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-950/90 border border-slate-800 mb-5">
-            <button type="button" id="auth-tab-login" onclick="switchAuthMode('login')"
-                    class="py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer">
-                Sign In (लगइन)
-            </button>
-            <button type="button" id="auth-tab-register" onclick="switchAuthMode('register')"
-                    class="py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
-                + Create New User
-            </button>
+      <!-- Auth Mode Switcher -->
+      <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-950/90 border border-slate-800 mb-5">
+        <button type="button" id="auth-tab-login" onclick="switchAuthMode('login')"
+          class="py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer">
+          Sign In (लगइन)
+        </button>
+        <button type="button" id="auth-tab-register" onclick="switchAuthMode('register')"
+          class="py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
+          + Create New User
+        </button>
+      </div>
+
+      <!-- Error / Success Feedback -->
+      <div id="auth-alert" class="hidden mb-4 p-3 rounded-xl text-xs font-medium border"></div>
+
+      <!-- Form 1: Sign In -->
+      <form id="master-login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5">Your User ID / Email</label>
+          <input id="login-userid" type="text" required autocomplete="off"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
+            placeholder="आफ्नो User ID वा Email लेख्नुहोस्" />
         </div>
-
-        <!-- Error / Success Feedback -->
-        <div id="auth-alert" class="hidden mb-4 p-3 rounded-xl text-xs font-medium border"></div>
-
-        <!-- Form 1: Sign In -->
-        <form id="master-login-form" class="space-y-4">
-            <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1.5">Your User ID / Username</label>
-                <input id="login-userid" type="text" required autocomplete="off"
-                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
-                       placeholder="आफ्नो User ID लेख्नुहोस्" />
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1.5">Password</label>
-                <input id="login-password" type="password" required
-                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
-                       placeholder="आफ्नो Password लेख्नुहोस्" />
-            </div>
-            <button type="submit"
-                    class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/25 transition cursor-pointer">
-                Unlock My Portfolio
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <label class="block text-xs font-medium text-slate-300">Password</label>
+            <button type="button" onclick="openRecoveryModal()" class="text-[11px] text-emerald-400 hover:underline cursor-pointer">
+              Forgot ID / Password? (Email मा पठाउनुहोस्)
             </button>
-        </form>
-
-        <!-- Form 2: Create New User Account -->
-        <form id="master-register-form" class="hidden space-y-3.5">
-            <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1">Full Name (पूरा नाम)</label>
-                <input id="reg-fullname" type="text" required
-                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
-                       placeholder="उदाहरण: Bimal Paudel" />
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1">Create User ID (नयाँ User ID)</label>
-                <input id="reg-userid" type="text" required autocomplete="off"
-                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
-                       placeholder="उदाहरण: bimal123" />
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1">Create Password (नयाँ Password)</label>
-                <input id="reg-password" type="password" required minlength="4"
-                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
-                       placeholder="कम्तिमा ४ अक्षरको पासवर्ड राख्नुहोस्" />
-            </div>
-            <button type="submit"
-                    class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-bold text-sm shadow-lg transition cursor-pointer">
-                Create Account & Enter App
-            </button>
-        </form>
-
-        <!-- Registered Users Quick Switcher -->
-        <div id="existing-users-box" class="hidden mt-5 pt-4 border-t border-slate-800">
-            <p class="text-[11px] text-slate-400 mb-2">यस डिभाइसमा बनेका User ID हरू (छान्न क्लिक गर्नुहोस्):</p>
-            <div id="existing-users-pills" class="flex flex-wrap gap-1.5"></div>
+          </div>
+          <input id="login-password" type="password" required
+            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500 transition"
+            placeholder="आफ्नो Password लेख्नुहोस्" />
         </div>
+        <button type="submit"
+          class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/25 transition cursor-pointer">
+          Unlock My Portfolio
+        </button>
+      </form>
+
+      <!-- Form 2: Create New User Account (With Email Backup) -->
+      <form id="master-register-form" class="hidden space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Full Name (पूरा नाम)</label>
+          <input id="reg-fullname" type="text" required
+            class="w-full px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+            placeholder="उदाहरण: Bimal Paudel" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Your Email Address (ID/Password पठाउन)</label>
+          <input id="reg-email" type="email" required
+            class="w-full px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+            placeholder="example@gmail.com" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Create User ID</label>
+            <input id="reg-userid" type="text" required autocomplete="off"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+              placeholder="bimal123" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Create Password</label>
+            <input id="reg-password" type="password" required minlength="4"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+              placeholder="••••••" />
+          </div>
+        </div>
+        <label class="flex items-center gap-2 text-[11px] text-slate-300 pt-1 cursor-pointer">
+          <input id="reg-send-email-chk" type="checkbox" checked class="rounded bg-slate-800 border-slate-600 text-emerald-500" />
+          <span>बनाउनेबित्तिकै मेरो Email मा User ID र Password पठाउनुहोस्</span>
+        </label>
+        <button type="submit"
+          class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-bold text-sm shadow-lg transition cursor-pointer">
+          Create Account & Send to Email
+        </button>
+      </form>
+
+      <!-- Registered Users Quick Switcher -->
+      <div id="existing-users-box" class="hidden mt-5 pt-4 border-t border-slate-800">
+        <p class="text-[11px] text-slate-400 mb-2">यस डिभाइसमा बनेका User ID हरू (छान्न क्लिक गर्नुहोस्):</p>
+        <div id="existing-users-pills" class="flex flex-wrap gap-1.5"></div>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- ==================== 2. MAIN CLOUD DASHBOARD SHELL ==================== -->
-<div id="app-shell" class="hidden max-w-6xl mx-auto pb-16">
+  <!-- ==================== EMAIL RECOVERY MODAL ==================== -->
+  <div id="recovery-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-sm font-bold text-white">Send User ID & Password to Email</h3>
+        <button onclick="closeRecoveryModal()" class="text-slate-400 hover:text-white font-bold px-2 cursor-pointer">✕</button>
+      </div>
+      <p class="text-xs text-slate-300">तपाईंले दर्ता गर्नुभएको Email Address लेख्नुहोस्—तपाईंको User ID र Password सिधै इमेलमा पठाइनेछ:</p>
+      <form id="recovery-form" class="space-y-3">
+        <input id="rec-email-input" type="email" required placeholder="तपाईंको Email लेख्नुहोस्..."
+          class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+        <div id="rec-result-box" class="hidden p-3 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-xs text-emerald-200 space-y-2"></div>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">
+          Find Account & Email Credentials
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN CLOUD DASHBOARD SHELL ==================== -->
+  <div id="app-shell" class="hidden max-w-6xl mx-auto pb-16">
 
     <!-- Top Status & Color-Mode Simulator Strip -->
     <div class="bg-slate-950/90 border-b border-slate-800/80 px-4 py-2 flex flex-wrap items-center justify-between gap-2 sticky top-0 z-30 backdrop-blur-md">
-        <div class="flex items-center gap-2 text-xs">
-            <span class="w-2 h-2 rounded-full dynamic-accent-bg animate-pulse-slow"></span>
-            <span class="font-semibold text-slate-200">NEPSE + Mutual Funds</span>
-            <span class="text-slate-500">|</span>
-            <span id="listed-count-badge" class="text-emerald-400 font-mono text-[11px]">110+ Listed Scrips Ready</span>
-        </div>
+      <div class="flex items-center gap-2 text-xs">
+        <span class="w-2 h-2 rounded-full dynamic-accent-bg animate-pulse-slow"></span>
+        <span class="font-semibold text-slate-200">NEPSE + Mutual Funds</span>
+        <span class="text-slate-500">|</span>
+        <span id="listed-count-badge" class="text-emerald-400 font-mono text-[11px]">Nepali Format (00,00,000)</span>
+      </div>
 
-        <!-- Instant Theme Tester -->
-        <div class="flex items-center gap-1.5">
-            <button onclick="forceTheme('profit')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-pointer">🟢 Profit</button>
-            <button onclick="forceTheme('loss')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-red-500/20 text-red-300 border border-red-500/40 cursor-pointer">🔴 Loss</button>
-            <button onclick="forceTheme('neutral')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/40 cursor-pointer">🟣 No Change</button>
-            <button onclick="resetAutoTheme()" class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer">Auto</button>
-        </div>
+      <!-- Instant Theme Tester -->
+      <div class="flex items-center gap-1.5">
+        <button onclick="forceTheme('profit')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-pointer">🟢 Profit</button>
+        <button onclick="forceTheme('loss')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-red-500/20 text-red-300 border border-red-500/40 cursor-pointer">🔴 Loss</button>
+        <button onclick="forceTheme('neutral')" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/40 cursor-pointer">🟣 No Change</button>
+        <button onclick="resetAutoTheme()" class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer">Auto</button>
+      </div>
     </div>
 
     <!-- Header & Multi-Account Bar -->
     <header class="px-4 pt-4 pb-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    NEPSE CloudPulse <span class="dynamic-accent-text">AI</span>
-                    <span id="status-pill" class="text-[10px] uppercase px-2 py-0.5 rounded-full bg-white/10 dynamic-accent-text font-bold tracking-wider">🟣 NO CHANGE</span>
-                </h2>
-                <p class="text-xs text-slate-400">User: <span id="active-user-label" class="text-white font-semibold"></span></p>
-            </div>
-            <button id="logout-btn" class="sm:hidden px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 border border-slate-700">Switch User / Lock</button>
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            NEPSE CloudPulse <span class="dynamic-accent-text">AI</span>
+            <span id="status-pill" class="text-[10px] uppercase px-2 py-0.5 rounded-full bg-white/10 dynamic-accent-text font-bold tracking-wider">🟣 NO CHANGE</span>
+          </h2>
+          <p class="text-xs text-slate-400">User: <span id="active-user-label" class="text-white font-semibold"></span></p>
         </div>
-
-        <div class="flex items-center gap-2">
-            <select id="account-selector"
-                    class="flex-1 sm:w-56 px-3 py-2 rounded-xl bg-slate-900 border dynamic-border text-xs font-semibold text-white focus:outline-none cursor-pointer">
-                <option value="ALL">All Demat Accounts (0)</option>
-            </select>
-
-            <button onclick="openVaultModal()"
-                    class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-white flex items-center gap-1.5 transition cursor-pointer shrink-0">
-                <span>+ Demat / MeroShare</span>
-            </button>
-
-            <button id="logout-btn-desktop"
-                    class="hidden sm:flex px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-400 hover:text-white transition cursor-pointer">
-                Switch User / Lock
-            </button>
+        <div class="flex items-center gap-1.5 sm:hidden">
+          <button onclick="emailCurrentUserCredentials()" title="Email My ID & Password"
+            class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs text-emerald-300 border border-slate-700">📧</button>
+          <button id="logout-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 border border-slate-700">Lock</button>
         </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <select id="account-selector"
+          class="flex-1 sm:w-56 px-3 py-2 rounded-xl bg-slate-900 border dynamic-border text-xs font-semibold text-white focus:outline-none cursor-pointer">
+          <option value="ALL">All Demat Accounts (0)</option>
+        </select>
+
+        <button onclick="openVaultModal()"
+          class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-white flex items-center gap-1.5 transition cursor-pointer shrink-0">
+          <span>+ Demat / MeroShare</span>
+        </button>
+
+        <button onclick="emailCurrentUserCredentials()" title="Send my User ID & Password to my Email"
+          class="hidden sm:flex px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-emerald-300 transition cursor-pointer">
+          📧 Email ID/Pass
+        </button>
+
+        <button id="logout-btn-desktop"
+          class="hidden sm:flex px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-400 hover:text-white transition cursor-pointer">
+          Switch User / Lock
+        </button>
+      </div>
     </header>
 
     <!-- Primary Feature Tabs -->
     <div class="px-4 mt-2">
-        <div class="flex gap-2 overflow-x-auto no-scrollbar border-b border-slate-800 pb-2">
-            <button onclick="switchTab('portfolio')" id="tab-btn-portfolio"
-                    class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border transition cursor-pointer shrink-0">
-                📊 My Portfolio & Mutual Funds
-            </button>
-            <button onclick="switchTab('ai-agent')" id="tab-btn-ai-agent"
-                    class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition cursor-pointer shrink-0 flex items-center gap-1.5">
-                <span>✨ Gemini AI Agent (नेपाली / English)</span>
-                <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[9px] uppercase">Live Web</span>
-            </button>
-            <button onclick="switchTab('nepse-directory')" id="tab-btn-nepse-directory"
-                    class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition cursor-pointer shrink-0">
-                🏛️ NEPSE Listed Companies & Mutual Funds
-            </button>
-        </div>
+      <div class="flex gap-2 overflow-x-auto no-scrollbar border-b border-slate-800 pb-2">
+        <button onclick="switchTab('portfolio')" id="tab-btn-portfolio"
+          class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border transition cursor-pointer shrink-0">
+          📊 My Portfolio & Mutual Funds
+        </button>
+        <button onclick="switchTab('ai-agent')" id="tab-btn-ai-agent"
+          class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition cursor-pointer shrink-0 flex items-center gap-1.5">
+          <span>✨ Gemini AI Agent (नेपाली / English)</span>
+          <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[9px] uppercase">Live Web</span>
+        </button>
+        <button onclick="switchTab('nepse-directory')" id="tab-btn-nepse-directory"
+          class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition cursor-pointer shrink-0">
+          🏛️ NEPSE Listed Companies & Mutual Funds
+        </button>
+      </div>
     </div>
 
     <!-- ==================== TAB 1: PORTFOLIO & DUAL GAIN/LOSS ==================== -->
     <main id="tab-portfolio" class="px-4 pt-4 space-y-5">
 
-        <!-- Dynamic Color-Adaptive Hero Summary Card -->
-        <section class="dynamic-banner rounded-2xl p-5 sm:p-6 relative overflow-hidden">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-slate-300 uppercase tracking-wider">Total Portfolio Value</span>
-                        <span id="account-badge" class="px-2 py-0.5 rounded-md bg-black/30 text-[11px] font-semibold text-white">All Accounts</span>
-                    </div>
-                    <div class="flex items-baseline gap-3">
-                        <h3 id="hero-total-value" class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">NPR 0</h3>
-                        <span id="hero-investment" class="text-xs text-slate-300">Invested: NPR 0</span>
-                    </div>
-                </div>
-
-                <!-- Dual Comparison Boxes: vs Purchase Rate & vs Previous Close -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full md:w-auto">
-                    <div class="bg-black/35 backdrop-blur-md rounded-xl p-3.5 border border-white/10 min-w-[215px]">
-                        <div class="text-[11px] text-slate-300 font-medium mb-1">Overall vs Purchase Rate (WACC)</div>
-                        <div class="flex items-baseline justify-between gap-2">
-                            <span id="overall-pl-amount" class="text-lg font-extrabold text-purple-300">NPR 0</span>
-                            <span id="overall-pl-pct" class="px-2 py-0.5 rounded-md text-xs font-bold bg-purple-500/25 text-purple-200">0.00%</span>
-                        </div>
-                        <div class="text-[11px] text-slate-300/90 mt-1">Total & per-unit profit/loss vs buy cost</div>
-                    </div>
-
-                    <div class="bg-black/35 backdrop-blur-md rounded-xl p-3.5 border border-white/10 min-w-[215px]">
-                        <div class="text-[11px] text-slate-300 font-medium mb-1">Today vs Previous Day Close</div>
-                        <div class="flex items-baseline justify-between gap-2">
-                            <span id="daily-pl-amount" class="text-lg font-extrabold text-purple-300">NPR 0</span>
-                            <span id="daily-pl-pct" class="px-2 py-0.5 rounded-md text-xs font-bold bg-purple-500/25 text-purple-200">0.00%</span>
-                        </div>
-                        <div class="text-[11px] text-slate-300/90 mt-1">Compared to yesterday's close</div>
-                    </div>
-                </div>
+      <!-- Dynamic Color-Adaptive Hero Summary Card (Nepali 00,00,000 Formatting) -->
+      <section class="dynamic-banner rounded-2xl p-5 sm:p-6 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-medium text-slate-300 uppercase tracking-wider">Total Portfolio Value</span>
+              <span id="account-badge" class="px-2 py-0.5 rounded-md bg-black/30 text-[11px] font-semibold text-white">All Accounts</span>
             </div>
-        </section>
+            <div class="flex flex-wrap items-baseline gap-3">
+              <h3 id="hero-total-value" class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">NPR 0.00</h3>
+              <span id="hero-investment" class="text-xs text-slate-300">Invested: NPR 0.00</span>
+            </div>
+          </div>
 
-        <!-- Action Toolbar to Load Own Data -->
-        <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex flex-wrap items-center gap-2">
-                <button onclick="openHoldingModal()"
-                        class="px-4 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs shadow-lg cursor-pointer flex items-center gap-1.5">
-                    <span>+ Add Stock / Mutual Fund</span>
-                </button>
-                <label class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white border border-slate-700 cursor-pointer flex items-center gap-1.5">
-                    <span>📂 Import MeroShare CSV</span>
-                    <input type="file" accept="*/*" class="hidden" onchange="handleCsvUpload(event)" />
-                </label>
+          <!-- Dual Comparison Boxes: vs Purchase Rate & vs Previous Close -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full md:w-auto">
+            <div class="bg-black/35 backdrop-blur-md rounded-xl p-3.5 border border-white/10 min-w-[225px]">
+              <div class="text-[11px] text-slate-300 font-medium mb-1">Overall vs Purchase Rate (WACC)</div>
+              <div class="flex items-baseline justify-between gap-2">
+                <span id="overall-pl-amount" class="text-base sm:text-lg font-extrabold text-purple-300">NPR 0.00</span>
+                <span id="overall-pl-pct" class="px-2 py-0.5 rounded-md text-xs font-bold bg-purple-500/25 text-purple-200">0.00%</span>
+              </div>
+              <div class="text-[11px] text-slate-300/90 mt-1">Total & per-unit profit/loss vs buy cost</div>
             </div>
 
-            <button onclick="refreshLivePrices()"
-                    class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-emerald-400 border border-slate-700 cursor-pointer">
-                ↻ Fetch Latest NEPSE Rates
-            </button>
+            <div class="bg-black/35 backdrop-blur-md rounded-xl p-3.5 border border-white/10 min-w-[225px]">
+              <div class="text-[11px] text-slate-300 font-medium mb-1">Today vs Previous Day Close</div>
+              <div class="flex items-baseline justify-between gap-2">
+                <span id="daily-pl-amount" class="text-base sm:text-lg font-extrabold text-purple-300">NPR 0.00</span>
+                <span id="daily-pl-pct" class="px-2 py-0.5 rounded-md text-xs font-bold bg-purple-500/25 text-purple-200">0.00%</span>
+              </div>
+              <div class="text-[11px] text-slate-300/90 mt-1">Compared to yesterday's close</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Toolbar to Load Own Data -->
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="openHoldingModal()"
+            class="px-4 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs shadow-lg cursor-pointer flex items-center gap-1.5">
+            <span>+ Add Stock / Mutual Fund</span>
+          </button>
+          <label class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white border border-slate-700 cursor-pointer flex items-center gap-1.5">
+            <span>📂 Import MeroShare CSV</span>
+            <input type="file" accept="*/*" class="hidden" onchange="handleCsvUpload(event)" />
+          </label>
         </div>
 
-        <!-- Holdings Table -->
-        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
-            <div class="p-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
-                <div>
-                    <h3 class="text-sm font-bold text-white">Your Holdings (Stocks & Mutual Funds)</h3>
-                    <p class="text-[11px] text-slate-400">💡 कुनै सेयरको कित्ता वा मूल्य गल्ती भएमा पङ्क्तिमा <strong>Long-Press (थिचिराख्नुहोस्)</strong> वा ✏️ थिचेर सच्याउनुहोस्</p>
-                </div>
-            </div>
+        <div class="flex items-center gap-2">
+          <button onclick="clearAccountHoldings()"
+            class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-red-950/50 text-xs font-semibold text-red-400 border border-slate-800 cursor-pointer">
+            🗑️ Clear List
+          </button>
+          <button onclick="refreshLivePrices()"
+            class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-emerald-400 border border-slate-700 cursor-pointer">
+            ↻ Fetch Latest NEPSE Rates
+          </button>
+        </div>
+      </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                    <tr class="bg-slate-900/90 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
-                        <th class="py-3 px-4">Scrip & Sector</th>
-                        <th class="py-3 px-3 text-right">Units</th>
-                        <th class="py-3 px-3 text-right">Buy Rate (WACC)</th>
-                        <th class="py-3 px-3 text-right">Prev Close</th>
-                        <th class="py-3 px-3 text-right">Live LTP</th>
-                        <th class="py-3 px-3 text-right">vs Purchase Rate</th>
-                        <th class="py-3 px-3 text-right">vs Previous Day</th>
-                        <th class="py-3 px-3 text-right">Edit</th>
-                    </tr>
-                    </thead>
-                    <tbody id="holdings-tbody" class="divide-y divide-slate-800/70 text-xs">
-                    <!-- Empty by default until user loads their own data -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
+      <!-- Holdings Table -->
+      <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+        <div class="p-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white">Your Holdings (Stocks & Mutual Funds)</h3>
+            <p class="text-[11px] text-slate-400">💡 कुनै सेयरको कित्ता वा मूल्य गल्ती भएमा पङ्क्तिमा <strong>Long-Press (थिचिराख्नुहोस्)</strong> वा ✏️ थिचेर सच्याउनुहोस्</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-900/90 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                <th class="py-3 px-4">Scrip & Sector</th>
+                <th class="py-3 px-3 text-right">Units</th>
+                <th class="py-3 px-3 text-right">Buy Rate (WACC)</th>
+                <th class="py-3 px-3 text-right">Prev Close</th>
+                <th class="py-3 px-3 text-right">Live LTP</th>
+                <th class="py-3 px-3 text-right">Total Value</th>
+                <th class="py-3 px-3 text-right">vs Purchase Rate</th>
+                <th class="py-3 px-3 text-right">vs Previous Day</th>
+                <th class="py-3 px-3 text-right">Edit</th>
+              </tr>
+            </thead>
+            <tbody id="holdings-tbody" class="divide-y divide-slate-800/70 text-xs"></tbody>
+          </table>
+        </div>
+      </section>
     </main>
 
     <!-- ==================== TAB 2: GEMINI LIVE NEPSE & WEB RESEARCH AGENT ==================== -->
     <main id="tab-ai-agent" class="hidden px-4 pt-4 space-y-4">
-        <div class="glass-card rounded-2xl border dynamic-border overflow-hidden flex flex-col h-[74vh] min-h-[520px]">
-            <div class="p-4 bg-slate-900/95 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl dynamic-accent-bg flex items-center justify-center text-slate-950 font-extrabold shadow-lg">AI</div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            Gemini NEPSE Research Agent
-                            <span class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Google Search Grounded</span>
-                        </h3>
-                        <p class="text-[11px] text-slate-400">Fetches live NEPSE, Mutual Fund NAV & internet news in your language</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <label for="agent-lang" class="text-[11px] text-slate-400">भाषा:</label>
-                    <select id="agent-lang"
-                            class="px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-semibold text-white focus:outline-none cursor-pointer">
-                        <option value="Nepali (Devanagari)">नेपाली (Devanagari)</option>
-                        <option value="Roman Nepali">Roman Nepali</option>
-                        <option value="English">English</option>
-                    </select>
-                </div>
+      <div class="glass-card rounded-2xl border dynamic-border overflow-hidden flex flex-col h-[74vh] min-h-[520px]">
+        <div class="p-4 bg-slate-900/95 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl dynamic-accent-bg flex items-center justify-center text-slate-950 font-extrabold shadow-lg">AI</div>
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                Gemini NEPSE Research Agent
+                <span class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Google Search Grounded</span>
+              </h3>
+              <p class="text-[11px] text-slate-400">Fetches live NEPSE, Mutual Fund NAV & internet news in your language</p>
             </div>
+          </div>
 
-            <div class="px-4 py-2.5 bg-slate-950/60 border-b border-slate-800/80 flex gap-2 overflow-x-auto no-scrollbar">
-                <button onclick="askQuickPrompt('आजको NEPSE बजारको ताजा समाचार, मुख्य सूचक र सेक्टर अवस्था के छ?')"
-                        class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">
-                    📰 आजको NEPSE ताजा समाचार
-                </button>
-                <button onclick="askMyPortfolioAnalysis()"
-                        class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">
-                    💼 मेरो पोर्टफोलियोको ताजा विश्लेषण
-                </button>
-                <button onclick="askQuickPrompt('नेपालका Mutual Funds हरूको पछिल्लो NAV, लाभांश (Dividend) र कुन फण्ड राम्रो चलिरहेको छ?')"
-                        class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-purple-300 border border-purple-500/30 shrink-0 cursor-pointer">
-                    📊 Mutual Funds NAV र लाभांश खबर
-                </button>
-                <button onclick="askQuickPrompt('नेपालमा आउन लागेका नयाँ IPO, Right Share र Dividend घोषणाहरूको ताजा जानकारी दिनुहोस्।')"
-                        class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">
-                    🚀 आगामी IPO र लाभांश
-                </button>
-            </div>
-
-            <div id="agent-chat-box" class="flex-1 overflow-y-auto p-4 space-y-4">
-                <div class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">AI</div>
-                    <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-3.5 max-w-3xl text-xs sm:text-sm text-slate-200 leading-relaxed">
-                        <p class="font-semibold text-white mb-1">नमस्ते! म तपाईंको NEPSE Gemini Live Research Agent हुँ।</p>
-                        <p>म इन्टरनेट र NEPSE वेबसाइटहरूबाट ताजा समाचार, कम्पनीको लाभांश, र Mutual Fund को NAV खोजेर तपाईंको भाषामा बुझाइदिन्छु।</p>
-                    </div>
-                </div>
-            </div>
-
-            <form id="agent-chat-form" class="p-3 bg-slate-900/95 border-t border-slate-800 flex items-center gap-2">
-                <input id="agent-input" type="text" required
-                       placeholder="NEPSE, कुनै कम्पनी वा Mutual Fund बारे सोध्नुहोस्..."
-                       class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-emerald-500" />
-                <button type="submit"
-                        class="px-4 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs sm:text-sm hover:opacity-90 transition cursor-pointer shrink-0">
-                    Search & Ask
-                </button>
-            </form>
+          <div class="flex items-center gap-2">
+            <label for="agent-lang" class="text-[11px] text-slate-400">भाषा:</label>
+            <select id="agent-lang"
+              class="px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-semibold text-white focus:outline-none cursor-pointer">
+              <option value="Nepali (Devanagari)">नेपाली (Devanagari)</option>
+              <option value="Roman Nepali">Roman Nepali</option>
+              <option value="English">English</option>
+            </select>
+          </div>
         </div>
+
+        <div class="px-4 py-2.5 bg-slate-950/60 border-b border-slate-800/80 flex gap-2 overflow-x-auto no-scrollbar">
+          <button onclick="askQuickPrompt('आजको NEPSE बजारको ताजा समाचार, मुख्य सूचक र सेक्टर अवस्था के छ?')"
+            class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">
+            📰 आजको NEPSE ताजा समाचार
+          </button>
+          <button onclick="askMyPortfolioAnalysis()"
+            class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">
+            💼 मेरो पोर्टफोलियोको ताजा विश्लेषण
+          </button>
+          <button onclick="askQuickPrompt('नेपालका Mutual Funds हरूको पछिल्लो NAV, लाभांश (Dividend) र कुन फण्ड राम्रो चलिरहेको छ?')"
+            class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-purple-300 border border-purple-500/30 shrink-0 cursor-pointer">
+            📊 Mutual Funds NAV र लाभांश खबर
+          </button>
+          <button onclick="askQuickPrompt('नेपालमा आउन लागेका नयाँ IPO, Right Share र Dividend घोषणाहरूको ताजा जानकारी दिनुहोस्।')"
+            class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">
+            🚀 आगामी IPO र लाभांश
+          </button>
+        </div>
+
+        <div id="agent-chat-box" class="flex-1 overflow-y-auto p-4 space-y-4">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">AI</div>
+            <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-3.5 max-w-3xl text-xs sm:text-sm text-slate-200 leading-relaxed">
+              <p class="font-semibold text-white mb-1">नमस्ते! म तपाईंको NEPSE Gemini Live Research Agent हुँ।</p>
+              <p>म इन्टरनेट र NEPSE वेबसाइटहरूबाट ताजा समाचार, कम्पनीको लाभांश, र Mutual Fund को NAV खोजेर तपाईंको भाषामा बुझाइदिन्छु।</p>
+            </div>
+          </div>
+        </div>
+
+        <form id="agent-chat-form" class="p-3 bg-slate-900/95 border-t border-slate-800 flex items-center gap-2">
+          <input id="agent-input" type="text" required
+            placeholder="NEPSE, कुनै कम्पनी वा Mutual Fund बारे सोध्नुहोस्..."
+            class="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-emerald-500" />
+          <button type="submit"
+            class="px-4 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs sm:text-sm hover:opacity-90 transition cursor-pointer shrink-0">
+            Search & Ask
+          </button>
+        </form>
+      </div>
     </main>
 
     <!-- ==================== TAB 3: NEPSE LISTED COMPANIES & MUTUAL FUNDS DIRECTORY ==================== -->
     <main id="tab-nepse-directory" class="hidden px-4 pt-4 space-y-4">
-        <section class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-800 space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                    <h3 class="text-base font-bold text-white">NEPSE Listed Companies & Mutual Funds</h3>
-                    <p class="text-xs text-slate-400">कुनै पनि कम्पनी वा Mutual Fund छानेर सिधै आफ्नो पोर्टफोलियोमा थप्नुहोस्</p>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <input id="dir-search" type="text" oninput="renderDirectory()" placeholder="Search Symbol or Name (e.g. NABIL, NIBLPF)..."
-                           class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white w-56 focus:outline-none focus:border-emerald-500" />
-                    <select id="dir-sector" onchange="renderDirectory()"
-                            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none cursor-pointer">
-                        <option value="ALL">All Sectors (All Scrips)</option>
-                        <option value="Mutual Fund">Mutual Funds (म्युचुअल फण्ड)</option>
-                        <option value="Commercial Banks">Commercial Banks</option>
-                        <option value="Hydropower">Hydropower</option>
-                        <option value="Development Banks">Development Banks</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Microfinance">Microfinance</option>
-                        <option value="Life Insurance">Life Insurance</option>
-                        <option value="Non-Life Insurance">Non-Life Insurance</option>
-                        <option value="Manufacturing & Processing">Manufacturing & Others</option>
-                        <option value="Investment">Investment</option>
-                    </select>
-                </div>
-            </div>
+      <section class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-800 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-base font-bold text-white">NEPSE Listed Companies & Mutual Funds</h3>
+            <p class="text-xs text-slate-400">कुनै पनि कम्पनी वा Mutual Fund छानेर सिधै आफ्नो पोर्टफोलियोमा थप्नुहोस्</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <input id="dir-search" type="text" oninput="renderDirectory()" placeholder="Search Symbol or Name (e.g. NABIL, NIBLPF)..."
+              class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white w-56 focus:outline-none focus:border-emerald-500" />
+            <select id="dir-sector" onchange="renderDirectory()"
+              class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none cursor-pointer">
+              <option value="ALL">All Sectors (All Scrips)</option>
+              <option value="Mutual Fund">Mutual Funds (म्युचुअल फण्ड)</option>
+              <option value="Commercial Banks">Commercial Banks</option>
+              <option value="Hydropower">Hydropower</option>
+              <option value="Development Banks">Development Banks</option>
+              <option value="Finance">Finance</option>
+              <option value="Microfinance">Microfinance</option>
+              <option value="Life Insurance">Life Insurance</option>
+              <option value="Non-Life Insurance">Non-Life Insurance</option>
+              <option value="Manufacturing & Processing">Manufacturing & Others</option>
+              <option value="Investment">Investment</option>
+            </select>
+          </div>
+        </div>
 
-            <div id="directory-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-[60vh] overflow-y-auto pr-1">
-                <!-- Populated dynamically -->
-            </div>
-        </section>
+        <div id="directory-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-[60vh] overflow-y-auto pr-1"></div>
+      </section>
     </main>
-</div>
+  </div>
 
-<!-- ==================== 3. ADD / EDIT STOCK & MUTUAL FUND MODAL ==================== -->
-<div id="holding-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+  <!-- ==================== 3. ADD / EDIT STOCK & MUTUAL FUND MODAL ==================== -->
+  <div id="holding-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-2xl space-y-4">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div>
-                <h3 id="holding-modal-title" class="text-base font-bold text-white">+ Add Stock / Mutual Fund</h3>
-                <p class="text-[11px] text-slate-400">NEPSE Listed Company वा Mutual Fund Symbol छान्नुहोस्</p>
-            </div>
-            <button onclick="closeHoldingModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h3 id="holding-modal-title" class="text-base font-bold text-white">+ Add Stock / Mutual Fund</h3>
+          <p class="text-[11px] text-slate-400">NEPSE Listed Company वा Mutual Fund Symbol छान्नुहोस्</p>
+        </div>
+        <button onclick="closeHoldingModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
+      </div>
+
+      <form id="holding-form" class="space-y-3">
+        <input type="hidden" id="edit-holding-id" value="" />
+
+        <div>
+          <label class="block text-[11px] text-slate-300 mb-1">Demat / Member Account</label>
+          <select id="hold-account" required
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none">
+          </select>
         </div>
 
-        <form id="holding-form" class="space-y-3">
-            <input type="hidden" id="edit-holding-id" value="" />
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-1">Scrip Symbol</label>
+            <input id="hold-scrip" list="nepse-scrip-datalist" type="text" required oninput="onScripInput(this.value)"
+              placeholder="e.g. NABIL, NIBLPF"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase focus:outline-none focus:border-emerald-500" />
+            <datalist id="nepse-scrip-datalist"></datalist>
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-1">Sector / Type</label>
+            <input id="hold-sector" type="text" required placeholder="e.g. Mutual Fund"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none" />
+          </div>
+        </div>
 
-            <div>
-                <label class="block text-[11px] text-slate-300 mb-1">Demat / Member Account</label>
-                <select id="hold-account" required
-                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none">
-                </select>
-            </div>
+        <div>
+          <label class="block text-[11px] text-slate-300 mb-1">Company / Mutual Fund Name</label>
+          <input id="hold-name" type="text" required placeholder="Company or Fund full name"
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none" />
+        </div>
 
-            <div class="grid grid-cols-2 gap-2.5">
-                <div>
-                    <label class="block text-[11px] text-slate-300 mb-1">Scrip Symbol (टाइप गरी छान्नुहोस्)</label>
-                    <input id="hold-scrip" list="nepse-scrip-datalist" type="text" required oninput="onScripInput(this.value)"
-                           placeholder="e.g. NABIL, NIBLPF"
-                           class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase focus:outline-none focus:border-emerald-500" />
-                    <datalist id="nepse-scrip-datalist"></datalist>
-                </div>
-                <div>
-                    <label class="block text-[11px] text-slate-300 mb-1">Sector / Type</label>
-                    <input id="hold-sector" type="text" required placeholder="e.g. Mutual Fund"
-                           class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none" />
-                </div>
-            </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-1">Total Units (कित्ता)</label>
+            <input id="hold-units" type="number" step="any" min="0.01" required placeholder="e.g. 500"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-1">Purchase Rate / WACC (Rs)</label>
+            <input id="hold-buy" type="number" step="any" min="0.01" required placeholder="e.g. 10.50 or 510"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+        </div>
 
-            <div>
-                <label class="block text-[11px] text-slate-300 mb-1">Company / Mutual Fund Name</label>
-                <input id="hold-name" type="text" required placeholder="Company or Fund full name"
-                       class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none" />
-            </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-1">Previous Day Close (Rs)</label>
+            <input id="hold-prev" type="number" step="any" min="0.01" required placeholder="Yesterday Close"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-1">Current Market LTP / NAV (Rs)</label>
+            <input id="hold-ltp" type="number" step="any" min="0.01" required placeholder="Today's LTP / NAV"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+        </div>
 
-            <div class="grid grid-cols-2 gap-2.5">
-                <div>
-                    <label class="block text-[11px] text-slate-300 mb-1">Total Units (कित्ता)</label>
-                    <input id="hold-units" type="number" step="any" min="1" required placeholder="e.g. 500"
-                           class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-                </div>
-                <div>
-                    <label class="block text-[11px] text-slate-300 mb-1">Purchase Rate / WACC (Rs)</label>
-                    <input id="hold-buy" type="number" step="any" min="0.1" required placeholder="e.g. 10.50 or 510"
-                           class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2.5">
-                <div>
-                    <label class="block text-[11px] text-slate-300 mb-1">Previous Day Close (Rs)</label>
-                    <input id="hold-prev" type="number" step="any" min="0.1" required placeholder="Yesterday Close"
-                           class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-                </div>
-                <div>
-                    <label class="block text-[11px] text-slate-300 mb-1">Current Market LTP / NAV (Rs)</label>
-                    <input id="hold-ltp" type="number" step="any" min="0.1" required placeholder="Today's LTP / NAV"
-                           class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between gap-2 pt-2">
-                <button type="button" id="delete-holding-btn" onclick="deleteCurrentHolding()"
-                        class="hidden px-3 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/40 text-xs font-bold cursor-pointer">
-                    🗑️ Delete
-                </button>
-                <button type="submit"
-                        class="flex-1 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
-                    Save to Portfolio
-                </button>
-            </div>
-        </form>
+        <div class="flex items-center justify-between gap-2 pt-2">
+          <button type="button" id="delete-holding-btn" onclick="deleteCurrentHolding()"
+            class="hidden px-3 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/40 text-xs font-bold cursor-pointer">
+            🗑️ Delete
+          </button>
+          <button type="submit"
+            class="flex-1 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
+            Save to Portfolio
+          </button>
+        </div>
+      </form>
     </div>
-</div>
+  </div>
 
-<!-- ==================== 4. MEROSHARE MULTI-ACCOUNT VAULT MODAL (WITH LONG-PRESS EDIT) ==================== -->
-<div id="vault-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+  <!-- ==================== 4. MEROSHARE MULTI-ACCOUNT VAULT MODAL (WITH LONG-PRESS EDIT) ==================== -->
+  <div id="vault-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-lg rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-2xl space-y-4">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div>
-                <h3 class="text-base font-bold text-white">Member Demat / MeroShare Accounts</h3>
-                <p class="text-[11px] text-emerald-400">💡 नाम वा Demat/DP गल्ती भएमा अकाउन्टमा <strong>Long-Press (थिचिराख्नुहोस्)</strong> वा ✏️ थिचेर सच्याउनुहोस्</p>
-            </div>
-            <button onclick="closeVaultModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white">Member Demat / MeroShare Accounts</h3>
+          <p class="text-[11px] text-emerald-400">💡 नाम वा Demat/DP गल्ती भएमा अकाउन्टमा <strong>Long-Press (थिचिराख्नुहोस्)</strong> वा ✏️ थिचेर सच्याउनुहोस्</p>
         </div>
+        <button onclick="closeVaultModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
+      </div>
 
-        <!-- Connected Accounts List -->
-        <div id="vault-accounts-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+      <div id="vault-accounts-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
 
-        <!-- Add / Edit Account Form -->
-        <form id="add-account-form" class="space-y-2.5 pt-2 border-t border-slate-800">
-            <input type="hidden" id="edit-acc-id" value="" />
-            <div class="flex items-center justify-between">
-                <span id="form-mode-label" class="text-[11px] font-semibold text-slate-300">+ नयाँ सदस्यको Demat / MeroShare थप्नुहोस्</span>
-                <button type="button" id="cancel-edit-btn" onclick="cancelEditAccount()" class="hidden text-[11px] text-amber-400 hover:underline cursor-pointer">
-                    Cancel Edit
-                </button>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <input id="new-acc-name" type="text" required placeholder="Member Name (e.g. Self / Father / Spouse)"
-                       class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-                <input id="new-acc-dp" type="text" required placeholder="Demat / BOID (e.g. 1301370000124581)"
-                       class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <input id="new-acc-user" type="text" placeholder="MeroShare Username"
-                       class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-                <input id="new-acc-pass" type="password" placeholder="Password (Encrypted)"
-                       class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
-                <button type="submit" id="save-acc-submit-btn"
-                        class="px-3 py-2 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
-                    + Save Member
-                </button>
-            </div>
-        </form>
+      <form id="add-account-form" class="space-y-2.5 pt-2 border-t border-slate-800">
+        <input type="hidden" id="edit-acc-id" value="" />
+        <div class="flex items-center justify-between">
+          <span id="form-mode-label" class="text-[11px] font-semibold text-slate-300">+ नयाँ सदस्यको Demat / MeroShare थप्नुहोस्</span>
+          <button type="button" id="cancel-edit-btn" onclick="cancelEditAccount()" class="hidden text-[11px] text-amber-400 hover:underline cursor-pointer">
+            Cancel Edit
+          </button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <input id="new-acc-name" type="text" required placeholder="Member Name (e.g. Self / Father / Spouse)"
+            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          <input id="new-acc-dp" type="text" required placeholder="Demat / BOID (e.g. 1301370000124581)"
+            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <input id="new-acc-user" type="text" placeholder="MeroShare Username"
+            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          <input id="new-acc-pass" type="password" placeholder="Password (Encrypted)"
+            class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          <button type="submit" id="save-acc-submit-btn"
+            class="px-3 py-2 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
+            + Save Member
+          </button>
+        </div>
+      </form>
 
-        <p id="vault-status-msg" class="text-[11px] text-emerald-400 hidden"></p>
+      <p id="vault-status-msg" class="text-[11px] text-emerald-400 hidden"></p>
     </div>
-</div>
+  </div>
 
-<!-- ==================== JAVASCRIPT: MULTI-USER AUTH, NEPSE + MUTUAL FUNDS DB, GEMINI AGENT ==================== -->
-<script>
-    // Paste your free Google AI Studio Gemini API Key inside the quotes below for Android APK usage
+  <!-- ==================== JAVASCRIPT: NEPALI FORMATTING, EMAIL CREDENTIALS, ACCURATE MEROSHARE CSV ==================== -->
+  <script>
     const apiKey = "";
 
-    // Comprehensive NEPSE Listed Companies & Mutual Funds Reference Directory
     const NEPSE_LISTED_SCRIPS = [
-      // Mutual Funds (NEPSE Listed Close-Ended & Open-Ended Schemes)
+      // Mutual Funds
       { symbol: "NIBLPF", name: "NIBL Pragati Fund", sector: "Mutual Fund", refPrice: 10.45 },
       { symbol: "NIBLSF", name: "NIBL Sahabhagita Fund (Open-Ended)", sector: "Mutual Fund", refPrice: 10.62 },
       { symbol: "NIBLGF", name: "NIBL Growth Fund", sector: "Mutual Fund", refPrice: 10.15 },
@@ -695,7 +718,7 @@
       { symbol: "SKBBL", name: "Sana Kisan Bikas Laghubitta", sector: "Microfinance", refPrice: 935.0 },
       { symbol: "JSLBB", name: "Janautthan Samudayic Laghubitta", sector: "Microfinance", refPrice: 1180.0 },
 
-      // Insurance (Life & Non-Life)
+      // Insurance
       { symbol: "NLIC", name: "Nepal Life Insurance Co. Ltd.", sector: "Life Insurance", refPrice: 745.0 },
       { symbol: "LICN", name: "Life Insurance Corporation (Nepal)", sector: "Life Insurance", refPrice: 1090.0 },
       { symbol: "ALICL", name: "Asian Life Insurance Co. Ltd.", sector: "Life Insurance", refPrice: 640.0 },
@@ -729,14 +752,68 @@
       { symbol: "SHL", name: "Soaltee Hotel Limited", sector: "Manufacturing & Processing", refPrice: 485.0 }
     ];
 
-    // Multi-User Storage Keys (No default users, no default portfolio)
-    const USERS_REGISTRY_KEY = "nepse_cloudpulse_users_v2";
+    const USERS_REGISTRY_KEY = "nepse_cloudpulse_users_v3";
     let currentUser = null;
     let holdingsData = [];
     let connectedAccounts = [];
     let activeAccountFilter = "ALL";
     let manualThemeOverride = null;
     let longPressTimer = null;
+
+    // ==================== NEPALI NUMBER FORMATTER (00,00,000) ====================
+    function formatNepaliNumber(num, decimals = 2) {
+      if (isNaN(num)) return "0.00";
+      const isNeg = num < 0;
+      const fixed = Math.abs(Number(num)).toFixed(decimals);
+      const parts = fixed.split(".");
+      let intPart = parts[0];
+      const decPart = parts[1];
+
+      if (intPart.length > 3) {
+        const lastThree = intPart.slice(-3);
+        const rest = intPart.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ",");
+        intPart = rest + "," + lastThree;
+      }
+      return (isNeg ? "-" : "") + intPart + (decimals > 0 ? "." + decPart : "");
+    }
+
+    function formatNPR(num) {
+      const sign = num < 0 ? "-" : "";
+      return sign + "NPR " + formatNepaliNumber(Math.abs(num), 2);
+    }
+
+    function formatSignedNPR(num) {
+      const sign = num > 0 ? "+" : num < 0 ? "-" : "";
+      return sign + "NPR " + formatNepaliNumber(Math.abs(num), 2);
+    }
+
+    function formatRateDiff(diff) {
+      const sign = diff > 0 ? "+" : diff < 0 ? "-" : "";
+      return sign + "Rs " + formatNepaliNumber(Math.abs(diff), 2) + "/unit";
+    }
+
+    // ==================== EMAIL CREDENTIAL SENDER ====================
+    function triggerEmailCredentials(userObj) {
+      if (!userObj || !userObj.email) {
+        alert("यस अकाउन्टमा Email दर्ता गरिएको छैन।");
+        return;
+      }
+      const subject = encodeURIComponent(`NEPSE CloudPulse AI — Your Login User ID & Password (${userObj.fullName})`);
+      const body = encodeURIComponent(
+        `Namaste ${userObj.fullName},\n\n` +
+        `Your NEPSE CloudPulse AI account details are saved below for future reference:\n\n` +
+        `• Full Name: ${userObj.fullName}\n` +
+        `• Registered Email: ${userObj.email}\n` +
+        `• User ID: ${userObj.userId}\n` +
+        `• Password: ${userObj.password}\n\n` +
+        `Keep this email safe so you never lose access to your portfolio.`
+      );
+      window.location.href = `mailto:${encodeURIComponent(userObj.email)}?subject=${subject}&body=${body}`;
+    }
+
+    function emailCurrentUserCredentials() {
+      if (currentUser) triggerEmailCredentials(currentUser);
+    }
 
     // ==================== MULTI-USER AUTHENTICATION ====================
     function getRegisteredUsers() {
@@ -791,7 +868,7 @@
 
       if (users.length === 0) {
         box.classList.add("hidden");
-        switchAuthMode("register"); // Prompt first-time user to create their own User ID & Password
+        switchAuthMode("register");
         return;
       }
 
@@ -815,52 +892,94 @@
     document.getElementById("master-register-form").addEventListener("submit", function (e) {
       e.preventDefault();
       const fullName = document.getElementById("reg-fullname").value.trim();
+      const email = document.getElementById("reg-email").value.trim().toLowerCase();
       const userId = document.getElementById("reg-userid").value.trim().toLowerCase();
       const password = document.getElementById("reg-password").value;
+      const shouldSendEmail = document.getElementById("reg-send-email-chk").checked;
 
-      if (!fullName || !userId || !password) return;
+      if (!fullName || !email || !userId || !password) return;
 
       const users = getRegisteredUsers();
       if (users.some(u => u.userId === userId)) {
-        showAuthAlert("यो User ID पहिले नै बनिसकेको छ। कृपया अर्को User ID छान्नुहोस् वा Sign In गर्नुहोस्।");
+        showAuthAlert("यो User ID पहिले नै बनिसकेको छ। अर्को User ID छान्नुहोस्।");
         return;
       }
 
-      const newUser = { fullName, userId, password };
+      const newUser = { fullName, email, userId, password };
       users.push(newUser);
       saveRegisteredUsers(users);
 
-      // Initialize clean empty workspace for this user (no dummy holdings)
       const initialWorkspace = {
         accounts: [{ id: "ACC1", name: fullName, dp: "Primary Demat", username: "", status: "Active" }],
         holdings: []
       };
       localStorage.setItem("nepse_workspace_" + userId, JSON.stringify(initialWorkspace));
 
+      if (shouldSendEmail) {
+        triggerEmailCredentials(newUser);
+      }
+
       loginAsUser(newUser);
     });
 
-    // Sign In Existing User
+    // Sign In Existing User (Supports User ID or Email)
     document.getElementById("master-login-form").addEventListener("submit", function (e) {
       e.preventDefault();
-      const userId = document.getElementById("login-userid").value.trim().toLowerCase();
+      const loginInput = document.getElementById("login-userid").value.trim().toLowerCase();
       const password = document.getElementById("login-password").value;
 
       const users = getRegisteredUsers();
-      const matched = users.find(u => u.userId === userId && u.password === password);
+      const matched = users.find(u => (u.userId === loginInput || u.email === loginInput) && u.password === password);
 
       if (!matched) {
-        showAuthAlert("User ID वा Password मिलेन। नयाँ प्रयोगकर्ता हुनुहुन्छ भने '+ Create New User' बाट आफ्नो अकाउन्ट बनाउनुहोस्।");
+        showAuthAlert("User ID/Email वा Password मिलेन। बिर्सनुभएको भए 'Forgot ID / Password?' थिचेर Email मा मगाउनुहोस्।");
         return;
       }
 
       loginAsUser(matched);
     });
 
+    // Recovery Modal Handlers
+    function openRecoveryModal() {
+      document.getElementById("rec-result-box").classList.add("hidden");
+      document.getElementById("recovery-modal").classList.remove("hidden");
+    }
+
+    function closeRecoveryModal() {
+      document.getElementById("recovery-modal").classList.add("hidden");
+    }
+
+    document.getElementById("recovery-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("rec-email-input").value.trim().toLowerCase();
+      const users = getRegisteredUsers();
+      const found = users.find(u => u.email === email);
+      const box = document.getElementById("rec-result-box");
+
+      if (!found) {
+        box.className = "p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-xs text-red-200";
+        box.textContent = "यो Email बाट कुनै अकाउन्ट भेटिएन। कृपया '+ Create New User' बाट नयाँ बनाउनुहोस्।";
+        box.classList.remove("hidden");
+        return;
+      }
+
+      box.className = "p-3 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-xs text-emerald-200 space-y-2";
+      box.innerHTML = `
+        <div>✅ अकाउन्ट भेटियो: <strong>${escapeHtml(found.fullName)}</strong></div>
+        <div>User ID: <strong>${escapeHtml(found.userId)}</strong> | Password: <strong>${escapeHtml(found.password)}</strong></div>
+        <button type="button" id="send-rec-mail-btn" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-[11px] cursor-pointer">
+          📧 Open Email App & Send to ${escapeHtml(found.email)}
+        </button>
+      `;
+      box.classList.remove("hidden");
+      document.getElementById("send-rec-mail-btn").onclick = () => triggerEmailCredentials(found);
+      triggerEmailCredentials(found);
+    });
+
     function loginAsUser(userObj) {
       currentUser = userObj;
       loadUserWorkspace();
-      document.getElementById("active-user-label").textContent = `${userObj.fullName} (@${userObj.userId})`;
+      document.getElementById("active-user-label").textContent = `${userObj.fullName} (${userObj.email || userObj.userId})`;
       document.getElementById("login-screen").classList.add("hidden");
       document.getElementById("app-shell").classList.remove("hidden");
       initApp();
@@ -877,7 +996,6 @@
     document.getElementById("logout-btn").addEventListener("click", lockDashboard);
     document.getElementById("logout-btn-desktop").addEventListener("click", lockDashboard);
 
-    // Per-User Workspace Persistence
     function loadUserWorkspace() {
       if (!currentUser) return;
       try {
@@ -904,25 +1022,7 @@
       }));
     }
 
-    // ==================== CURRENCY & FORMATTING ====================
-    function formatNPR(num) {
-      const sign = num < 0 ? "-" : "";
-      const absVal = Math.abs(Math.round(num));
-      return sign + "NPR " + absVal.toLocaleString("en-IN");
-    }
-
-    function formatSignedNPR(num) {
-      const sign = num > 0 ? "+" : num < 0 ? "-" : "";
-      const absVal = Math.abs(Math.round(num));
-      return sign + "NPR " + absVal.toLocaleString("en-IN");
-    }
-
-    function formatRateDiff(diff) {
-      const sign = diff > 0 ? "+" : diff < 0 ? "-" : "";
-      return sign + "Rs " + Math.abs(diff).toFixed(2) + "/unit";
-    }
-
-    // ==================== PORTFOLIO RENDERING & DUAL GAIN/LOSS ====================
+    // ==================== PORTFOLIO RENDERING (WITH NEPALI COMMAS 00,00,000) ====================
     function refreshAccountDropdown() {
       const sel = document.getElementById("account-selector");
       const currentVal = sel.value;
@@ -958,12 +1058,9 @@
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="8" class="py-10 px-4 text-center">
-              <div class="text-sm font-bold text-white mb-1">तपाईंको पोर्टफोलियो अहिले खाली छ (No Default Data)</div>
-              <p class="text-xs text-slate-400 mb-3">माथिको <strong>"+ Add Stock / Mutual Fund"</strong> थिचेर NEPSE कम्पनी वा Mutual Fund छान्नुहोस्, वा MeroShare CSV अपलोड गर्नुहोस्।</p>
-              <button onclick="openHoldingModal()" class="px-4 py-2 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">
-                + Add First Stock / Mutual Fund
-              </button>
+            <td colspan="9" class="py-10 px-4 text-center">
+              <div class="text-sm font-bold text-white mb-1">तपाईंको पोर्टफोलियो अहिले खाली छ</div>
+              <p class="text-xs text-slate-400 mb-3">माथिको <strong>"+ Add Stock / Mutual Fund"</strong> वा <strong>"📂 Import MeroShare CSV"</strong> थिचेर आफ्नो सेयर डेटा लोड गर्नुहोस्।</p>
             </td>
           </tr>`;
       }
@@ -1009,10 +1106,11 @@
             </div>
             <div class="text-[11px] text-slate-400">${escapeHtml(displayAccName)} • ${escapeHtml(item.sector || "Equity")}</div>
           </td>
-          <td class="py-3 px-3 text-right font-semibold text-slate-200">${item.units}</td>
-          <td class="py-3 px-3 text-right text-slate-300">Rs ${Number(item.buyRate).toFixed(2)}</td>
-          <td class="py-3 px-3 text-right text-slate-300">Rs ${Number(item.prevClose).toFixed(2)}</td>
-          <td class="py-3 px-3 text-right font-bold text-white">Rs ${Number(item.ltp).toFixed(2)}</td>
+          <td class="py-3 px-3 text-right font-semibold text-slate-200">${formatNepaliNumber(item.units, Number.isInteger(item.units) ? 0 : 2)}</td>
+          <td class="py-3 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(item.buyRate, 2)}</td>
+          <td class="py-3 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(item.prevClose, 2)}</td>
+          <td class="py-3 px-3 text-right font-bold text-white">Rs ${formatNepaliNumber(item.ltp, 2)}</td>
+          <td class="py-3 px-3 text-right font-bold text-slate-100">Rs ${formatNepaliNumber(currentVal, 2)}</td>
           <td class="py-3 px-3 text-right">
             <div class="font-bold ${buyColor}">${formatSignedNPR(buyTotalPL)} (${buyPct >= 0 ? "+" : ""}${buyPct.toFixed(2)}%)</div>
             <div class="text-[11px] ${buyColor} opacity-90">${formatRateDiff(buyDiffPerShare)}</div>
@@ -1061,7 +1159,7 @@
     }
 
     function applyBoxColor(amtEl, pctEl, val) {
-      amtEl.className = "text-lg font-extrabold " + (val > 0 ? "text-emerald-300" : val < 0 ? "text-red-300" : "text-purple-300");
+      amtEl.className = "text-base sm:text-lg font-extrabold " + (val > 0 ? "text-emerald-300" : val < 0 ? "text-red-300" : "text-purple-300");
       pctEl.className = "px-2 py-0.5 rounded-md text-xs font-bold " + (val > 0 ? "bg-emerald-500/25 text-emerald-200" : val < 0 ? "bg-red-500/25 text-red-200" : "bg-purple-500/25 text-purple-200");
     }
 
@@ -1080,15 +1178,8 @@
       }
     }
 
-    function forceTheme(mode) {
-      manualThemeOverride = mode;
-      applyTheme(mode);
-    }
-
-    function resetAutoTheme() {
-      manualThemeOverride = null;
-      renderPortfolio();
-    }
+    function forceTheme(mode) { manualThemeOverride = mode; applyTheme(mode); }
+    function resetAutoTheme() { manualThemeOverride = null; renderPortfolio(); }
 
     document.getElementById("account-selector").addEventListener("change", function (e) {
       activeAccountFilter = e.target.value;
@@ -1105,17 +1196,13 @@
       document.getElementById("tab-" + tabName).classList.remove("hidden");
       const activeBtn = document.getElementById("tab-btn-" + tabName);
       activeBtn.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border transition cursor-pointer shrink-0";
-
       if (tabName === "nepse-directory") renderDirectory();
     }
 
-    // ==================== ADD / EDIT STOCK & MUTUAL FUND MODAL ====================
+    // ==================== ADD / EDIT HOLDING MODAL ====================
     function populateScripDatalist() {
       const dl = document.getElementById("nepse-scrip-datalist");
-      dl.innerHTML = NEPSE_LISTED_SCRIPS.map(s =>
-        `<option value="${s.symbol}">${s.name} (${s.sector})</option>`
-      ).join("");
-      document.getElementById("listed-count-badge").textContent = `${NEPSE_LISTED_SCRIPS.length} Listed Scrips + Mutual Funds`;
+      dl.innerHTML = NEPSE_LISTED_SCRIPS.map(s => `<option value="${s.symbol}">${s.name} (${s.sector})</option>`).join("");
     }
 
     function onScripInput(val) {
@@ -1124,20 +1211,14 @@
       if (found) {
         document.getElementById("hold-name").value = found.name;
         document.getElementById("hold-sector").value = found.sector;
-        if (!document.getElementById("hold-ltp").value) {
-          document.getElementById("hold-ltp").value = found.refPrice;
-        }
-        if (!document.getElementById("hold-prev").value) {
-          document.getElementById("hold-prev").value = found.refPrice;
-        }
+        if (!document.getElementById("hold-ltp").value) document.getElementById("hold-ltp").value = found.refPrice;
+        if (!document.getElementById("hold-prev").value) document.getElementById("hold-prev").value = found.refPrice;
       }
     }
 
     function populateHoldingAccountSelect() {
       const sel = document.getElementById("hold-account");
-      sel.innerHTML = connectedAccounts.map(a =>
-        `<option value="${a.id}">${escapeHtml(a.name)} (${escapeHtml(a.dp)})</option>`
-      ).join("");
+      sel.innerHTML = connectedAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)} (${escapeHtml(a.dp)})</option>`).join("");
     }
 
     function openHoldingModal(prefillScrip = "") {
@@ -1146,7 +1227,6 @@
       document.getElementById("delete-holding-btn").classList.add("hidden");
       document.getElementById("holding-form").reset();
       populateHoldingAccountSelect();
-
       if (prefillScrip) {
         document.getElementById("hold-scrip").value = prefillScrip;
         onScripInput(prefillScrip);
@@ -1157,7 +1237,6 @@
     function openEditHoldingModal(holdingId) {
       const item = holdingsData.find(h => String(h.id) === String(holdingId));
       if (!item) return;
-
       populateHoldingAccountSelect();
       document.getElementById("edit-holding-id").value = item.id;
       document.getElementById("holding-modal-title").textContent = `✏️ Edit Holding: ${item.scrip}`;
@@ -1173,9 +1252,7 @@
       document.getElementById("holding-modal").classList.remove("hidden");
     }
 
-    function closeHoldingModal() {
-      document.getElementById("holding-modal").classList.add("hidden");
-    }
+    function closeHoldingModal() { document.getElementById("holding-modal").classList.add("hidden"); }
 
     function startHoldingLongPress(holdingId) {
       cancelLongPress();
@@ -1186,10 +1263,7 @@
     }
 
     function cancelLongPress() {
-      if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        longPressTimer = null;
-      }
+      if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
     }
 
     document.getElementById("holding-form").addEventListener("submit", function (e) {
@@ -1207,32 +1281,13 @@
 
       if (editId) {
         holdingsData = holdingsData.map(h => String(h.id) === String(editId) ? {
-          ...h,
-          account,
-          accountLabel: accObj ? accObj.name : h.accountLabel,
-          scrip,
-          sector,
-          name,
-          units,
-          buyRate,
-          prevClose,
-          ltp
+          ...h, account, accountLabel: accObj ? accObj.name : h.accountLabel, scrip, sector, name, units, buyRate, prevClose, ltp
         } : h);
       } else {
         holdingsData.push({
-          id: "H" + Date.now(),
-          account,
-          accountLabel: accObj ? accObj.name : "Primary",
-          scrip,
-          sector,
-          name,
-          units,
-          buyRate,
-          prevClose,
-          ltp
+          id: "H" + Date.now(), account, accountLabel: accObj ? accObj.name : "Primary", scrip, sector, name, units, buyRate, prevClose, ltp
         });
       }
-
       saveUserWorkspace();
       renderPortfolio();
       closeHoldingModal();
@@ -1247,44 +1302,49 @@
       closeHoldingModal();
     }
 
-    // Smart MeroShare & Custom CSV Parser (Handles raw MeroShare export directly)
+    function clearAccountHoldings() {
+      if (holdingsData.length === 0) return;
+      if (!confirm("के तपाईं अहिलेको लिस्टमा भएका सबै सेयर हटाउन चाहनुहुन्छ?")) return;
+      if (activeAccountFilter === "ALL") holdingsData = [];
+      else holdingsData = holdingsData.filter(h => h.account !== activeAccountFilter);
+      saveUserWorkspace();
+      renderPortfolio();
+    }
+
+    // ==================== ACCURATE MEROSHARE CSV PARSER ====================
     function handleCsvUpload(event) {
       const file = event.target.files?.[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = function (e) {
-        const text = e.target.result || "";
+        const text = (e.target.result || "").replace(/^\uFEFF/, ""); // Strip UTF-8 BOM
         const rawLines = text.split(/\r?\n/).filter(l => l.trim());
         const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
         const accObj = connectedAccounts.find(a => a.id === targetAcc);
 
-        // Helper to split CSV respecting quotes and strip commas inside numbers
         const parseCsvLine = (line) => {
           const result = [];
           let cur = "";
           let inQuotes = false;
           for (let i = 0; i < line.length; i++) {
             const ch = line[i];
-            if (ch === '"') {
-              inQuotes = !inQuotes;
-            } else if (ch === ',' && !inQuotes) {
-              result.push(cur.trim());
-              cur = "";
-            } else {
-              cur += ch;
-            }
+            if (ch === '"') inQuotes = !inQuotes;
+            else if (ch === ',' && !inQuotes) { result.push(cur.trim()); cur = ""; }
+            else cur += ch;
           }
           result.push(cur.trim());
           return result;
         };
 
         const cleanNum = (val) => {
-          if (!val) return NaN;
-          return parseFloat(String(val).replace(/,/g, "").replace(/Rs\.?/gi, "").trim());
+          if (val === undefined || val === null || val === "") return NaN;
+          return parseFloat(String(val).replace(/,/g, "").replace(/Rs\.?|NPR/gi, "").trim());
         };
 
-        let colMap = { scrip: 1, units: 2, prevClose: 3, ltp: 5, buyRate: -1 };
+        // Standard MeroShare My Portfolio CSV order:
+        // [0] S.N., [1] Scrip, [2] Current Balance, [3] Previous Closing Price, [4] Value as of Previous Closing Price, [5] Last Transaction Price (LTP), [6] Value as of LTP
+        let colMap = { scrip: 1, units: 2, prevClose: 3, prevVal: 4, ltp: 5, ltpVal: 6, buyRate: -1 };
         let headerFound = false;
         let importedCount = 0;
 
@@ -1292,32 +1352,34 @@
           const cols = parseCsvLine(line);
           if (cols.length < 2) return;
 
-          // Detect MeroShare Header Row dynamically (even if on row 3 or 4)
           const joinedLower = cols.join("|").toLowerCase();
+
+          // Detect Header Row dynamically
           if (joinedLower.includes("scrip") || joinedLower.includes("symbol")) {
             headerFound = true;
             cols.forEach((colName, cIdx) => {
               const c = colName.toLowerCase();
               if (c.includes("scrip") || c.includes("symbol")) colMap.scrip = cIdx;
-              else if (c.includes("balance") || c.includes("unit") || c.includes("qty") || c.includes("kitta")) colMap.units = cIdx;
-              else if (c.includes("previous closing") || c.includes("prev")) colMap.prevClose = cIdx;
-              else if (c.includes("last transaction") || c.includes("ltp") || c.includes("closing price")) colMap.ltp = cIdx;
+              else if (c.includes("current balance") || c.includes("balance") || c.includes("unit") || c.includes("qty") || c.includes("kitta")) colMap.units = cIdx;
+              else if (c.includes("previous closing price") || (c.includes("prev") && !c.includes("value"))) colMap.prevClose = cIdx;
+              else if (c.includes("value as of previous")) colMap.prevVal = cIdx;
+              else if (c.includes("last transaction") || c.includes("ltp") || (c.includes("closing price") && !c.includes("previous"))) colMap.ltp = cIdx;
+              else if (c.includes("value as of ltp")) colMap.ltpVal = cIdx;
               else if (c.includes("wacc") || c.includes("buy") || c.includes("purchase") || c.includes("cost")) colMap.buyRate = cIdx;
             });
             return;
           }
 
-          // Skip metadata rows before header (e.g. "My Portfolio", "As of Date", "Total")
+          // Skip summary/total/metadata rows
           if (joinedLower.includes("total") || joinedLower.includes("my portfolio") || joinedLower.includes("as of")) return;
 
-          // If header wasn't present, check if col[0] is S.N. (number) or Scrip (letters)
           let scripRaw = cols[colMap.scrip] || "";
           let unitsVal = cleanNum(cols[colMap.units]);
           let prevVal = cleanNum(cols[colMap.prevClose]);
           let ltpVal = cleanNum(cols[colMap.ltp]);
           let buyVal = colMap.buyRate >= 0 ? cleanNum(cols[colMap.buyRate]) : NaN;
 
-          // Fallback if user uploaded a 2-column or 3-column custom CSV without S.N.
+          // Fallback for custom CSV without S.N. column
           if (!headerFound && /^[A-Z]{2,10}$/i.test(cols[0])) {
             scripRaw = cols[0];
             unitsVal = cleanNum(cols[1]);
@@ -1333,41 +1395,49 @@
             const finalPrev = !isNaN(prevVal) && prevVal > 0 ? prevVal : finalLtp;
             const finalBuy = !isNaN(buyVal) && buyVal > 0 ? buyVal : finalPrev;
 
-            holdingsData.push({
-              id: "CSV" + Date.now() + "_" + idx,
-              account: targetAcc,
-              accountLabel: accObj ? accObj.name : "Primary",
-              scrip,
-              sector: listed ? listed.sector : "Equity",
-              name: listed ? listed.name : scrip,
-              units: unitsVal,
-              buyRate: finalBuy,
-              prevClose: finalPrev,
-              ltp: finalLtp
-            });
+            // Update existing holding for same account & scrip if already present
+            const existingIdx = holdingsData.findIndex(h => h.account === targetAcc && h.scrip === scrip);
+            if (existingIdx >= 0) {
+              holdingsData[existingIdx] = {
+                ...holdingsData[existingIdx],
+                units: unitsVal,
+                prevClose: finalPrev,
+                ltp: finalLtp,
+                buyRate: !isNaN(buyVal) && buyVal > 0 ? buyVal : holdingsData[existingIdx].buyRate
+              };
+            } else {
+              holdingsData.push({
+                id: "CSV" + Date.now() + "_" + idx,
+                account: targetAcc,
+                accountLabel: accObj ? accObj.name : "Primary",
+                scrip,
+                sector: listed ? listed.sector : "Equity",
+                name: listed ? listed.name : scrip,
+                units: unitsVal,
+                buyRate: finalBuy,
+                prevClose: finalPrev,
+                ltp: finalLtp
+              });
+            }
             importedCount++;
           }
         });
 
-        // Reset file input so the same file can be re-uploaded if needed
         event.target.value = "";
 
         if (importedCount > 0) {
           saveUserWorkspace();
           renderPortfolio();
-          alert(`✅ MeroShare CSV बाट ${importedCount} वटा सेयर/Mutual Fund सफलतापूर्वक लोड भयो!\n\nनोट: MeroShare CSV मा किनेको दर (WACC) नहुने भएकाले किनेको दर मिलाउन कुनै पनि सेयरमा Long-Press वा ✏️ थिचेर अपडेट गर्नुहोस्।`);
+          alert(`✅ MeroShare CSV बाट ${importedCount} वटा सेयर/Mutual Fund को वास्तविक डेटा लोड भयो!\n(किनेको दर WACC मिलाउन सेयरमा Long-Press वा ✏️ थिच्नुहोस्)`);
         } else {
-          alert("⚠️ CSV फाइल पढ्न सकिएन। कृपया MeroShare > My Portfolio > CSV बाट डाउनलोड भएको सक्कली फाइल छान्नुहोस् (वा फाइलको पहिलो २ लाइन कस्तो छ यहाँ पेस्ट गर्नुहोस्)।");
+          alert("⚠️ CSV फाइलमा सेयर डेटा भेटिएन। कृपया MeroShare को 'My Portfolio' बाट Export गरेको CSV फाइल छान्नुहोस्।");
         }
       };
       reader.readAsText(file);
     }
 
     function refreshLivePrices() {
-      if (holdingsData.length === 0) {
-        openHoldingModal();
-        return;
-      }
+      if (holdingsData.length === 0) { openHoldingModal(); return; }
       holdingsData = holdingsData.map(h => {
         const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === h.scrip);
         const base = listed ? listed.refPrice : h.ltp;
@@ -1378,7 +1448,7 @@
       renderPortfolio();
     }
 
-    // ==================== NEPSE DIRECTORY TAB ====================
+    // ==================== DIRECTORY & VAULT ====================
     function renderDirectory() {
       const q = (document.getElementById("dir-search").value || "").trim().toLowerCase();
       const sec = document.getElementById("dir-sector").value;
@@ -1410,22 +1480,10 @@
       }).join("");
     }
 
-    function addFromDirectory(symbol) {
-      switchTab("portfolio");
-      openHoldingModal(symbol);
-    }
+    function addFromDirectory(symbol) { switchTab("portfolio"); openHoldingModal(symbol); }
 
-    // ==================== MEMBER DEMAT VAULT WITH LONG-PRESS EDIT ====================
-    function openVaultModal() {
-      cancelEditAccount();
-      renderVaultAccounts();
-      document.getElementById("vault-modal").classList.remove("hidden");
-    }
-
-    function closeVaultModal() {
-      cancelEditAccount();
-      document.getElementById("vault-modal").classList.add("hidden");
-    }
+    function openVaultModal() { cancelEditAccount(); renderVaultAccounts(); document.getElementById("vault-modal").classList.remove("hidden"); }
+    function closeVaultModal() { cancelEditAccount(); document.getElementById("vault-modal").classList.add("hidden"); }
 
     function renderVaultAccounts() {
       const container = document.getElementById("vault-accounts-list");
@@ -1445,13 +1503,9 @@
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             <button type="button" onclick="event.stopPropagation(); startEditAccount('${acc.id}')"
-              class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-amber-500/20 text-amber-300 border border-slate-700 text-[11px] font-semibold cursor-pointer">
-              ✏️ Edit
-            </button>
+              class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-amber-500/20 text-amber-300 border border-slate-700 text-[11px] font-semibold cursor-pointer">✏️ Edit</button>
             <button type="button" onclick="event.stopPropagation(); deleteAccount('${acc.id}')"
-              class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-red-500/20 text-red-400 border border-slate-700 text-[11px] font-semibold cursor-pointer">
-              🗑️
-            </button>
+              class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-red-500/20 text-red-400 border border-slate-700 text-[11px] font-semibold cursor-pointer">🗑️</button>
           </div>
         </div>
       `).join("");
@@ -1459,26 +1513,20 @@
 
     function startAccountLongPress(accId) {
       cancelLongPress();
-      longPressTimer = setTimeout(() => {
-        if (navigator.vibrate) navigator.vibrate(40);
-        startEditAccount(accId);
-      }, 550);
+      longPressTimer = setTimeout(() => { if (navigator.vibrate) navigator.vibrate(40); startEditAccount(accId); }, 550);
     }
 
     function startEditAccount(accId) {
       const acc = connectedAccounts.find(a => a.id === accId);
       if (!acc) return;
-
       document.getElementById("edit-acc-id").value = acc.id;
       document.getElementById("new-acc-name").value = acc.name;
       document.getElementById("new-acc-dp").value = acc.dp;
       document.getElementById("new-acc-user").value = acc.username || "";
       document.getElementById("new-acc-pass").value = "";
-
-      document.getElementById("form-mode-label").innerHTML = `✏️ सच्याउँदै (Editing): <strong class="text-amber-300">${escapeHtml(acc.name)}</strong>`;
+      document.getElementById("form-mode-label").innerHTML = `✏️ सच्याउँदै: <strong class="text-amber-300">${escapeHtml(acc.name)}</strong>`;
       document.getElementById("cancel-edit-btn").classList.remove("hidden");
       document.getElementById("save-acc-submit-btn").textContent = "✔ Update Details";
-      document.getElementById("new-acc-name").focus();
     }
 
     function cancelEditAccount() {
@@ -1487,25 +1535,16 @@
       document.getElementById("new-acc-dp").value = "";
       document.getElementById("new-acc-user").value = "";
       document.getElementById("new-acc-pass").value = "";
-
       document.getElementById("form-mode-label").textContent = "+ नयाँ सदस्यको Demat / MeroShare थप्नुहोस्";
       document.getElementById("cancel-edit-btn").classList.add("hidden");
       document.getElementById("save-acc-submit-btn").textContent = "+ Save Member";
     }
 
     function deleteAccount(accId) {
-      if (connectedAccounts.length <= 1) {
-        const msg = document.getElementById("vault-status-msg");
-        msg.textContent = "⚠️ कम्तिमा एउटा मुख्य Demat अकाउन्ट रहनुपर्छ।";
-        msg.classList.remove("hidden");
-        return;
-      }
+      if (connectedAccounts.length <= 1) return;
       connectedAccounts = connectedAccounts.filter(a => a.id !== accId);
       if (document.getElementById("edit-acc-id").value === accId) cancelEditAccount();
-      saveUserWorkspace();
-      refreshAccountDropdown();
-      renderVaultAccounts();
-      renderPortfolio();
+      saveUserWorkspace(); refreshAccountDropdown(); renderVaultAccounts(); renderPortfolio();
     }
 
     document.getElementById("add-account-form").addEventListener("submit", function (e) {
@@ -1517,30 +1556,21 @@
       if (!name || !dp) return;
 
       const msg = document.getElementById("vault-status-msg");
-
       if (editId) {
-        connectedAccounts = connectedAccounts.map(acc => acc.id === editId ? {
-          ...acc, name, dp, username: username || acc.username, status: "Updated"
-        } : acc);
+        connectedAccounts = connectedAccounts.map(acc => acc.id === editId ? { ...acc, name, dp, username: username || acc.username } : acc);
         holdingsData = holdingsData.map(h => h.account === editId ? { ...h, accountLabel: name } : h);
         msg.textContent = `✅ "${name}" को विवरण सच्याइयो!`;
-        msg.classList.remove("hidden");
-        cancelEditAccount();
       } else {
         const newId = "ACC" + Date.now().toString().slice(-4);
         connectedAccounts.push({ id: newId, name, dp, username, status: "Linked" });
         msg.textContent = `✅ "${name}" (${dp}) थपियो!`;
-        msg.classList.remove("hidden");
-        cancelEditAccount();
       }
-
-      saveUserWorkspace();
-      refreshAccountDropdown();
-      renderVaultAccounts();
-      renderPortfolio();
+      msg.classList.remove("hidden");
+      cancelEditAccount();
+      saveUserWorkspace(); refreshAccountDropdown(); renderVaultAccounts(); renderPortfolio();
     });
 
-    // ==================== GEMINI LIVE RESEARCH AGENT ====================
+    // ==================== GEMINI LIVE AGENT ====================
     document.getElementById("agent-chat-form").addEventListener("submit", function (e) {
       e.preventDefault();
       const input = document.getElementById("agent-input");
@@ -1550,9 +1580,7 @@
       sendMessageToGeminiAgent(query);
     });
 
-    function askQuickPrompt(text) {
-      sendMessageToGeminiAgent(text);
-    }
+    function askQuickPrompt(text) { sendMessageToGeminiAgent(text); }
 
     function askMyPortfolioAnalysis() {
       if (holdingsData.length === 0) {
@@ -1569,39 +1597,20 @@
 
       const userBubble = document.createElement("div");
       userBubble.className = "flex justify-end";
-      userBubble.innerHTML = `
-        <div class="dynamic-accent-bg text-slate-950 font-medium rounded-2xl rounded-tr-none px-4 py-2.5 max-w-2xl text-xs sm:text-sm shadow">
-          ${escapeHtml(userQuery)}
-        </div>
-      `;
+      userBubble.innerHTML = `<div class="dynamic-accent-bg text-slate-950 font-medium rounded-2xl rounded-tr-none px-4 py-2.5 max-w-2xl text-xs sm:text-sm shadow">${escapeHtml(userQuery)}</div>`;
       chatBox.appendChild(userBubble);
 
       const typingId = "typing-" + Date.now();
       const typingBubble = document.createElement("div");
       typingBubble.id = typingId;
       typingBubble.className = "flex items-start gap-3";
-      typingBubble.innerHTML = `
-        <div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0">AI</div>
-        <div class="bg-slate-800/90 border border-slate-700 rounded-2xl rounded-tl-none px-4 py-3 flex items-center gap-1.5">
-          <span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span>
-          <span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span>
-          <span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span>
-          <span class="text-[11px] text-slate-400 ml-2">Searching live NEPSE & Mutual Fund news...</span>
-        </div>
-      `;
+      typingBubble.innerHTML = `<div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0">AI</div><div class="bg-slate-800/90 border border-slate-700 rounded-2xl rounded-tl-none px-4 py-3 flex items-center gap-1.5"><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="w-2 h-2 bg-emerald-400 rounded-full typing-dot"></span><span class="text-[11px] text-slate-400 ml-2">Searching live NEPSE news...</span></div>`;
       chatBox.appendChild(typingBubble);
       chatBox.scrollTop = chatBox.scrollHeight;
 
       const portfolioSummary = holdingsData.length > 0
         ? holdingsData.map(h => `${h.scrip} (${h.sector}, ${h.units} units, Buy: Rs ${h.buyRate}, LTP: Rs ${h.ltp})`).join("; ")
-        : "User currently has an empty portfolio.";
-
-      const systemInstruction = `You are an expert Nepal Stock Exchange (NEPSE) & Mutual Fund financial analyst and live news research agent.
-CRITICAL RULES:
-1. Always respond strictly in the user's chosen language: ${selectedLang}.
-2. Use Google Search grounding to find the latest real-time news from NEPSE, ShareSansar, MeroLagani, NRB, SEBON, and Mutual Fund NAV updates.
-3. User's portfolio holdings: ${portfolioSummary}.
-4. Format cleanly with bullet points and note briefly that stock/mutual fund investments carry market risk.`;
+        : "Empty portfolio.";
 
       try {
         const response = await fetch(
@@ -1611,67 +1620,30 @@ CRITICAL RULES:
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               contents: [{ parts: [{ text: userQuery }] }],
-              systemInstruction: { parts: [{ text: systemInstruction }] },
+              systemInstruction: { parts: [{ text: `You are an expert NEPSE & Mutual Fund analyst. Respond strictly in ${selectedLang}. Use Google Search grounding for live NEPSE/ShareSansar/MeroLagani/NRB news. Portfolio: ${portfolioSummary}` }] },
               tools: [{ google_search: {} }]
             })
           }
         );
-
         const data = await response.json();
         document.getElementById(typingId)?.remove();
 
         const candidate = data?.candidates?.[0];
         const replyText = candidate?.content?.parts?.map(p => p.text).join("\n") ||
-          (apiKey === ""
-            ? "⚠️ API Key सेट गरिएको छैन। Android APK मा लाइभ इन्टरनेट समाचार चलाउन `index.html` भित्र `const apiKey = \"YOUR_KEY\";` मा आफ्नो निःशुल्क Google AI Studio API Key राख्नुहोस्।"
-            : "माफ गर्नुहोस्, अहिले लाइभ डेटा तान्न सकिएन।");
-
-        const chunks = candidate?.groundingMetadata?.groundingChunks || [];
-        const sources = chunks
-          .filter(c => c.web && c.web.uri)
-          .map(c => ({ title: c.web.title || "Source", uri: c.web.uri }))
-          .slice(0, 4);
-
-        let sourcesHtml = "";
-        if (sources.length > 0) {
-          sourcesHtml = `<div class="mt-3 pt-2.5 border-t border-slate-700/80 flex flex-wrap gap-1.5">
-            <span class="text-[10px] text-slate-400 w-full mb-0.5">Live Sources:</span>
-            ${sources.map(s => `<a href="${s.uri}" target="_blank" rel="noopener" class="px-2 py-0.5 rounded bg-slate-900 hover:bg-slate-700 text-[10px] text-emerald-300 border border-slate-700 truncate max-w-[200px]">🔗 ${escapeHtml(s.title)}</a>`).join("")}
-          </div>`;
-        }
+          "⚠️ API Key सेट गरिएको छैन। लाइभ समाचार चलाउन `index.html` भित्र `const apiKey = \"YOUR_KEY\";` मा आफ्नो Google AI Studio API Key राख्नुहोस्।";
 
         const aiBubble = document.createElement("div");
         aiBubble.className = "flex items-start gap-3";
-        aiBubble.innerHTML = `
-          <div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">AI</div>
-          <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-3.5 max-w-3xl text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line">
-            ${formatMarkdownBasic(replyText)}
-            ${sourcesHtml}
-          </div>
-        `;
+        aiBubble.innerHTML = `<div class="w-8 h-8 rounded-lg dynamic-accent-bg text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">AI</div><div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-3.5 max-w-3xl text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line">${escapeHtml(replyText).replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')}</div>`;
         chatBox.appendChild(aiBubble);
         chatBox.scrollTop = chatBox.scrollHeight;
       } catch (err) {
         document.getElementById(typingId)?.remove();
-        const errBubble = document.createElement("div");
-        errBubble.className = "flex items-start gap-3";
-        errBubble.innerHTML = `
-          <div class="w-8 h-8 rounded-lg bg-red-500 text-white font-bold text-xs flex items-center justify-center shrink-0">!</div>
-          <div class="bg-red-950/60 border border-red-500/40 rounded-2xl p-3.5 text-xs text-red-200">
-            इन्टरनेट जडान वा Gemini API Key जाँच गर्नुहोस्। (${escapeHtml(err.message)})
-          </div>
-        `;
-        chatBox.appendChild(errBubble);
-        chatBox.scrollTop = chatBox.scrollHeight;
       }
     }
 
     function escapeHtml(str) {
       return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-    }
-
-    function formatMarkdownBasic(text) {
-      return escapeHtml(text).replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>');
     }
 
     function initApp() {
@@ -1680,8 +1652,7 @@ CRITICAL RULES:
       renderPortfolio();
     }
 
-    // Boot Auth Screen
     renderExistingUsersPills();
-</script>
+  </script>
 </body>
 </html>
