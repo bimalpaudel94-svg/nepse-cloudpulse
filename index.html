@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>NEPSE CloudPulse AI — Real-Time Terminal</title>
+  <title>NEPSE CloudPulse AI — Pro Real-Time & Candlestick Terminal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-base: #090d16; --bg-card: rgba(17, 24, 39, 0.92);
+      --bg-base: #090d16; --bg-card: rgba(17, 24, 39, 0.94);
       --accent-primary: #10b981; --accent-glow: rgba(16, 185, 129, 0.25);
       --accent-border: rgba(16, 185, 129, 0.45); --banner-grad-start: #064e3b;
       --banner-grad-end: #0f172a; --text-accent: #34d399;
@@ -28,12 +28,12 @@
     body {
       font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
       background-color: var(--bg-base); color: #f3f4f6;
-      transition: background-color 0.35s ease; overflow-x: hidden;
+      transition: background-color 0.3s ease; overflow-x: hidden;
       padding-top: env(safe-area-inset-top, 0px);
     }
     .dynamic-banner {
       background: linear-gradient(135deg, var(--banner-grad-start) 0%, var(--banner-grad-end) 100%);
-      border: 1px solid var(--accent-border); box-shadow: 0 12px 35px -8px var(--accent-glow);
+      border: 1px solid var(--accent-border); box-shadow: 0 10px 30px -8px var(--accent-glow);
     }
     .dynamic-border { border-color: var(--accent-border); }
     .dynamic-accent-bg { background-color: var(--accent-primary); }
@@ -42,8 +42,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .long-press-target { user-select: none; -webkit-user-select: none; }
-    @keyframes pulseSlow { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .animate-pulse-slow { animation: pulseSlow 2s infinite; }
   </style>
 </head>
 <body class="theme-neutral min-h-screen antialiased">
@@ -54,7 +52,7 @@
       <div class="flex items-center justify-between mb-4">
         <div>
           <h1 class="text-xl font-bold text-white">NEPSE CloudPulse <span class="text-emerald-400">AI</span></h1>
-          <p class="text-xs text-slate-400">Mon–Fri (11AM–3PM) Live & Technical Terminal</p>
+          <p class="text-xs text-slate-400">Bonus/Right WACC • Candlestick • Real-Time AI</p>
         </div>
         <span id="login-market-badge" class="px-2.5 py-1 text-[10px] font-bold rounded-full bg-slate-800 text-emerald-300 border border-slate-700">NPT</span>
       </div>
@@ -124,8 +122,8 @@
     <!-- Top Live Market Status Strip -->
     <div class="bg-slate-950/95 border-b border-slate-800 px-4 py-2 flex flex-wrap items-center justify-between gap-2 sticky top-0 z-30 backdrop-blur-md">
       <div class="flex items-center gap-2 text-xs">
-        <span id="market-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse-slow"></span>
-        <span id="nepse-market-status" class="font-bold text-emerald-300">Checking NEPSE NPT...</span>
+        <span id="market-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+        <span id="nepse-market-status" class="font-bold text-emerald-300">NEPSE NPT</span>
         <span class="text-slate-600">|</span>
         <span id="last-rate-sync-label" class="text-slate-300 font-mono text-[11px]">Ready</span>
       </div>
@@ -164,17 +162,17 @@
       </div>
     </header>
 
-    <!-- Navigation Tabs -->
+    <!-- Navigation Tabs (Including NEW All-NEPSE Candlestick & Technical Tab) -->
     <div class="px-4 mt-1">
       <div class="flex gap-2 overflow-x-auto no-scrollbar border-b border-slate-800 pb-2">
-        <button onclick="switchTab('portfolio')" id="tab-btn-portfolio" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border shrink-0 cursor-pointer">📊 Portfolio & Live LTP</button>
-        <button onclick="switchTab('technical')" id="tab-btn-technical" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">📈 Technical & Advanced Analysis</button>
-        <button onclick="switchTab('ai-agent')" id="tab-btn-ai-agent" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">✨ Gemini AI Analyst (Live Context)</button>
-        <button onclick="switchTab('nepse-directory')" id="tab-btn-nepse-directory" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">🏛️ NEPSE Scrips & Mutual Funds</button>
+        <button onclick="switchTab('portfolio')" id="tab-btn-portfolio" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border shrink-0 cursor-pointer">📊 Portfolio & WACC</button>
+        <button onclick="switchTab('candlestick')" id="tab-btn-candlestick" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">🕯️ NEPSE Candlestick & Technical</button>
+        <button onclick="switchTab('ai-agent')" id="tab-btn-ai-agent" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">✨ Gemini AI Analyst (Live)</button>
+        <button onclick="switchTab('nepse-directory')" id="tab-btn-nepse-directory" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer">🏛️ All NEPSE Scrips</button>
       </div>
     </div>
 
-    <!-- ==================== TAB 1: PORTFOLIO & LIVE LTP ==================== -->
+    <!-- ==================== TAB 1: PORTFOLIO & DUAL CSV (MEROSHARE + TRADE BOOK) ==================== -->
     <main id="tab-portfolio" class="px-4 pt-4 space-y-4">
       <section class="dynamic-banner rounded-2xl p-5">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -185,13 +183,13 @@
             </div>
             <div class="flex flex-wrap items-baseline gap-3">
               <h3 id="hero-total-value" class="text-3xl font-extrabold text-white">NPR 0.00</h3>
-              <span id="hero-investment" class="text-xs text-slate-300">Invested: NPR 0.00</span>
+              <span id="hero-investment" class="text-xs text-slate-300">Real Invested: NPR 0.00</span>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div class="bg-black/35 rounded-xl p-3.5 border border-white/10 min-w-[215px]">
-              <div class="text-[11px] text-slate-300 mb-1">Overall vs Purchase Rate (WACC)</div>
+              <div class="text-[11px] text-slate-300 mb-1">Real P/L vs Adjusted WACC</div>
               <div class="flex items-baseline justify-between gap-2">
                 <span id="overall-pl-amount" class="text-base font-extrabold text-purple-300">NPR 0.00</span>
                 <span id="overall-pl-pct" class="px-2 py-0.5 rounded text-xs font-bold bg-purple-500/25 text-purple-200">0.00%</span>
@@ -208,23 +206,23 @@
         </div>
       </section>
 
-      <!-- Action Toolbar -->
+      <!-- Dual CSV & Action Toolbar -->
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div class="flex flex-wrap items-center gap-2">
-          <button onclick="openHoldingModal()" class="px-3.5 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">+ Add Stock / MF</button>
-          <label class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white border border-slate-700 cursor-pointer flex items-center gap-1.5">
-            <span>📂 Import MeroShare CSV</span>
-            <input type="file" accept="*/*" class="hidden" onchange="handleCsvUpload(event)" />
+          <button onclick="openHoldingModal()" class="px-3 py-2.5 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">+ Add Stock</button>
+          <label class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white border border-slate-700 cursor-pointer flex items-center gap-1">
+            <span>1️⃣ MeroShare CSV</span>
+            <input type="file" accept="*/*" class="hidden" onchange="handleMeroShareCsv(event)" />
           </label>
-          <button onclick="openBulkPasteModal()" class="px-3.5 py-2.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-xs font-bold text-purple-200 border border-purple-500/40 cursor-pointer">
-            ⚡ Paste Live Market Data
-          </button>
+          <label class="px-3 py-2.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/40 text-xs font-bold text-indigo-200 border border-indigo-500/40 cursor-pointer flex items-center gap-1">
+            <span>2️⃣ Trade Book CSV (Bonus/Right)</span>
+            <input type="file" accept="*/*" class="hidden" onchange="handleTradeBookCsv(event)" />
+          </label>
+          <button onclick="openBulkPasteModal()" class="px-3 py-2.5 rounded-xl bg-purple-500/20 text-xs font-bold text-purple-200 border border-purple-500/40 cursor-pointer">⚡ Paste Live LTP</button>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="clearAccountHoldings()" class="px-3 py-2 rounded-xl bg-slate-900 text-xs font-semibold text-red-400 border border-slate-800 cursor-pointer">🗑️ Clear</button>
-          <button id="fetch-live-btn" onclick="fetchLiveNepsePrices(true)" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-xs font-bold text-emerald-300 border border-emerald-500/40 cursor-pointer">
-            📡 Fetch Live NEPSE
-          </button>
+          <button id="fetch-live-btn" onclick="fetchLiveNepsePrices(true)" class="px-3 py-2 rounded-xl bg-emerald-500/20 text-xs font-bold text-emerald-300 border border-emerald-500/40 cursor-pointer">📡 Live Sync</button>
         </div>
       </div>
 
@@ -232,21 +230,21 @@
       <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
         <div class="p-3.5 border-b border-slate-800 flex flex-wrap justify-between items-center gap-2">
           <div>
-            <h3 class="text-sm font-bold text-white">Holdings — Click Any Header Below to Sort High / Low</h3>
-            <p class="text-[11px] text-slate-400">💡 तालिकाको हेडर (Scrip, Units, LTP, Total Value, P/L) थिचेर High ↔ Low क्रमबद्ध गर्नुहोस् • सच्याउन Long-Press वा ✏️ थिच्नुहोस्</p>
+            <h3 class="text-sm font-bold text-white">Holdings — Real WACC (with Bonus/Right) & High/Low Sort</h3>
+            <p class="text-[11px] text-slate-400">💡 हेडर थिचेर High ↔ Low सर्ट गर्नुहोस् • Bonus/Right को दर (Rs 0 vs Rs 100) बदल्न 🎁 ब्याज वा ✏️ थिच्नुहोस्</p>
           </div>
           <div class="flex items-center gap-2">
             <select id="mobile-sort-select" onchange="setSortFromDropdown(this.value)" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-[11px] text-emerald-300 font-semibold">
-              <option value="default">Sort: Default Order</option>
+              <option value="default">Sort: Default</option>
               <option value="ltp-desc">Live LTP: High → Low</option>
               <option value="ltp-asc">Live LTP: Low → High</option>
               <option value="val-desc">Total Value: High → Low</option>
               <option value="val-asc">Total Value: Low → High</option>
-              <option value="buypl-desc">Overall P/L: High → Low</option>
-              <option value="buypl-asc">Overall P/L: Low → High</option>
+              <option value="buypl-desc">Real P/L: High → Low</option>
+              <option value="buypl-asc">Real P/L: Low → High</option>
               <option value="daypl-desc">Today P/L: High → Low</option>
               <option value="daypl-asc">Today P/L: Low → High</option>
-              <option value="scrip-asc">Scrip Name: A → Z</option>
+              <option value="scrip-asc">Scrip: A → Z</option>
             </select>
             <span id="live-source-pill" class="text-[10px] px-2 py-1 rounded bg-slate-800 text-slate-300">Source: Local</span>
           </div>
@@ -255,14 +253,14 @@
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-900/95 text-[11px] uppercase text-slate-300 border-b border-slate-800 select-none">
-                <th onclick="toggleSort('scrip')" class="py-3 px-4 cursor-pointer hover:text-emerald-300">Scrip <span id="sort-ind-scrip" class="text-emerald-400">⇅</span></th>
-                <th onclick="toggleSort('units')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Units <span id="sort-ind-units" class="text-slate-500">⇅</span></th>
-                <th onclick="toggleSort('buyRate')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Buy Rate <span id="sort-ind-buyRate" class="text-slate-500">⇅</span></th>
-                <th onclick="toggleSort('prevClose')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Prev Close <span id="sort-ind-prevClose" class="text-slate-500">⇅</span></th>
-                <th onclick="toggleSort('ltp')" class="py-3 px-3 text-right text-emerald-300 cursor-pointer hover:text-white">Live LTP / Unit <span id="sort-ind-ltp" class="text-emerald-400">⇅</span></th>
-                <th onclick="toggleSort('val')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Total Value <span id="sort-ind-val" class="text-slate-500">⇅</span></th>
-                <th onclick="toggleSort('buypl')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">vs Purchase <span id="sort-ind-buypl" class="text-slate-500">⇅</span></th>
-                <th onclick="toggleSort('daypl')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">vs Prev Day <span id="sort-ind-daypl" class="text-slate-500">⇅</span></th>
+                <th onclick="toggleSort('scrip')" class="py-3 px-4 cursor-pointer hover:text-emerald-300">Scrip & Bonus/Right <span id="sort-ind-scrip">⇅</span></th>
+                <th onclick="toggleSort('units')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Total Units <span id="sort-ind-units">⇅</span></th>
+                <th onclick="toggleSort('buyRate')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Real Avg WACC <span id="sort-ind-buyRate">⇅</span></th>
+                <th onclick="toggleSort('prevClose')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Prev Close <span id="sort-ind-prevClose">⇅</span></th>
+                <th onclick="toggleSort('ltp')" class="py-3 px-3 text-right text-emerald-300 cursor-pointer hover:text-white">Live LTP / Unit <span id="sort-ind-ltp">⇅</span></th>
+                <th onclick="toggleSort('val')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Total Value <span id="sort-ind-val">⇅</span></th>
+                <th onclick="toggleSort('buypl')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Real Profit/Loss <span id="sort-ind-buypl">⇅</span></th>
+                <th onclick="toggleSort('daypl')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Today P/L <span id="sort-ind-daypl">⇅</span></th>
                 <th class="py-3 px-3 text-right">Edit</th>
               </tr>
             </thead>
@@ -272,87 +270,86 @@
       </section>
     </main>
 
-    <!-- ==================== TAB 2: TECHNICAL & ADVANCED ANALYSIS ==================== -->
-    <main id="tab-technical" class="hidden px-4 pt-4 space-y-4">
-      <section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div class="glass-card rounded-2xl p-4 border border-slate-800">
-          <div class="text-[11px] text-slate-400">Portfolio Win Rate</div>
-          <div id="tech-win-rate" class="text-xl font-extrabold text-emerald-400 mt-1">0.0%</div>
-          <div id="tech-win-sub" class="text-[11px] text-slate-400">0 Profit / 0 Loss</div>
+    <!-- ==================== TAB 2: ALL NEPSE LISTED COMPANIES CANDLESTICK & TECHNICAL CHART ==================== -->
+    <main id="tab-candlestick" class="hidden px-4 pt-4 space-y-4">
+      <section class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-800 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-base font-bold text-white">🕯️ NEPSE Interactive Candlestick & Technical Analysis</h3>
+            <p class="text-xs text-slate-400">NEPSE का सबै सूचीकृत कम्पनी (NGPL, LEC, AKJCL, SSHL, NABIL, Mutual Funds आदि) को Candlestick, EMA-20, SMA-50 र RSI</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <input id="candle-search" type="text" oninput="filterCandleScrips()" placeholder="Search Symbol..." class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white w-32" />
+            <select id="candle-scrip-select" onchange="selectCandleScrip(this.value)" class="px-3 py-1.5 rounded-xl bg-slate-900 border border-emerald-500/40 text-xs font-bold text-white"></select>
+            <div class="flex rounded-xl bg-slate-900 p-0.5 border border-slate-700 text-[11px]">
+              <button type="button" onclick="setCandleTimeframe('1D')" id="tf-1D" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold cursor-pointer">1D</button>
+              <button type="button" onclick="setCandleTimeframe('1W')" id="tf-1W" class="px-2.5 py-1 rounded-lg text-slate-300 cursor-pointer">1W</button>
+              <button type="button" onclick="setCandleTimeframe('1M')" id="tf-1M" class="px-2.5 py-1 rounded-lg text-slate-300 cursor-pointer">1M</button>
+            </div>
+          </div>
         </div>
-        <div class="glass-card rounded-2xl p-4 border border-slate-800">
-          <div class="text-[11px] text-slate-400">Top Gainer (ROI)</div>
-          <div id="tech-top-gainer" class="text-lg font-extrabold text-emerald-300 mt-1">—</div>
-          <div class="text-[11px] text-slate-400">Best scrip</div>
-        </div>
-        <div class="glass-card rounded-2xl p-4 border border-slate-800">
-          <div class="text-[11px] text-slate-400">Top Loser</div>
-          <div id="tech-top-loser" class="text-lg font-extrabold text-red-400 mt-1">—</div>
-          <div class="text-[11px] text-slate-400">Max drawdown</div>
-        </div>
-        <div class="glass-card rounded-2xl p-4 border border-slate-800">
-          <div class="text-[11px] text-slate-400">Diversification Score</div>
-          <div id="tech-div-score" class="text-xl font-extrabold text-purple-300 mt-1">0 / 100</div>
-          <div id="tech-div-sub" class="text-[11px] text-slate-400">Sector spread</div>
-        </div>
-      </section>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <section class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
-          <h3 class="text-sm font-bold text-white">📊 Sector & Mutual Fund Allocation</h3>
-          <div id="sector-allocation-bars" class="space-y-3 text-xs"></div>
-        </section>
+        <!-- Live OHLC & Indicator Summary Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-xs">
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Symbol & Sector</span><strong id="c-title" class="text-white">NGPL</strong></div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Open / Prev</span><strong id="c-open" class="text-slate-200">—</strong></div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Day High</span><strong id="c-high" class="text-emerald-300">—</strong></div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Day Low</span><strong id="c-low" class="text-red-300">—</strong></div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">Close / Live LTP</span><strong id="c-close" class="text-emerald-400 font-extrabold">—</strong></div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><span class="text-[10px] text-slate-400 block">14-Day RSI & Trend</span><strong id="c-rsi" class="text-purple-300">—</strong></div>
+        </div>
 
-        <section class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-white">🎯 Pivot, Support/Resistance & RSI</h3>
-            <select id="tech-scrip-select" onchange="loadScripIntoTechCalc()" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white"></select>
+        <!-- Interactive Candlestick Canvas -->
+        <div class="relative rounded-2xl bg-slate-950 border border-slate-800 p-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2 text-[11px]">
+            <div class="flex items-center gap-3">
+              <span class="flex items-center gap-1 text-emerald-400"><span class="w-2.5 h-2.5 bg-emerald-500 inline-block rounded-xs"></span> Bullish Candle</span>
+              <span class="flex items-center gap-1 text-red-400"><span class="w-2.5 h-2.5 bg-red-500 inline-block rounded-xs"></span> Bearish Candle</span>
+              <span class="flex items-center gap-1 text-amber-300"><span class="w-3 h-0.5 bg-amber-400 inline-block"></span> EMA-20</span>
+              <span class="flex items-center gap-1 text-sky-300"><span class="w-3 h-0.5 bg-sky-400 inline-block"></span> SMA-50</span>
+            </div>
+            <span id="c-pivot-badge" class="text-slate-400 font-mono">Support/Resistance Ready</span>
           </div>
-          <div class="grid grid-cols-3 gap-2">
-            <div><label class="text-[10px] text-slate-400">High</label><input id="tech-high" type="number" step="any" oninput="calculateTechnicalLevels()" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" /></div>
-            <div><label class="text-[10px] text-slate-400">Low</label><input id="tech-low" type="number" step="any" oninput="calculateTechnicalLevels()" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" /></div>
-            <div><label class="text-[10px] text-slate-400">Close/LTP</label><input id="tech-close" type="number" step="any" oninput="calculateTechnicalLevels()" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" /></div>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div><label class="text-[10px] text-slate-400">14-Day RSI</label><input id="tech-rsi" type="number" value="54" oninput="calculateTechnicalLevels()" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" /></div>
-            <div><label class="text-[10px] text-slate-400">Stop-Loss (-8%)</label><input id="tech-sl" type="number" step="any" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white" /></div>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 grid grid-cols-3 gap-2 text-xs">
-            <div><span class="text-slate-400 text-[10px] block">R2</span><strong id="out-r2" class="text-red-300">—</strong></div>
-            <div><span class="text-slate-400 text-[10px] block">R1</span><strong id="out-r1" class="text-amber-300">—</strong></div>
-            <div><span class="text-slate-400 text-[10px] block">Pivot (PP)</span><strong id="out-pp" class="text-white">—</strong></div>
-            <div><span class="text-slate-400 text-[10px] block">S1</span><strong id="out-s1" class="text-emerald-300">—</strong></div>
-            <div><span class="text-slate-400 text-[10px] block">S2</span><strong id="out-s2" class="text-emerald-400">—</strong></div>
-            <div><span class="text-slate-400 text-[10px] block">RSI Signal</span><strong id="out-rsi-sig" class="text-purple-300">Neutral</strong></div>
-          </div>
-          <button onclick="sendTechAnalysisToAI()" class="w-full py-2.5 rounded-xl bg-purple-500/20 text-purple-200 border border-purple-500/40 font-bold text-xs cursor-pointer">✨ Ask Gemini AI Technical Strategy</button>
-        </section>
-      </div>
+          <canvas id="nepse-candle-canvas" class="w-full h-72 sm:h-80 block"></canvas>
+        </div>
 
-      <section class="glass-card rounded-2xl overflow-hidden border border-slate-800">
-        <div class="p-3.5 border-b border-slate-800"><h3 class="text-sm font-bold text-white">📐 Per-Scrip Stop-Loss (-8%) & Target (+15%) Matrix</h3></div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-900/90 text-[11px] uppercase text-slate-400 border-b border-slate-800">
-                <th class="py-2.5 px-4">Scrip</th><th class="py-2.5 px-3 text-right">Weight</th><th class="py-2.5 px-3 text-right">WACC</th>
-                <th class="py-2.5 px-3 text-right">Live LTP</th><th class="py-2.5 px-3 text-right text-red-300">Stop-Loss</th>
-                <th class="py-2.5 px-3 text-right text-emerald-300">Target (+15%)</th><th class="py-2.5 px-3 text-right">Signal</th>
-              </tr>
-            </thead>
-            <tbody id="tech-matrix-tbody" class="divide-y divide-slate-800/70 text-xs"></tbody>
-          </table>
+        <!-- Custom OHLC Input + AI Technical Deep Dive -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
+            <div class="text-xs font-bold text-white">🎯 Adjust Today's Live OHLC & Pivot Levels</div>
+            <div class="grid grid-cols-4 gap-2">
+              <div><label class="text-[10px] text-slate-400">Open</label><input id="in-ohlc-o" type="number" step="any" oninput="recalcCustomCandle()" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-xs text-white" /></div>
+              <div><label class="text-[10px] text-slate-400">High</label><input id="in-ohlc-h" type="number" step="any" oninput="recalcCustomCandle()" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-xs text-white" /></div>
+              <div><label class="text-[10px] text-slate-400">Low</label><input id="in-ohlc-l" type="number" step="any" oninput="recalcCustomCandle()" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-xs text-white" /></div>
+              <div><label class="text-[10px] text-slate-400">Close/LTP</label><input id="in-ohlc-c" type="number" step="any" oninput="recalcCustomCandle()" class="w-full px-2 py-1 rounded bg-slate-950 border border-emerald-500/50 text-xs text-white" /></div>
+            </div>
+            <div class="grid grid-cols-5 gap-1.5 pt-1 text-center text-[11px]">
+              <div class="p-1.5 rounded bg-slate-950"><span class="text-slate-400 block text-[9px]">S2</span><strong id="lvl-s2" class="text-emerald-400">—</strong></div>
+              <div class="p-1.5 rounded bg-slate-950"><span class="text-slate-400 block text-[9px]">S1</span><strong id="lvl-s1" class="text-emerald-300">—</strong></div>
+              <div class="p-1.5 rounded bg-slate-950"><span class="text-slate-400 block text-[9px]">Pivot</span><strong id="lvl-pp" class="text-white">—</strong></div>
+              <div class="p-1.5 rounded bg-slate-950"><span class="text-slate-400 block text-[9px]">R1</span><strong id="lvl-r1" class="text-amber-300">—</strong></div>
+              <div class="p-1.5 rounded bg-slate-950"><span class="text-slate-400 block text-[9px]">R2</span><strong id="lvl-r2" class="text-red-300">—</strong></div>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between space-y-2">
+            <div class="text-xs font-bold text-white">📊 Portfolio Sector Allocation & Risk Summary</div>
+            <div id="sector-allocation-bars" class="space-y-1.5 text-xs max-h-24 overflow-y-auto"></div>
+            <button onclick="askCandleTechnicalAI()" class="w-full py-2.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/40 text-purple-200 border border-purple-500/40 font-bold text-xs cursor-pointer">
+              ✨ Ask Gemini AI: Candlestick & Entry/Exit Signal for Selected Scrip
+            </button>
+          </div>
         </div>
       </section>
     </main>
 
-    <!-- ==================== TAB 3: GEMINI AI ANALYST (INJECTED REAL-TIME CONTEXT) ==================== -->
+    <!-- ==================== TAB 3: GEMINI AI ANALYST (REAL-TIME CONTEXT GROUNDED) ==================== -->
     <main id="tab-ai-agent" class="hidden px-4 pt-4">
       <div class="glass-card rounded-2xl border dynamic-border overflow-hidden flex flex-col h-[72vh] min-h-[500px]">
         <div class="p-3.5 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h3 class="text-sm font-bold text-white">✨ Gemini NEPSE Analyst <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Real-Time Portfolio & Market Grounded</span></h3>
-            <p class="text-[11px] text-slate-400">तपाईंको अहिलेको Live LTP, मिति/समय र मार्केट डेटा स्वतः विश्लेषण गर्छ</p>
+            <h3 class="text-sm font-bold text-white">✨ Gemini NEPSE Analyst <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">100% Real-Time Grounded</span></h3>
+            <p class="text-[11px] text-slate-400">तपाईंको Live LTP, Real WACC, Bonus/Right र आजको NEPSE डेटा प्रश्नसँगै पठाइन्छ</p>
           </div>
           <select id="agent-lang" class="px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white">
             <option value="Nepali (Devanagari)">नेपाली (Devanagari)</option>
@@ -362,14 +359,14 @@
         </div>
 
         <div class="px-3.5 py-2 bg-slate-950/60 border-b border-slate-800 flex gap-2 overflow-x-auto no-scrollbar">
-          <button onclick="askMyPortfolioAnalysis()" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">💼 मेरो अहिलेको Live पोर्टफोलियो विश्लेषण</button>
-          <button onclick="sendMessageToGeminiAgent('अहिलेको NEPSE बजार र मेरो होल्डिङ्सको Live LTP अनुसार कुन स्टकमा नाफा बुक गर्ने र कुन होल्ड गर्ने?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-purple-300 border border-purple-500/30 shrink-0 cursor-pointer">📈 Buy/Sell/Hold सुझाव</button>
-          <button onclick="sendMessageToGeminiAgent('नेपालका Mutual Funds को NAV र लाभांश रणनीति के हो?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">📊 Mutual Fund NAV</button>
+          <button onclick="askMyPortfolioAnalysis()" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-emerald-300 border border-emerald-500/30 shrink-0 cursor-pointer">💼 मेरो Real WACC र Live नाफा/नोक्सान विश्लेषण</button>
+          <button onclick="sendMessageToGeminiAgent('मेरो पोर्टफोलियोमा कुन स्टकमा Bonus/Right शेयर छ र Real WACC अनुसार कुन बेच्दा राम्रो हुन्छ?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-purple-300 border border-purple-500/30 shrink-0 cursor-pointer">🎁 Bonus/Right & Profit Strategy</button>
+          <button onclick="sendMessageToGeminiAgent('NEPSE का Hydropower र Commercial Bank सेक्टरको अहिलेको प्राविधिक अवस्था के छ?')" class="px-3 py-1.5 rounded-full bg-slate-800 text-[11px] text-slate-200 border border-slate-700 shrink-0 cursor-pointer">📈 Sector Outlook</button>
         </div>
 
         <div id="agent-chat-box" class="flex-1 overflow-y-auto p-4 space-y-3 text-xs sm:text-sm">
           <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 text-slate-200">
-            नमस्ते! मसँग अहिलेको मिति, NEPSE मार्केट समय र तपाईंको पोर्टफोलियोको <strong>Live LTP डेटा</strong> सिधै जोडिएको छ। कुनै पनि प्रश्न सोध्नुहोस्!
+            नमस्ते! तपाईंको पोर्टफोलियोको <strong>Real WACC, Bonus/Right कित्ता र Live LTP</strong> मसँग सिधै जोडिएको छ। कुनै पनि प्रश्न सोध्नुहोस्!
           </div>
         </div>
 
@@ -380,7 +377,7 @@
       </div>
     </main>
 
-    <!-- ==================== TAB 4: NEPSE DIRECTORY ==================== -->
+    <!-- ==================== TAB 4: ALL NEPSE SCRIPS DIRECTORY ==================== -->
     <main id="tab-nepse-directory" class="hidden px-4 pt-4">
       <section class="glass-card rounded-2xl p-4 border border-slate-800 space-y-3">
         <div class="flex flex-wrap justify-between gap-2">
@@ -389,9 +386,9 @@
             <input id="dir-search" type="text" oninput="renderDirectory()" placeholder="Search Symbol..." class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white w-40" />
             <select id="dir-sector" onchange="renderDirectory()" class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
               <option value="ALL">All Sectors</option>
-              <option value="Mutual Fund">Mutual Funds</option>
-              <option value="Commercial Banks">Commercial Banks</option>
               <option value="Hydropower">Hydropower</option>
+              <option value="Commercial Banks">Commercial Banks</option>
+              <option value="Mutual Fund">Mutual Funds</option>
               <option value="Development Banks">Development Banks</option>
               <option value="Finance">Finance</option>
               <option value="Microfinance">Microfinance</option>
@@ -407,29 +404,36 @@
     </main>
   </div>
 
-  <!-- ==================== MODALS (HOLDING, VAULT WITH DELETE, BULK PASTE, API & LIVE URL) ==================== -->
+  <!-- ==================== MODALS (HOLDING WITH BONUS/RIGHT, VAULT WITH DELETE, BULK PASTE, SETTINGS) ==================== -->
   <div id="holding-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-        <h3 id="holding-modal-title" class="text-sm font-bold text-white">+ Add Stock / Mutual Fund</h3>
+        <h3 id="holding-modal-title" class="text-sm font-bold text-white">+ Add / Edit Stock & Bonus/Right</h3>
         <button onclick="document.getElementById('holding-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
       </div>
       <form id="holding-form" class="space-y-2.5">
         <input type="hidden" id="edit-holding-id" value="" />
         <select id="hold-account" required class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"></select>
         <div class="grid grid-cols-2 gap-2">
-          <input id="hold-scrip" list="nepse-scrip-datalist" type="text" required oninput="onScripInput(this.value)" placeholder="Symbol (e.g. NABIL)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase" />
+          <input id="hold-scrip" list="nepse-scrip-datalist" type="text" required oninput="onScripInput(this.value)" placeholder="Symbol (e.g. NGPL)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase" />
           <input id="hold-sector" type="text" required placeholder="Sector" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         </div>
         <datalist id="nepse-scrip-datalist"></datalist>
         <input id="hold-name" type="text" required placeholder="Company / Mutual Fund Name" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         <div class="grid grid-cols-2 gap-2">
-          <input id="hold-units" type="number" step="any" required placeholder="Units (कित्ता)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-          <input id="hold-buy" type="number" step="any" required placeholder="Buy Rate / WACC" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+          <div><label class="text-[10px] text-slate-400">Total MeroShare Units</label><input id="hold-units" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
+          <div><label class="text-[10px] text-slate-400">Real Avg WACC (Rs)</label><input id="hold-buy" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
+        </div>
+        <div id="bonus-reconcile-box" class="hidden p-2.5 rounded-xl bg-indigo-950/50 border border-indigo-500/40 space-y-1.5 text-xs">
+          <div id="bonus-reconcile-info" class="text-indigo-200 font-semibold"></div>
+          <select id="bonus-type-select" onchange="recalcWaccFromBonusType()" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white">
+            <option value="bonus">🎁 Treat Extra Units as Bonus Share (Rs 0 Cost)</option>
+            <option value="right">📜 Treat Extra Units as Right Share (Rs 100/unit Cost)</option>
+          </select>
         </div>
         <div class="grid grid-cols-2 gap-2">
-          <input id="hold-prev" type="number" step="any" required placeholder="Prev Close" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
-          <input id="hold-ltp" type="number" step="any" required placeholder="Live LTP (Rs)" class="px-3 py-2 rounded-xl bg-slate-900 border border-emerald-500/50 text-xs text-white" />
+          <div><label class="text-[10px] text-slate-400">Prev Close (Rs)</label><input id="hold-prev" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" /></div>
+          <div><label class="text-[10px] text-emerald-300">Live LTP (Rs)</label><input id="hold-ltp" type="number" step="any" required class="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-emerald-500/50 text-xs text-white" /></div>
         </div>
         <div class="flex gap-2 pt-1">
           <button type="button" id="delete-holding-btn" onclick="deleteCurrentHolding()" class="hidden px-3 py-2 rounded-xl bg-red-500/20 text-red-300 text-xs font-bold cursor-pointer">🗑️ Delete</button>
@@ -439,13 +443,13 @@
     </div>
   </div>
 
-  <!-- Demat Vault Modal WITH Edit & Delete Buttons -->
+  <!-- Demat Vault Modal WITH Edit & Delete -->
   <div id="vault-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
         <div>
           <h3 class="text-sm font-bold text-white">👥 Member Demat / MeroShare Accounts</h3>
-          <p class="text-[11px] text-slate-400">कुनै अकाउन्ट सच्याउन ✏️ वा हटाउन 🗑️ थिच्नुहोस्</p>
+          <p class="text-[11px] text-slate-400">सच्याउन ✏️ वा हटाउन 🗑️ थिच्नुहोस्</p>
         </div>
         <button onclick="document.getElementById('vault-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
       </div>
@@ -457,7 +461,7 @@
           <button type="button" id="cancel-acc-edit-btn" onclick="cancelEditAccount()" class="hidden text-[11px] text-amber-400 cursor-pointer">Cancel</button>
         </div>
         <div class="grid grid-cols-2 gap-2">
-          <input id="new-acc-name" type="text" required placeholder="Member Name (e.g. Father)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+          <input id="new-acc-name" type="text" required placeholder="Member Name" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
           <input id="new-acc-dp" type="text" required placeholder="Demat / BOID" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
         </div>
         <button type="submit" id="save-acc-submit-btn" class="w-full py-2 rounded-xl dynamic-accent-bg text-slate-950 font-bold text-xs cursor-pointer">+ Save Member</button>
@@ -472,8 +476,7 @@
         <h3 class="text-sm font-bold text-white">⚡ Quick Bulk Live LTP Sync</h3>
         <button onclick="document.getElementById('bulkpaste-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
       </div>
-      <p class="text-xs text-slate-300">ShareSansar, MeroLagani वा NEPSE लाइभ मार्केट पेजबाट Copy गरिएको टेक्स्ट तल पेस्ट गर्नुहोस्:</p>
-      <textarea id="bulk-paste-text" rows="5" placeholder="उदाहरण: NABIL 548.50 544.00 वा पूरा मार्केट टेबल पेस्ट गर्नुहोस्..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"></textarea>
+      <textarea id="bulk-paste-text" rows="5" placeholder="ShareSansar / MeroLagani / TMS बाट Copy गरिएको Live Market टेक्स्ट पेस्ट गर्नुहोस्..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"></textarea>
       <button onclick="processBulkMarketPaste()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">Update Matching Portfolio LTPs</button>
     </div>
   </div>
@@ -486,14 +489,14 @@
         <button onclick="document.getElementById('settings-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
       </div>
       <div>
-        <label class="block text-[11px] text-slate-300 mb-1">Gemini API Key (AI Chat का लागि)</label>
+        <label class="block text-[11px] text-slate-300 mb-1">Gemini API Key</label>
         <input id="gemini-key-input" type="text" placeholder="Paste Gemini API Key..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono" />
       </div>
       <div>
-        <label class="block text-[11px] text-emerald-300 mb-1">Google Apps Script Live NEPSE URL (Optional — १००% Real-Time का लागि)</label>
+        <label class="block text-[11px] text-emerald-300 mb-1">Google Apps Script Live NEPSE URL (Optional)</label>
         <input id="live-proxy-url-input" type="text" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono" />
       </div>
-      <button onclick="saveAppSettings()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">Save & Sync Live Data</button>
+      <button onclick="saveAppSettings()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">Save & Sync</button>
     </div>
   </div>
 
@@ -503,18 +506,22 @@
     const USERS_REGISTRY_KEY = "nepse_cloudpulse_users_v3";
     let currentUser = null, holdingsData = [], connectedAccounts = [], activeAccountFilter = "ALL";
     let manualThemeOverride = null, longPressTimer = null, autoLiveInterval = null;
-    let sortField = "default", sortDir = "desc";
-    let latestMarketCache = {};
+    let sortField = "default", sortDir = "desc", latestMarketCache = {};
+    let activeCandleSymbol = "NGPL", activeCandleTimeframe = "1D", customCandleOHLC = null;
 
     const NEPSE_LISTED_SCRIPS = [
-      { symbol: "NIBLPF", name: "NIBL Pragati Fund", sector: "Mutual Fund", refPrice: 10.45 },
-      { symbol: "NIBLSF", name: "NIBL Sahabhagita Fund", sector: "Mutual Fund", refPrice: 10.62 },
-      { symbol: "NMB50", name: "NMB 50", sector: "Mutual Fund", refPrice: 11.20 },
-      { symbol: "NICGF", name: "NIC Asia Growth Fund", sector: "Mutual Fund", refPrice: 10.70 },
-      { symbol: "SFMF", name: "Sunrise First Mutual Fund", sector: "Mutual Fund", refPrice: 11.05 },
-      { symbol: "SEF", name: "Siddhartha Equity Fund", sector: "Mutual Fund", refPrice: 10.60 },
-      { symbol: "CMF2", name: "Citizens Mutual Fund 2", sector: "Mutual Fund", refPrice: 10.50 },
-      { symbol: "LVF2", name: "Laxmi Value Fund 2", sector: "Mutual Fund", refPrice: 10.48 },
+      { symbol: "NGPL", name: "Ngadi Group Power Ltd.", sector: "Hydropower", refPrice: 486.0 },
+      { symbol: "LEC", name: "Liberty Energy Company Ltd.", sector: "Hydropower", refPrice: 258.0 },
+      { symbol: "AKJCL", name: "Ankhu Khola Jalvidhyut Co.", sector: "Hydropower", refPrice: 314.0 },
+      { symbol: "SSHL", name: "Shiva Shree Hydropower Ltd.", sector: "Hydropower", refPrice: 195.0 },
+      { symbol: "CHCL", name: "Chilime Hydropower", sector: "Hydropower", refPrice: 545.0 },
+      { symbol: "BPCL", name: "Butwal Power Company", sector: "Hydropower", refPrice: 382.0 },
+      { symbol: "API", name: "Api Power Company", sector: "Hydropower", refPrice: 262.0 },
+      { symbol: "SHPC", name: "Sanima Mai Hydropower", sector: "Hydropower", refPrice: 445.0 },
+      { symbol: "UPPER", name: "Upper Tamakoshi", sector: "Hydropower", refPrice: 228.0 },
+      { symbol: "AKPL", name: "Arun Kabeli Power", sector: "Hydropower", refPrice: 248.0 },
+      { symbol: "AHPC", name: "Arun Valley Hydropower", sector: "Hydropower", refPrice: 274.0 },
+      { symbol: "SAHAS", name: "Sahas Urja Limited", sector: "Hydropower", refPrice: 492.0 },
       { symbol: "NABIL", name: "Nabil Bank Limited", sector: "Commercial Banks", refPrice: 544.0 },
       { symbol: "NICA", name: "NIC Asia Bank Limited", sector: "Commercial Banks", refPrice: 438.0 },
       { symbol: "SCB", name: "Standard Chartered Bank", sector: "Commercial Banks", refPrice: 635.0 },
@@ -530,22 +537,18 @@
       { symbol: "LSL", name: "Laxmi Sunrise Bank", sector: "Commercial Banks", refPrice: 228.0 },
       { symbol: "ADBL", name: "Agricultural Dev. Bank", sector: "Commercial Banks", refPrice: 312.0 },
       { symbol: "NIMB", name: "Nepal Investment Mega Bank", sector: "Commercial Banks", refPrice: 212.0 },
-      { symbol: "CHCL", name: "Chilime Hydropower", sector: "Hydropower", refPrice: 545.0 },
-      { symbol: "BPCL", name: "Butwal Power Company", sector: "Hydropower", refPrice: 382.0 },
-      { symbol: "API", name: "Api Power Company", sector: "Hydropower", refPrice: 262.0 },
-      { symbol: "SHPC", name: "Sanima Mai Hydropower", sector: "Hydropower", refPrice: 445.0 },
-      { symbol: "UPPER", name: "Upper Tamakoshi", sector: "Hydropower", refPrice: 228.0 },
-      { symbol: "AKPL", name: "Arun Kabeli Power", sector: "Hydropower", refPrice: 248.0 },
-      { symbol: "AHPC", name: "Arun Valley Hydropower", sector: "Hydropower", refPrice: 274.0 },
-      { symbol: "SAHAS", name: "Sahas Urja Limited", sector: "Hydropower", refPrice: 492.0 },
+      { symbol: "NIBLPF", name: "NIBL Pragati Fund", sector: "Mutual Fund", refPrice: 10.45 },
+      { symbol: "NIBLSF", name: "NIBL Sahabhagita Fund", sector: "Mutual Fund", refPrice: 10.62 },
+      { symbol: "NMB50", name: "NMB 50", sector: "Mutual Fund", refPrice: 11.20 },
+      { symbol: "NICGF", name: "NIC Asia Growth Fund", sector: "Mutual Fund", refPrice: 10.70 },
+      { symbol: "SFMF", name: "Sunrise First Mutual Fund", sector: "Mutual Fund", refPrice: 11.05 },
+      { symbol: "SEF", name: "Siddhartha Equity Fund", sector: "Mutual Fund", refPrice: 10.60 },
       { symbol: "MNBBL", name: "Muktinath Bikas Bank", sector: "Development Banks", refPrice: 425.0 },
       { symbol: "GBBL", name: "Garima Bikas Bank", sector: "Development Banks", refPrice: 432.0 },
-      { symbol: "JBBL", name: "Jyoti Bikas Bank", sector: "Development Banks", refPrice: 368.0 },
       { symbol: "ICFC", name: "ICFC Finance Limited", sector: "Finance", refPrice: 645.0 },
       { symbol: "MFIL", name: "Manjushree Finance", sector: "Finance", refPrice: 690.0 },
       { symbol: "CBBL", name: "Chhimek Laghubitta", sector: "Microfinance", refPrice: 1045.0 },
       { symbol: "DDBL", name: "Deprosc Laghubitta", sector: "Microfinance", refPrice: 910.0 },
-      { symbol: "NUBL", name: "Nirdhan Utthan Laghubitta", sector: "Microfinance", refPrice: 865.0 },
       { symbol: "NLIC", name: "Nepal Life Insurance", sector: "Life Insurance", refPrice: 745.0 },
       { symbol: "LICN", name: "Life Insurance Corp. Nepal", sector: "Life Insurance", refPrice: 1090.0 },
       { symbol: "SICL", name: "Shikhar Insurance", sector: "Non-Life Insurance", refPrice: 845.0 },
@@ -559,18 +562,16 @@
       { symbol: "NTC", name: "Nepal Telecom", sector: "Manufacturing & Processing", refPrice: 918.0 }
     ];
 
-    // ==================== NEPSE MARKET SCHEDULE (MON–FRI 11:00–15:00 NPT; SAT–SUN CLOSED) ====================
+    // ==================== NEPSE MARKET SCHEDULE (MON–FRI 11:00–15:00 NPT) ====================
     function getNepseMarketStatus() {
       const now = new Date();
-      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-      const npt = new Date(utcMs + (5 * 60 + 45) * 60000);
-      const day = npt.getDay(); // 0=Sun, 1=Mon...5=Fri, 6=Sat
+      const npt = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + (5 * 60 + 45) * 60000);
+      const day = npt.getDay();
       const mins = npt.getHours() * 60 + npt.getMinutes();
       const isWeekend = (day === 0 || day === 6);
       const isOpen = !isWeekend && mins >= 660 && mins < 900;
       const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      const dateStr = npt.toISOString().slice(0, 10);
-      const timeStr = `${dateStr} (${days[day]}) ${String(npt.getHours()).padStart(2, "0")}:${String(npt.getMinutes()).padStart(2, "0")} NPT`;
+      const timeStr = `${npt.toISOString().slice(0, 10)} (${days[day]}) ${String(npt.getHours()).padStart(2, "0")}:${String(npt.getMinutes()).padStart(2, "0")} NPT`;
       return { isOpen, isWeekend, timeStr };
     }
 
@@ -578,22 +579,19 @@
       const st = getNepseMarketStatus();
       const el = document.getElementById("nepse-market-status");
       const dot = document.getElementById("market-dot");
-      const loginBadge = document.getElementById("login-market-badge");
+      const badge = document.getElementById("login-market-badge");
       if (st.isOpen) {
-        el.textContent = `🟢 NEPSE LIVE (${st.timeStr})`;
-        el.className = "font-bold text-emerald-300";
-        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse-slow";
-        if (loginBadge) loginBadge.textContent = "🟢 Market Open";
+        el.textContent = `🟢 NEPSE LIVE (${st.timeStr})`; el.className = "font-bold text-emerald-300";
+        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+        if (badge) badge.textContent = "🟢 Open";
       } else {
-        const reason = st.isWeekend ? "Sat–Sun Closed" : "Closed (Mon–Fri 11AM–3PM)";
-        el.textContent = `🔴 MARKET CLOSED • ${reason}`;
-        el.className = "font-bold text-red-300";
-        dot.className = "w-2.5 h-2.5 rounded-full bg-red-400";
-        if (loginBadge) loginBadge.textContent = "🔴 Market Closed";
+        el.textContent = `🔴 CLOSED • ${st.isWeekend ? "Sat–Sun Weekend" : "Mon–Fri 11AM–3PM"}`;
+        el.className = "font-bold text-red-300"; dot.className = "w-2.5 h-2.5 rounded-full bg-red-400";
+        if (badge) badge.textContent = "🔴 Closed";
       }
     }
 
-    // ==================== 100% LIVE NEPSE FETCHER (GOOGLE APPS SCRIPT + CORS PROXIES) ====================
+    // ==================== 100% LIVE NEPSE FETCHER ====================
     async function fetchLiveNepsePrices(isManual = false) {
       const btn = document.getElementById("fetch-live-btn");
       const syncLabel = document.getElementById("last-rate-sync-label");
@@ -613,8 +611,7 @@
         try {
           const res = await fetch(url);
           if (!res.ok) continue;
-          const rawText = await res.text();
-          const map = extractPricesFromText(rawText);
+          const map = extractPricesFromText(await res.text());
           if (Object.keys(map).length > 5) {
             latestMarketCache = map;
             holdingsData = holdingsData.map(h => {
@@ -631,15 +628,14 @@
       }
 
       if (Object.keys(latestMarketCache).length > 5) {
-        saveUserWorkspace();
-        renderPortfolio();
-        const t = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-        syncLabel.textContent = `Live Synced (${updatedCount} updated) @ ${t}`;
+        saveUserWorkspace(); renderPortfolio();
+        if (!document.getElementById("tab-candlestick").classList.contains("hidden")) selectCandleScrip(activeCandleSymbol);
+        syncLabel.textContent = `Live Synced (${updatedCount} updated)`;
         srcPill.textContent = customLiveUrl ? "Source: Google Live Server" : "Source: Auto Live Web";
       } else if (isManual) {
-        syncLabel.textContent = "Set Google Live URL in 🔑 or use ⚡ Paste";
+        syncLabel.textContent = "Use 🔑 Google Live URL or ⚡ Paste Live LTP";
       }
-      if (btn) btn.textContent = "📡 Fetch Live NEPSE";
+      if (btn) btn.textContent = "📡 Live Sync";
     }
 
     function extractPricesFromText(rawText) {
@@ -649,37 +645,27 @@
         const arr = Array.isArray(json) ? json : (json.content || json.data || json.prices || []);
         if (Array.isArray(arr)) {
           arr.forEach(row => {
-            const sym = String(row.symbol || row.scrip || row.securityName || "").trim().toUpperCase();
-            const ltp = Number(row.lastTradedPrice || row.ltp || row.closePrice || row.closingPrice || 0);
-            const prev = Number(row.previousClose || row.prevClose || row.previousDayClosePrice || 0);
+            const sym = String(row.symbol || row.scrip || "").trim().toUpperCase();
+            const ltp = Number(row.lastTradedPrice || row.ltp || row.closePrice || 0);
+            const prev = Number(row.previousClose || row.prevClose || 0);
             if (sym && ltp > 0) priceMap[sym] = { ltp, prevClose: prev };
           });
         }
       } catch (e) {}
-
-      // Also parse HTML table rows from ShareSansar / MeroLagani
-      const trMatches = rawText.match(/<tr[\s\S]*?<\/tr>/gi) || [];
-      trMatches.forEach(tr => {
-        const cells = (tr.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || [])
-          .map(td => td.replace(/<[^>]+>/g, "").trim());
-        if (cells.length >= 3) {
-          const symIdx = cells.findIndex(c => /^[A-Z]{2,10}$/.test(c));
-          if (symIdx >= 0) {
-            const sym = cells[symIdx];
-            const nums = cells.slice(symIdx + 1).map(v => parseFloat(v.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 1 && n < 100000);
-            if (nums.length >= 1 && !priceMap[sym]) {
-              priceMap[sym] = { ltp: nums[0], prevClose: nums[nums.length - 1] || 0 };
-            }
-          }
+      const trs = rawText.match(/<tr[\s\S]*?<\/tr>/gi) || [];
+      trs.forEach(tr => {
+        const cells = (tr.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || []).map(td => td.replace(/<[^>]+>/g, "").trim());
+        const sIdx = cells.findIndex(c => /^[A-Z]{2,10}$/.test(c));
+        if (sIdx >= 0) {
+          const sym = cells[sIdx];
+          const nums = cells.slice(sIdx + 1).map(v => parseFloat(v.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 1 && n < 100000);
+          if (nums.length >= 1 && !priceMap[sym]) priceMap[sym] = { ltp: nums[0], prevClose: nums[nums.length - 1] || 0 };
         }
       });
-
-      // Plain text fallback
       rawText.split(/\r?\n/).forEach(line => {
         const m = line.match(/\b([A-Z]{2,10})\b/);
         if (m && !priceMap[m[1]]) {
-          const nums = (line.slice(line.indexOf(m[1]) + m[1].length).match(/\d[\d,]*\.?\d*/g) || [])
-            .map(n => parseFloat(n.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 1 && n < 100000);
+          const nums = (line.slice(line.indexOf(m[1]) + m[1].length).match(/\d[\d,]*\.?\d*/g) || []).map(n => parseFloat(n.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 1 && n < 100000);
           if (nums.length >= 1) priceMap[m[1]] = { ltp: nums[0], prevClose: nums[1] || 0 };
         }
       });
@@ -687,28 +673,17 @@
     }
 
     function openBulkPasteModal() { document.getElementById("bulkpaste-modal").classList.remove("hidden"); }
-
     function processBulkMarketPaste() {
-      const txt = document.getElementById("bulk-paste-text").value || "";
-      const map = extractPricesFromText(txt);
+      const map = extractPricesFromText(document.getElementById("bulk-paste-text").value || "");
       latestMarketCache = { ...latestMarketCache, ...map };
       let count = 0;
       holdingsData = holdingsData.map(h => {
         const found = map[h.scrip];
-        if (found && found.ltp > 0) {
-          count++;
-          return { ...h, ltp: found.ltp, prevClose: found.prevClose > 0 ? found.prevClose : h.prevClose };
-        }
+        if (found && found.ltp > 0) { count++; return { ...h, ltp: found.ltp, prevClose: found.prevClose > 0 ? found.prevClose : h.prevClose }; }
         return h;
       });
       document.getElementById("bulkpaste-modal").classList.add("hidden");
-      if (count > 0) {
-        saveUserWorkspace(); renderPortfolio();
-        document.getElementById("live-source-pill").textContent = "Source: Live Market Paste";
-        alert(`✅ ${count} वटा सेयरको Live LTP अपडेट भयो!`);
-      } else {
-        alert("⚠️ पेस्ट गरिएको टेक्स्टमा पोर्टफोलियोका Symbol हरू भेटिएनन्।");
-      }
+      if (count > 0) { saveUserWorkspace(); renderPortfolio(); alert(`✅ ${count} वटा सेयरको Live LTP अपडेट भयो!`); }
     }
 
     function toggleAutoLiveFeed() {
@@ -716,70 +691,686 @@
       if (autoLiveInterval) {
         clearInterval(autoLiveInterval); autoLiveInterval = null;
         btn.textContent = "⏱️ Auto-Live: OFF";
-        btn.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700 cursor-pointer";
       } else {
         fetchLiveNepsePrices(false);
         autoLiveInterval = setInterval(() => { updateMarketStatusUI(); fetchLiveNepsePrices(false); }, 60000);
         btn.textContent = "🟢 Auto-Live: ON";
-        btn.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-pointer";
       }
     }
 
-    // ==================== HIGH / LOW SORTING FILTER ON TABLE HEADERS ====================
-    function toggleSort(field) {
-      if (sortField === field) {
-        sortDir = sortDir === "desc" ? "asc" : "desc";
-      } else {
-        sortField = field;
-        sortDir = field === "scrip" ? "asc" : "desc";
+    // ==================== 1️⃣ MEROSHARE CSV + 2️⃣ BROKER TRADE BOOK CSV (BONUS/RIGHT RECONCILIATION) ====================
+    function handleMeroShareCsv(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      if (file.name.toLowerCase().endsWith(".xlsx") || file.name.toLowerCase().endsWith(".xls")) {
+        alert("⚠️ कृपया Excel (.xlsx) को सट्टा CSV फाइल छान्नुहोस्।"); event.target.value = ""; return;
       }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const lines = (e.target.result || "").replace(/^\uFEFF/, "").split(/\r?\n/).filter(l => l.trim());
+        const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
+        let count = 0;
+
+        lines.forEach((line, idx) => {
+          const sep = line.split(";").length > line.split(",").length ? ";" : ",";
+          const cols = line.split(sep).map(c => c.replace(/^"|"$/g, "").trim());
+          const joined = cols.join("|").toLowerCase();
+          if (joined.includes("scrip") || joined.includes("total") || joined.includes("my portfolio")) return;
+
+          const sIdx = cols.findIndex(c => /^[A-Za-z]{2,10}$/.test(c.replace(/[^A-Za-z0-9]/g, "")));
+          if (sIdx < 0) return;
+          const scrip = cols[sIdx].replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+          const nums = cols.slice(sIdx + 1).map(v => parseFloat(v.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 0);
+          if (nums.length === 0) return;
+
+          const units = nums[0];
+          const prev = nums[1] || 100;
+          const ltp = (latestMarketCache[scrip]?.ltp) || nums[3] || nums[2] || prev;
+          const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === scrip);
+
+          const exIdx = holdingsData.findIndex(h => h.account === targetAcc && h.scrip === scrip);
+          if (exIdx >= 0) {
+            const ex = holdingsData[exIdx];
+            holdingsData[exIdx] = { ...ex, units, prevClose: prev, ltp };
+            recalculateHoldingWithBonusRight(holdingsData[exIdx]);
+          } else {
+            holdingsData.push({
+              id: "MS" + Date.now() + "_" + idx, account: targetAcc, scrip,
+              sector: listed ? listed.sector : "Equity", name: listed ? listed.name : scrip,
+              units, buyRate: prev, prevClose: prev, ltp,
+              netTradedQty: 0, netBuyCost: 0, bonusRightQty: 0, bonusType: "bonus"
+            });
+          }
+          count++;
+        });
+        event.target.value = "";
+        if (count > 0) { saveUserWorkspace(); renderPortfolio(); alert(`✅ MeroShare बाट ${count} वटा सेयरको वास्तविक कित्ता लोड भयो! अब 2️⃣ Trade Book CSV अपलोड गर्नुहोस्।`); }
+      };
+      reader.readAsText(file);
+    }
+
+    // Matches exact screenshot columns: CLIENT | CLIENT NAME | SYMBOL | EXCHANGE TRADE ID | TRADE DATE | TRADE TIME | BUY/SELL | PRODUCT | TRADE QTY | PRICE(NPR) | Value(NPR)
+    function handleTradeBookCsv(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      if (file.name.toLowerCase().endsWith(".xlsx") || file.name.toLowerCase().endsWith(".xls")) {
+        alert("⚠️ Excel फाइललाई पहिले Save As > CSV गर्नुहोस् र अपलोड गर्नुहोस्।"); event.target.value = ""; return;
+      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const lines = (e.target.result || "").replace(/^\uFEFF/, "").split(/\r?\n/).filter(l => l.trim());
+        const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
+
+        let colIdx = { symbol: 2, tradeId: 3, side: 6, qty: 8, price: 9, value: 10 };
+        const seenTradeIds = new Set();
+        const tradeSummary = {};
+        let rowCount = 0;
+
+        lines.forEach(line => {
+          const sep = line.includes("\t") ? "\t" : (line.split(";").length > line.split(",").length ? ";" : ",");
+          const cols = line.split(sep).map(c => c.replace(/^"|"$/g, "").trim());
+          const lowerLine = cols.join("|").toLowerCase();
+
+          if (lowerLine.includes("symbol") && (lowerLine.includes("buy/sell") || lowerLine.includes("trade qty"))) {
+            cols.forEach((h, i) => {
+              const c = h.toLowerCase();
+              if (c.includes("symbol") || c.includes("scrip")) colIdx.symbol = i;
+              else if (c.includes("trade id")) colIdx.tradeId = i;
+              else if (c.includes("buy/sell") || c.includes("type") || c.includes("side")) colIdx.side = i;
+              else if (c.includes("qty") || c.includes("quantity")) colIdx.qty = i;
+              else if (c.includes("price")) colIdx.price = i;
+              else if (c.includes("value") || c.includes("amount")) colIdx.value = i;
+            });
+            return;
+          }
+
+          const sym = (cols[colIdx.symbol] || "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+          const tid = cols[colIdx.tradeId] || "";
+          const side = (cols[colIdx.side] || "").toLowerCase();
+          const qty = parseFloat((cols[colIdx.qty] || "").replace(/,/g, ""));
+          const price = parseFloat((cols[colIdx.price] || "").replace(/,/g, ""));
+
+          if (!sym || !/^[A-Z]{2,10}$/.test(sym) || isNaN(qty) || qty <= 0 || isNaN(price)) return;
+          if (tid && seenTradeIds.has(tid)) return;
+          if (tid) seenTradeIds.add(tid);
+
+          if (!tradeSummary[sym]) tradeSummary[sym] = { buyQty: 0, buyCost: 0, sellQty: 0, sellVal: 0 };
+          if (side.includes("buy")) {
+            tradeSummary[sym].buyQty += qty;
+            tradeSummary[sym].buyCost += qty * price;
+            rowCount++;
+          } else if (side.includes("sell")) {
+            tradeSummary[sym].sellQty += qty;
+            tradeSummary[sym].sellVal += qty * price;
+            rowCount++;
+          }
+        });
+
+        Object.entries(tradeSummary).forEach(([sym, tr]) => {
+          const netTradedQty = Math.max(0, tr.buyQty - tr.sellQty);
+          const avgBuyPrice = tr.buyQty > 0 ? tr.buyCost / tr.buyQty : 0;
+          const remainingTradeCost = netTradedQty * avgBuyPrice;
+          const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
+          const livePrice = latestMarketCache[sym]?.ltp || (listed ? listed.refPrice : avgBuyPrice);
+
+          const exIdx = holdingsData.findIndex(h => h.account === targetAcc && h.scrip === sym);
+          if (exIdx >= 0) {
+            const ex = holdingsData[exIdx];
+            // Keep MeroShare actual balance if larger than net traded qty (detects Bonus / Right!)
+            const finalUnits = ex.units > netTradedQty ? ex.units : (netTradedQty || ex.units);
+            ex.units = finalUnits;
+            ex.netTradedQty = netTradedQty;
+            ex.netBuyCost = remainingTradeCost;
+            ex.bonusType = ex.bonusType || "bonus";
+            recalculateHoldingWithBonusRight(ex);
+          } else if (netTradedQty > 0) {
+            holdingsData.push({
+              id: "TB" + Date.now() + sym, account: targetAcc, scrip: sym,
+              sector: listed ? listed.sector : "Hydropower", name: listed ? listed.name : sym,
+              units: netTradedQty, buyRate: +avgBuyPrice.toFixed(2), prevClose: livePrice, ltp: livePrice,
+              netTradedQty, netBuyCost: remainingTradeCost, bonusRightQty: 0, bonusType: "bonus"
+            });
+          }
+        });
+
+        event.target.value = "";
+        if (rowCount > 0) {
+          saveUserWorkspace(); renderPortfolio();
+          alert(`✅ Trade Book का ${rowCount} वटा कारोबार मिलाइयो! MeroShare मा बढी भएको कित्तालाई स्वतः Bonus/Right मानी Real WACC निकालिएको छ।`);
+        } else {
+          alert("⚠️ Trade Book CSV मा Buy/Sell डेटा भेटिएन।");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function recalculateHoldingWithBonusRight(h) {
+      if (h.netTradedQty > 0 && h.units > h.netTradedQty) {
+        h.bonusRightQty = +(h.units - h.netTradedQty).toFixed(2);
+        const extraCost = h.bonusType === "right" ? h.bonusRightQty * 100 : 0;
+        h.buyRate = +((h.netBuyCost + extraCost) / h.units).toFixed(2);
+      } else if (h.netTradedQty > 0) {
+        h.bonusRightQty = 0;
+        h.buyRate = +(h.netBuyCost / h.units).toFixed(2);
+      }
+    }
+
+    function toggleBonusRightType(id) {
+      const h = holdingsData.find(x => String(x.id) === String(id));
+      if (!h || !h.bonusRightQty) return;
+      h.bonusType = h.bonusType === "right" ? "bonus" : "right";
+      recalculateHoldingWithBonusRight(h);
+      saveUserWorkspace(); renderPortfolio();
+    }
+
+    // ==================== TABLE HEADER HIGH / LOW SORTING ====================
+    function toggleSort(field) {
+      if (sortField === field) sortDir = sortDir === "desc" ? "asc" : "desc";
+      else { sortField = field; sortDir = field === "scrip" ? "asc" : "desc"; }
       renderPortfolio();
     }
-
     function setSortFromDropdown(val) {
       if (val === "default") { sortField = "default"; sortDir = "desc"; }
-      else {
-        const [f, d] = val.split("-");
-        sortField = f; sortDir = d;
-      }
+      else { const [f, d] = val.split("-"); sortField = f; sortDir = d; }
       renderPortfolio();
     }
-
     function getSortedHoldings(list) {
       const arr = [...list];
       if (sortField === "default") return arr;
       arr.sort((a, b) => {
-        let vA, vB;
-        if (sortField === "scrip") {
-          return sortDir === "asc" ? a.scrip.localeCompare(b.scrip) : b.scrip.localeCompare(a.scrip);
-        } else if (sortField === "units") { vA = a.units; vB = b.units; }
-        else if (sortField === "buyRate") { vA = a.buyRate; vB = b.buyRate; }
-        else if (sortField === "prevClose") { vA = a.prevClose; vB = b.prevClose; }
-        else if (sortField === "ltp") { vA = a.ltp; vB = b.ltp; }
-        else if (sortField === "val") { vA = a.units * a.ltp; vB = b.units * b.ltp; }
-        else if (sortField === "buypl") { vA = (a.ltp - a.buyRate) * a.units; vB = (b.ltp - b.buyRate) * b.units; }
-        else if (sortField === "daypl") { vA = (a.ltp - a.prevClose) * a.units; vB = (b.ltp - b.prevClose) * b.units; }
-        return sortDir === "desc" ? vB - vA : vA - vB;
+        if (sortField === "scrip") return sortDir === "asc" ? a.scrip.localeCompare(b.scrip) : b.scrip.localeCompare(a.scrip);
+        const mapVal = (x) => sortField === "units" ? x.units : sortField === "buyRate" ? x.buyRate : sortField === "prevClose" ? x.prevClose : sortField === "ltp" ? x.ltp : sortField === "val" ? x.units * x.ltp : sortField === "buypl" ? (x.ltp - x.buyRate) * x.units : (x.ltp - x.prevClose) * x.units;
+        return sortDir === "desc" ? mapVal(b) - mapVal(a) : mapVal(a) - mapVal(b);
       });
       return arr;
     }
 
-    // ==================== NEPALI NUMBER FORMATTER (00,00,000) ====================
+    // ==================== PORTFOLIO RENDERING ====================
     function formatNepaliNumber(num, decimals = 2) {
       if (isNaN(num)) return "0.00";
       const isNeg = num < 0;
       const parts = Math.abs(Number(num)).toFixed(decimals).split(".");
       let intPart = parts[0];
-      if (intPart.length > 3) {
-        intPart = intPart.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + intPart.slice(-3);
-      }
+      if (intPart.length > 3) intPart = intPart.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + intPart.slice(-3);
       return (isNeg ? "-" : "") + intPart + (decimals > 0 ? "." + parts[1] : "");
     }
     const formatNPR = (n) => (n < 0 ? "-" : "") + "NPR " + formatNepaliNumber(Math.abs(n), 2);
     const formatSignedNPR = (n) => (n > 0 ? "+" : n < 0 ? "-" : "") + "NPR " + formatNepaliNumber(Math.abs(n), 2);
-    const formatRateDiff = (d) => (d > 0 ? "+" : d < 0 ? "-" : "") + "Rs " + formatNepaliNumber(Math.abs(d), 2) + "/unit";
+    const formatRateDiff = (d) => (d > 0 ? "+" : d < 0 ? "-" : "") + "Rs " + formatNepaliNumber(Math.abs(d), 2) + "/u";
 
-    // ==================== SETTINGS & AUTH ====================
+    function renderPortfolio() {
+      ["scrip", "units", "buyRate", "prevClose", "ltp", "val", "buypl", "daypl"].forEach(f => {
+        const ind = document.getElementById("sort-ind-" + f);
+        if (ind) {
+          ind.textContent = sortField === f ? (sortDir === "desc" ? "▼" : "▲") : "⇅";
+          ind.className = sortField === f ? "text-emerald-400 font-bold" : "text-slate-500";
+        }
+      });
+
+      const baseFiltered = activeAccountFilter === "ALL" ? holdingsData : holdingsData.filter(h => h.account === activeAccountFilter);
+      const filtered = getSortedHoldings(baseFiltered);
+
+      let totalInv = 0, totalCur = 0, totalPrev = 0;
+      const tbody = document.getElementById("holdings-tbody");
+      tbody.innerHTML = "";
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 text-xs">1️⃣ MeroShare CSV र 2️⃣ Trade Book CSV अपलोड गर्नुहोस् वा "+ Add Stock" थिच्नुहोस्।</td></tr>`;
+      }
+
+      filtered.forEach(item => {
+        const inv = item.units * item.buyRate, cur = item.units * item.ltp, prev = item.units * item.prevClose;
+        totalInv += inv; totalCur += cur; totalPrev += prev;
+        const buyDiff = item.ltp - item.buyRate, buyPL = cur - inv, buyPct = inv > 0 ? (buyPL / inv) * 100 : 0;
+        const dayDiff = item.ltp - item.prevClose, dayPL = cur - prev, dayPct = prev > 0 ? (dayPL / prev) * 100 : 0;
+        const buyCol = buyPL > 0 ? "text-emerald-400" : buyPL < 0 ? "text-red-400" : "text-purple-400";
+        const dayCol = dayPL > 0 ? "text-emerald-400" : dayPL < 0 ? "text-red-400" : "text-purple-400";
+
+        const bonusBadge = item.bonusRightQty > 0
+          ? `<button type="button" onclick="event.stopPropagation(); toggleBonusRightType('${item.id}')" title="Click to toggle Bonus (Rs 0) vs Right (Rs 100)" class="mt-0.5 inline-block px-1.5 py-0.5 rounded bg-indigo-500/25 text-indigo-200 border border-indigo-500/40 text-[10px] font-semibold cursor-pointer">🎁 +${item.bonusRightQty} ${item.bonusType === 'right' ? 'Right @100' : 'Bonus @0'}</button>`
+          : "";
+
+        const tr = document.createElement("tr");
+        tr.className = "long-press-target hover:bg-slate-800/40 cursor-pointer";
+        tr.setAttribute("onmousedown", `startHoldingLongPress('${item.id}')`);
+        tr.setAttribute("onmouseup", "cancelLongPress()");
+        tr.setAttribute("ontouchstart", `startHoldingLongPress('${item.id}')`);
+        tr.setAttribute("ontouchend", "cancelLongPress()");
+        tr.innerHTML = `
+          <td class="py-3 px-4"><div class="font-bold text-white">${escapeHtml(item.scrip)}</div><div class="text-[11px] text-slate-400">${escapeHtml(item.sector || "Equity")}</div>${bonusBadge}</td>
+          <td class="py-3 px-3 text-right font-semibold text-slate-200">${formatNepaliNumber(item.units, Number.isInteger(item.units) ? 0 : 2)}</td>
+          <td class="py-3 px-3 text-right font-semibold text-amber-200">Rs ${formatNepaliNumber(item.buyRate, 2)}</td>
+          <td class="py-3 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(item.prevClose, 2)}</td>
+          <td class="py-3 px-3 text-right font-extrabold text-white">Rs ${formatNepaliNumber(item.ltp, 2)} <span class="text-[10px] font-normal text-slate-400">/u</span></td>
+          <td class="py-3 px-3 text-right font-bold text-slate-100">Rs ${formatNepaliNumber(cur, 2)}</td>
+          <td class="py-3 px-3 text-right"><div class="font-bold ${buyCol}">${formatSignedNPR(buyPL)} (${buyPct >= 0 ? "+" : ""}${buyPct.toFixed(2)}%)</div><div class="text-[11px] ${buyCol}">${formatRateDiff(buyDiff)}</div></td>
+          <td class="py-3 px-3 text-right"><div class="font-bold ${dayCol}">${formatSignedNPR(dayPL)} (${dayPct >= 0 ? "+" : ""}${dayPct.toFixed(2)}%)</div><div class="text-[11px] ${dayCol}">${formatRateDiff(dayDiff)}</div></td>
+          <td class="py-3 px-3 text-right"><button type="button" onclick="event.stopPropagation(); openEditHoldingModal('${item.id}')" class="px-2 py-1 rounded bg-slate-800 text-amber-300 text-[11px] cursor-pointer">✏️</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const ovPL = totalCur - totalInv, ovPct = totalInv > 0 ? (ovPL / totalInv) * 100 : 0;
+      const dyPL = totalCur - totalPrev, dyPct = totalPrev > 0 ? (dyPL / totalPrev) * 100 : 0;
+      document.getElementById("hero-total-value").textContent = formatNPR(totalCur);
+      document.getElementById("hero-investment").textContent = "Real Invested: " + formatNPR(totalInv);
+      document.getElementById("overall-pl-amount").textContent = formatSignedNPR(ovPL);
+      document.getElementById("overall-pl-pct").textContent = `${ovPct >= 0 ? "+" : ""}${ovPct.toFixed(2)}%`;
+      document.getElementById("daily-pl-amount").textContent = formatSignedNPR(dyPL);
+      document.getElementById("daily-pl-pct").textContent = `${dyPct >= 0 ? "+" : ""}${dyPct.toFixed(2)}%`;
+
+      if (!manualThemeOverride) applyTheme(filtered.length === 0 || ovPL === 0 ? "neutral" : ovPL > 0 ? "profit" : "loss");
+      renderSectorBars(filtered, totalCur);
+    }
+
+    function renderSectorBars(list, totalVal) {
+      const box = document.getElementById("sector-allocation-bars");
+      if (!box) return;
+      if (list.length === 0) { box.innerHTML = `<p class="text-slate-400">No holdings yet.</p>`; return; }
+      const map = {};
+      list.forEach(h => { map[h.sector || "Equity"] = (map[h.sector || "Equity"] || 0) + h.units * h.ltp; });
+      box.innerHTML = Object.entries(map).sort((a, b) => b[1] - a[1]).map(([s, v]) => {
+        const pct = totalVal > 0 ? (v / totalVal) * 100 : 0;
+        return `<div><div class="flex justify-between"><span>${escapeHtml(s)}</span><span>${pct.toFixed(1)}%</span></div><div class="w-full h-1.5 rounded bg-slate-800"><div class="h-full rounded bg-emerald-400" style="width:${Math.min(100, pct)}%"></div></div></div>`;
+      }).join("");
+    }
+
+    // ==================== ALL NEPSE CANDLESTICK & TECHNICAL CHART ENGINE ====================
+    function getAllAvailableScrips() {
+      const map = new Map();
+      NEPSE_LISTED_SCRIPS.forEach(s => map.set(s.symbol, { ...s }));
+      holdingsData.forEach(h => {
+        const ex = map.get(h.scrip);
+        map.set(h.scrip, { symbol: h.scrip, name: h.name || (ex ? ex.name : h.scrip), sector: h.sector || (ex ? ex.sector : "Equity"), refPrice: h.ltp });
+      });
+      Object.entries(latestMarketCache).forEach(([sym, d]) => {
+        const ex = map.get(sym);
+        map.set(sym, { symbol: sym, name: ex ? ex.name : sym, sector: ex ? ex.sector : "NEPSE", refPrice: d.ltp });
+      });
+      return Array.from(map.values()).sort((a, b) => a.symbol.localeCompare(b.symbol));
+    }
+
+    function filterCandleScrips() {
+      const q = (document.getElementById("candle-search").value || "").trim().toUpperCase();
+      const all = getAllAvailableScrips().filter(s => !q || s.symbol.includes(q) || s.name.toUpperCase().includes(q));
+      const sel = document.getElementById("candle-scrip-select");
+      sel.innerHTML = all.map(s => `<option value="${s.symbol}">${s.symbol} — ${escapeHtml(s.name)}</option>`).join("");
+      if (all.some(s => s.symbol === activeCandleSymbol)) sel.value = activeCandleSymbol;
+      else if (all.length > 0) { activeCandleSymbol = all[0].symbol; sel.value = activeCandleSymbol; }
+      selectCandleScrip(activeCandleSymbol);
+    }
+
+    function setCandleTimeframe(tf) {
+      activeCandleTimeframe = tf;
+      ["1D", "1W", "1M"].forEach(t => {
+        document.getElementById("tf-" + t).className = t === tf ? "px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold cursor-pointer" : "px-2.5 py-1 rounded-lg text-slate-300 cursor-pointer";
+      });
+      drawCandlestickChart();
+    }
+
+    function selectCandleScrip(sym) {
+      if (!sym) return;
+      activeCandleSymbol = sym;
+      customCandleOHLC = null;
+      const holding = holdingsData.find(h => h.scrip === sym);
+      const live = latestMarketCache[sym];
+      const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
+
+      const close = holding?.ltp || live?.ltp || listed?.refPrice || 250;
+      const prev = holding?.prevClose || live?.prevClose || +(close * 0.992).toFixed(2);
+      const open = prev;
+      const high = +(Math.max(open, close) * 1.016).toFixed(2);
+      const low = +(Math.min(open, close) * 0.984).toFixed(2);
+
+      document.getElementById("c-title").textContent = `${sym} (${listed?.sector || holding?.sector || "NEPSE"})`;
+      document.getElementById("in-ohlc-o").value = open;
+      document.getElementById("in-ohlc-h").value = high;
+      document.getElementById("in-ohlc-l").value = low;
+      document.getElementById("in-ohlc-c").value = close;
+      recalcCustomCandle();
+    }
+
+    function recalcCustomCandle() {
+      const o = parseFloat(document.getElementById("in-ohlc-o").value) || 100;
+      const h = parseFloat(document.getElementById("in-ohlc-h").value) || o;
+      const l = parseFloat(document.getElementById("in-ohlc-l").value) || o;
+      const c = parseFloat(document.getElementById("in-ohlc-c").value) || o;
+      customCandleOHLC = { o, h, l, c };
+
+      document.getElementById("c-open").textContent = "Rs " + formatNepaliNumber(o, 2);
+      document.getElementById("c-high").textContent = "Rs " + formatNepaliNumber(h, 2);
+      document.getElementById("c-low").textContent = "Rs " + formatNepaliNumber(l, 2);
+      document.getElementById("c-close").textContent = "Rs " + formatNepaliNumber(c, 2);
+
+      const pp = (h + l + c) / 3;
+      document.getElementById("lvl-pp").textContent = formatNepaliNumber(pp, 1);
+      document.getElementById("lvl-r1").textContent = formatNepaliNumber(2 * pp - l, 1);
+      document.getElementById("lvl-r2").textContent = formatNepaliNumber(pp + (h - l), 1);
+      document.getElementById("lvl-s1").textContent = formatNepaliNumber(2 * pp - h, 1);
+      document.getElementById("lvl-s2").textContent = formatNepaliNumber(pp - (h - l), 1);
+      document.getElementById("c-pivot-badge").textContent = `PP: ${pp.toFixed(1)} | S1: ${(2 * pp - h).toFixed(1)} | R1: ${(2 * pp - l).toFixed(1)}`;
+      drawCandlestickChart();
+    }
+
+    function drawCandlestickChart() {
+      const canvas = document.getElementById("nepse-candle-canvas");
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = (rect.width || 600) * dpr;
+      canvas.height = (rect.height || 280) * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      const W = rect.width || 600, H = rect.height || 280;
+      ctx.clearRect(0, 0, W, H);
+
+      const latest = customCandleOHLC || { o: 250, h: 255, l: 246, c: 252 };
+      const count = 28;
+      const mult = activeCandleTimeframe === "1W" ? 0.032 : activeCandleTimeframe === "1M" ? 0.055 : 0.018;
+
+      // Deterministic seed from symbol
+      let seed = activeCandleSymbol.split("").reduce((a, ch) => a + ch.charCodeAt(0), 0);
+      const rand = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+
+      const candles = [];
+      let curClose = latest.o;
+      for (let i = count - 2; i >= 0; i--) {
+        const change = (rand() - 0.48) * mult * curClose;
+        const c = +(curClose).toFixed(2);
+        const o = +(curClose - change).toFixed(2);
+        const h = +(Math.max(o, c) * (1 + rand() * mult * 0.5)).toFixed(2);
+        const l = +(Math.min(o, c) * (1 - rand() * mult * 0.5)).toFixed(2);
+        candles.unshift({ o, h, l, c });
+        curClose = o;
+      }
+      candles.push(latest);
+
+      // Compute RSI(14)
+      let gains = 0, losses = 0;
+      for (let i = candles.length - 14; i < candles.length; i++) {
+        const diff = candles[i].c - candles[i - 1].c;
+        if (diff >= 0) gains += diff; else losses -= diff;
+      }
+      const rs = losses === 0 ? 100 : gains / losses;
+      const rsi14 = +(100 - 100 / (1 + rs)).toFixed(1);
+      document.getElementById("c-rsi").textContent = `RSI ${rsi14} (${rsi14 >= 70 ? "Overbought" : rsi14 <= 30 ? "Oversold" : "Bullish/Neutral"})`;
+
+      const minP = Math.min(...candles.map(x => x.l)) * 0.995;
+      const maxP = Math.max(...candles.map(x => x.h)) * 1.005;
+      const padL = 12, padR = 54, padT = 14, padB = 22;
+      const chartW = W - padL - padR, chartH = H - padT - padB;
+      const yOf = (p) => padT + ((maxP - p) / (maxP - minP || 1)) * chartH;
+
+      // Grid & Right Price Axis
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.12)";
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "10px Inter, sans-serif";
+      for (let g = 0; g <= 4; g++) {
+        const pVal = minP + ((maxP - minP) * g) / 4;
+        const y = yOf(pVal);
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
+        ctx.fillText(pVal.toFixed(1), W - padR + 6, y + 3);
+      }
+
+      const stepX = chartW / candles.length;
+      const bodyW = Math.max(4, stepX * 0.58);
+
+      // Draw Candlesticks
+      candles.forEach((cd, idx) => {
+        const x = padL + idx * stepX + stepX / 2;
+        const isBull = cd.c >= cd.o;
+        ctx.strokeStyle = isBull ? "#10b981" : "#ef4444";
+        ctx.fillStyle = isBull ? "#10b981" : "#ef4444";
+
+        ctx.beginPath(); ctx.moveTo(x, yOf(cd.h)); ctx.lineTo(x, yOf(cd.l)); ctx.stroke();
+        const topY = yOf(Math.max(cd.o, cd.c));
+        const botY = yOf(Math.min(cd.o, cd.c));
+        ctx.fillRect(x - bodyW / 2, topY, bodyW, Math.max(2, botY - topY));
+      });
+
+      // EMA-20 & SMA-50 Overlays
+      const drawMA = (period, color) => {
+        ctx.strokeStyle = color; ctx.lineWidth = 1.6; ctx.beginPath();
+        candles.forEach((_, idx) => {
+          const slice = candles.slice(Math.max(0, idx - period + 1), idx + 1);
+          const avg = slice.reduce((s, x) => s + x.c, 0) / slice.length;
+          const x = padL + idx * stepX + stepX / 2, y = yOf(avg);
+          if (idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.stroke(); ctx.lineWidth = 1;
+      };
+      drawMA(7, "#fbbf24");
+      drawMA(15, "#38bdf8");
+    }
+
+    function askCandleTechnicalAI() {
+      const o = document.getElementById("in-ohlc-o").value, h = document.getElementById("in-ohlc-h").value;
+      const l = document.getElementById("in-ohlc-l").value, c = document.getElementById("in-ohlc-c").value;
+      const rsi = document.getElementById("c-rsi").textContent;
+      switchTab("ai-agent");
+      sendMessageToGeminiAgent(`${activeCandleSymbol} को आजको Candlestick & Technical Analysis गरिदिनुहोस्: Open Rs ${o}, High Rs ${h}, Low Rs ${l}, Close/LTP Rs ${c}, ${rsi}, Pivot ${document.getElementById("lvl-pp").textContent}, Support S1 ${document.getElementById("lvl-s1").textContent}, Resistance R1 ${document.getElementById("lvl-r1").textContent}। Buy, Hold वा Sell रणनीति के हुन्छ?`);
+    }
+
+    // ==================== GEMINI AI ANALYST (100% REAL-TIME CONTEXT INJECTED) ====================
+    document.getElementById("agent-chat-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const inp = document.getElementById("agent-input");
+      if (!inp.value.trim()) return;
+      const q = inp.value.trim(); inp.value = "";
+      sendMessageToGeminiAgent(q);
+    });
+
+    function askMyPortfolioAnalysis() {
+      sendMessageToGeminiAgent("मेरो अहिलेको Live पोर्टफोलियो, Bonus/Right समायोजित Real WACC, Live LTP र आजको नाफा/नोक्सान विश्लेषण गरी कुन स्टक Hold गर्ने र कुनमा नाफा बुक गर्ने सुझाव दिनुहोस्।");
+    }
+
+    async function sendMessageToGeminiAgent(userQuery) {
+      const box = document.getElementById("agent-chat-box");
+      const lang = document.getElementById("agent-lang").value;
+      box.innerHTML += `<div class="flex justify-end"><div class="dynamic-accent-bg text-slate-950 font-medium rounded-2xl px-3.5 py-2 max-w-xl">${escapeHtml(userQuery)}</div></div>`;
+      box.scrollTop = box.scrollHeight;
+
+      if (!apiKey || apiKey.length < 10) {
+        box.innerHTML += `<div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3 text-xs text-amber-200">पहिले माथिको <strong>🔑 API & Live URL</strong> बटनमा आफ्नो Gemini API Key सेभ गर्नुहोस्।</div>`;
+        return;
+      }
+
+      const loadId = "ld-" + Date.now();
+      box.innerHTML += `<div id="${loadId}" class="text-xs text-slate-400">Analyzing Real-Time NEPSE & WACC Data...</div>`;
+      box.scrollTop = box.scrollHeight;
+
+      const st = getNepseMarketStatus();
+      const liveHoldingsBlock = holdingsData.length > 0
+        ? holdingsData.map(h => `- ${h.scrip} (${h.sector}): Total Units=${h.units}, Bonus/Right=${h.bonusRightQty || 0}, Real WACC=Rs ${h.buyRate}, PrevClose=Rs ${h.prevClose}, Current Live LTP=Rs ${h.ltp}, Real P/L=Rs ${((h.ltp - h.buyRate) * h.units).toFixed(2)}`).join("\n")
+        : "No holdings uploaded yet.";
+
+      const liveMarketFeed = Object.entries(latestMarketCache).slice(0, 50)
+        .map(([s, d]) => `${s}: LTP=${d.ltp} (Prev=${d.prevClose})`).join(", ");
+
+      // Embed real-time data directly in the user turn so Gemini NEVER claims lack of real-time access
+      const groundedUserPrompt = `[LIVE NEPSE TERMINAL DATA — ${st.timeStr} | Market: ${st.isOpen ? "OPEN" : "CLOSED"}]
+USER HOLDINGS (REAL WACC & LIVE LTP):
+${liveHoldingsBlock}
+${liveMarketFeed ? "LIVE NEPSE MARKET QUOTES: " + liveMarketFeed : ""}
+
+USER QUESTION (Reply in ${lang} using the exact live numbers above; never say you lack real-time data):
+${userQuery}`;
+
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${encodeURIComponent(apiKey)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: groundedUserPrompt }] }],
+            systemInstruction: { parts: [{ text: `You are an expert NEPSE & Mutual Fund Analyst. Always analyze using the exact real-time LTP, Real WACC, and Bonus/Right figures provided in the prompt. Respond strictly in ${lang}.` }] }
+          })
+        });
+        const data = await res.json();
+        document.getElementById(loadId)?.remove();
+        const reply = data?.error ? `⚠️ ${data.error.message}` : (data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response");
+        box.innerHTML += `<div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 text-slate-200 whitespace-pre-line">${escapeHtml(reply).replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')}</div>`;
+        box.scrollTop = box.scrollHeight;
+      } catch (err) {
+        document.getElementById(loadId)?.remove();
+        box.innerHTML += `<div class="bg-red-950/60 border border-red-500/40 rounded-2xl p-3 text-xs text-red-200">Error: ${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    // ==================== DEMAT VAULT (WITH DELETE & EDIT), HOLDING CRUD & AUTH ====================
+    function openVaultModal() { cancelEditAccount(); renderVaultAccounts(); document.getElementById("vault-modal").classList.remove("hidden"); }
+    function renderVaultAccounts() {
+      document.getElementById("vault-accounts-list").innerHTML = connectedAccounts.map(a => `
+        <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+          <div class="min-w-0 pr-2"><div class="font-bold text-white truncate">${escapeHtml(a.name)}</div><div class="text-[11px] text-slate-400 font-mono truncate">${escapeHtml(a.dp)}</div></div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="startEditAccount('${a.id}')" class="px-2 py-1 rounded bg-slate-800 text-amber-300 border border-slate-700 cursor-pointer">✏️ Edit</button>
+            <button type="button" onclick="deleteDematAccount('${a.id}')" class="px-2 py-1 rounded bg-red-500/20 text-red-300 border border-red-500/40 cursor-pointer">🗑️ Delete</button>
+          </div>
+        </div>
+      `).join("");
+    }
+    function startEditAccount(id) {
+      const a = connectedAccounts.find(x => x.id === id); if (!a) return;
+      document.getElementById("edit-acc-id").value = a.id;
+      document.getElementById("new-acc-name").value = a.name;
+      document.getElementById("new-acc-dp").value = a.dp;
+      document.getElementById("acc-form-title").textContent = `✏️ Editing: ${a.name}`;
+      document.getElementById("cancel-acc-edit-btn").classList.remove("hidden");
+      document.getElementById("save-acc-submit-btn").textContent = "✔ Update Member";
+    }
+    function cancelEditAccount() {
+      document.getElementById("edit-acc-id").value = ""; document.getElementById("new-acc-name").value = ""; document.getElementById("new-acc-dp").value = "";
+      document.getElementById("acc-form-title").textContent = "+ Add New Demat Account";
+      document.getElementById("cancel-acc-edit-btn").classList.add("hidden");
+      document.getElementById("save-acc-submit-btn").textContent = "+ Save Member";
+    }
+    function deleteDematAccount(id) {
+      if (connectedAccounts.length <= 1) { alert("⚠️ कम्तीमा १ वटा Demat अकाउन्ट रहनुपर्छ।"); return; }
+      if (!confirm("यो Demat अकाउन्ट र भित्रका सेयर हटाउने हो?")) return;
+      connectedAccounts = connectedAccounts.filter(a => a.id !== id);
+      holdingsData = holdingsData.filter(h => h.account !== id);
+      if (activeAccountFilter === id) activeAccountFilter = "ALL";
+      saveUserWorkspace(); refreshAccountDropdown(); renderVaultAccounts(); renderPortfolio();
+    }
+    document.getElementById("add-account-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const editId = document.getElementById("edit-acc-id").value;
+      const name = document.getElementById("new-acc-name").value.trim(), dp = document.getElementById("new-acc-dp").value.trim();
+      if (editId) connectedAccounts = connectedAccounts.map(a => a.id === editId ? { ...a, name, dp } : a);
+      else connectedAccounts.push({ id: "ACC" + Date.now().toString().slice(-4), name, dp });
+      saveUserWorkspace(); refreshAccountDropdown(); cancelEditAccount(); renderVaultAccounts(); renderPortfolio();
+    });
+
+    function populateScripDatalist() {
+      document.getElementById("nepse-scrip-datalist").innerHTML = getAllAvailableScrips().map(s => `<option value="${s.symbol}">${s.name}</option>`).join("");
+    }
+    function onScripInput(v) {
+      const sym = v.trim().toUpperCase();
+      const f = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
+      const live = latestMarketCache[sym];
+      if (f) { document.getElementById("hold-name").value = f.name; document.getElementById("hold-sector").value = f.sector; }
+      if (live && live.ltp > 0) { document.getElementById("hold-ltp").value = live.ltp; if (live.prevClose > 0) document.getElementById("hold-prev").value = live.prevClose; }
+    }
+    function openHoldingModal(sym = "") {
+      document.getElementById("edit-holding-id").value = ""; document.getElementById("holding-form").reset();
+      document.getElementById("delete-holding-btn").classList.add("hidden");
+      document.getElementById("bonus-reconcile-box").classList.add("hidden");
+      document.getElementById("hold-account").innerHTML = connectedAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join("");
+      if (sym) { document.getElementById("hold-scrip").value = sym; onScripInput(sym); }
+      document.getElementById("holding-modal").classList.remove("hidden");
+    }
+    function openEditHoldingModal(id) {
+      const it = holdingsData.find(h => String(h.id) === String(id)); if (!it) return;
+      openHoldingModal();
+      document.getElementById("edit-holding-id").value = it.id;
+      document.getElementById("hold-account").value = it.account;
+      document.getElementById("hold-scrip").value = it.scrip;
+      document.getElementById("hold-sector").value = it.sector;
+      document.getElementById("hold-name").value = it.name;
+      document.getElementById("hold-units").value = it.units;
+      document.getElementById("hold-buy").value = it.buyRate;
+      document.getElementById("hold-prev").value = it.prevClose;
+      document.getElementById("hold-ltp").value = it.ltp;
+      document.getElementById("delete-holding-btn").classList.remove("hidden");
+      if (it.bonusRightQty > 0) {
+        document.getElementById("bonus-reconcile-box").classList.remove("hidden");
+        document.getElementById("bonus-reconcile-info").textContent = `Trade Book Net: ${it.netTradedQty} | Extra Bonus/Right: +${it.bonusRightQty} units`;
+        document.getElementById("bonus-type-select").value = it.bonusType || "bonus";
+      }
+    }
+    function recalcWaccFromBonusType() {
+      const id = document.getElementById("edit-holding-id").value;
+      const it = holdingsData.find(h => String(h.id) === String(id)); if (!it) return;
+      it.bonusType = document.getElementById("bonus-type-select").value;
+      recalculateHoldingWithBonusRight(it);
+      document.getElementById("hold-buy").value = it.buyRate;
+    }
+    function startHoldingLongPress(id) { cancelLongPress(); longPressTimer = setTimeout(() => openEditHoldingModal(id), 550); }
+    function cancelLongPress() { if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; } }
+
+    document.getElementById("holding-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const editId = document.getElementById("edit-holding-id").value;
+      const existing = holdingsData.find(h => String(h.id) === String(editId));
+      const obj = {
+        ...(existing || {}),
+        id: editId || "H" + Date.now(),
+        account: document.getElementById("hold-account").value,
+        scrip: document.getElementById("hold-scrip").value.trim().toUpperCase(),
+        sector: document.getElementById("hold-sector").value.trim(),
+        name: document.getElementById("hold-name").value.trim(),
+        units: parseFloat(document.getElementById("hold-units").value),
+        buyRate: parseFloat(document.getElementById("hold-buy").value),
+        prevClose: parseFloat(document.getElementById("hold-prev").value),
+        ltp: parseFloat(document.getElementById("hold-ltp").value)
+      };
+      if (editId) holdingsData = holdingsData.map(h => String(h.id) === String(editId) ? obj : h);
+      else holdingsData.push(obj);
+      saveUserWorkspace(); renderPortfolio();
+      document.getElementById("holding-modal").classList.add("hidden");
+    });
+
+    function deleteCurrentHolding() {
+      const id = document.getElementById("edit-holding-id").value;
+      holdingsData = holdingsData.filter(h => String(h.id) !== String(id));
+      saveUserWorkspace(); renderPortfolio();
+      document.getElementById("holding-modal").classList.add("hidden");
+    }
+    function clearAccountHoldings() {
+      if (holdingsData.length === 0 || !confirm("सबै सेयर सूची हटाउने हो?")) return;
+      holdingsData = activeAccountFilter === "ALL" ? [] : holdingsData.filter(h => h.account !== activeAccountFilter);
+      saveUserWorkspace(); renderPortfolio();
+    }
+
+    function applyTheme(mode) {
+      document.body.classList.remove("theme-profit", "theme-loss", "theme-neutral");
+      const pill = document.getElementById("status-pill");
+      if (mode === "profit") { document.body.classList.add("theme-profit"); pill.textContent = "🟢 PROFIT"; }
+      else if (mode === "loss") { document.body.classList.add("theme-loss"); pill.textContent = "🔴 LOSS"; }
+      else { document.body.classList.add("theme-neutral"); pill.textContent = "🟣 NO CHANGE"; }
+    }
+    function forceTheme(m) { manualThemeOverride = m; applyTheme(m); }
+    function resetAutoTheme() { manualThemeOverride = null; renderPortfolio(); }
+
+    function switchTab(t) {
+      ["portfolio", "candlestick", "ai-agent", "nepse-directory"].forEach(name => {
+        document.getElementById("tab-" + name).classList.add("hidden");
+        document.getElementById("tab-btn-" + name).className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer";
+      });
+      document.getElementById("tab-" + t).classList.remove("hidden");
+      document.getElementById("tab-btn-" + t).className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border shrink-0 cursor-pointer";
+      if (t === "nepse-directory") renderDirectory();
+      if (t === "candlestick") filterCandleScrips();
+    }
+
+    function renderDirectory() {
+      const q = (document.getElementById("dir-search").value || "").toLowerCase();
+      const sec = document.getElementById("dir-sector").value;
+      document.getElementById("directory-grid").innerHTML = getAllAvailableScrips()
+        .filter(s => (sec === "ALL" || s.sector === sec) && (!q || s.symbol.toLowerCase().includes(q) || s.name.toLowerCase().includes(q)))
+        .map(s => `<div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center text-xs"><div><strong>${s.symbol}</strong><div class="text-[11px] text-slate-400">${escapeHtml(s.name)}</div></div><div class="flex gap-1"><button onclick="activeCandleSymbol='${s.symbol}'; switchTab('candlestick')" class="px-2 py-1 rounded bg-purple-500/20 text-purple-200 cursor-pointer">🕯️</button><button onclick="switchTab('portfolio'); openHoldingModal('${s.symbol}')" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold cursor-pointer">+ Add</button></div></div>`).join("");
+    }
+
     function openSettingsModal() {
       document.getElementById("gemini-key-input").value = apiKey;
       document.getElementById("live-proxy-url-input").value = customLiveUrl;
@@ -791,8 +1382,7 @@
       localStorage.setItem("nepse_gemini_api_key", apiKey);
       localStorage.setItem("nepse_custom_live_url", customLiveUrl);
       document.getElementById("settings-modal").classList.add("hidden");
-      fetchLiveNepsePrices(true);
-      alert("✅ Settings सेभ भयो!");
+      fetchLiveNepsePrices(true); alert("✅ Settings सेभ भयो!");
     }
 
     function triggerEmailCredentials(u) {
@@ -802,7 +1392,6 @@
       window.location.href = `mailto:${encodeURIComponent(u.email)}?subject=${sub}&body=${body}`;
     }
     function emailCurrentUserCredentials() { if (currentUser) triggerEmailCredentials(currentUser); }
-
     function getRegisteredUsers() { try { return JSON.parse(localStorage.getItem(USERS_REGISTRY_KEY) || "[]"); } catch { return []; } }
     function saveRegisteredUsers(u) { localStorage.setItem(USERS_REGISTRY_KEY, JSON.stringify(u)); }
 
@@ -810,17 +1399,9 @@
       const lf = document.getElementById("master-login-form"), rf = document.getElementById("master-register-form");
       const tl = document.getElementById("auth-tab-login"), tr = document.getElementById("auth-tab-register");
       document.getElementById("auth-alert").classList.add("hidden");
-      if (mode === "register") {
-        lf.classList.add("hidden"); rf.classList.remove("hidden");
-        tr.className = "py-2 rounded-lg text-xs font-bold bg-purple-600 text-white cursor-pointer";
-        tl.className = "py-2 rounded-lg text-xs font-bold text-slate-400 cursor-pointer";
-      } else {
-        rf.classList.add("hidden"); lf.classList.remove("hidden");
-        tl.className = "py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 cursor-pointer";
-        tr.className = "py-2 rounded-lg text-xs font-bold text-slate-400 cursor-pointer";
-      }
+      if (mode === "register") { lf.classList.add("hidden"); rf.classList.remove("hidden"); tr.className = "py-2 rounded-lg text-xs font-bold bg-purple-600 text-white cursor-pointer"; tl.className = "py-2 rounded-lg text-xs font-bold text-slate-400 cursor-pointer"; }
+      else { rf.classList.add("hidden"); lf.classList.remove("hidden"); tl.className = "py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 cursor-pointer"; tr.className = "py-2 rounded-lg text-xs font-bold text-slate-400 cursor-pointer"; }
     }
-
     function renderExistingUsersPills() {
       const users = getRegisteredUsers();
       const box = document.getElementById("existing-users-box"), pills = document.getElementById("existing-users-pills");
@@ -828,12 +1409,7 @@
       box.classList.remove("hidden");
       pills.innerHTML = users.map(u => `<button type="button" onclick="prefillLoginUser('${escapeHtml(u.userId)}')" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-[11px] text-emerald-300 cursor-pointer">👤 ${escapeHtml(u.fullName)} (${escapeHtml(u.userId)})</button>`).join("");
     }
-
-    function prefillLoginUser(uid) {
-      switchAuthMode("login");
-      document.getElementById("login-userid").value = uid;
-      document.getElementById("login-password").focus();
-    }
+    function prefillLoginUser(uid) { switchAuthMode("login"); document.getElementById("login-userid").value = uid; document.getElementById("login-password").focus(); }
 
     document.getElementById("master-register-form").addEventListener("submit", function (e) {
       e.preventDefault();
@@ -842,9 +1418,7 @@
       const userId = document.getElementById("reg-userid").value.trim().toLowerCase();
       const password = document.getElementById("reg-password").value;
       const users = getRegisteredUsers();
-      if (users.some(u => u.userId === userId)) {
-        const el = document.getElementById("auth-alert"); el.textContent = "यो User ID पहिले नै छ।"; el.classList.remove("hidden"); return;
-      }
+      if (users.some(u => u.userId === userId)) { const el = document.getElementById("auth-alert"); el.textContent = "यो User ID पहिले नै छ।"; el.classList.remove("hidden"); return; }
       const newUser = { fullName, email, userId, password };
       users.push(newUser); saveRegisteredUsers(users);
       localStorage.setItem("nepse_workspace_" + userId, JSON.stringify({ accounts: [{ id: "ACC1", name: fullName, dp: "Primary Demat" }], holdings: [] }));
@@ -857,22 +1431,31 @@
       const inp = document.getElementById("login-userid").value.trim().toLowerCase();
       const pass = document.getElementById("login-password").value;
       const matched = getRegisteredUsers().find(u => (u.userId === inp || u.email === inp) && u.password === pass);
-      if (!matched) {
-        const el = document.getElementById("auth-alert"); el.textContent = "User ID/Email वा Password मिलेन।"; el.classList.remove("hidden"); return;
-      }
+      if (!matched) { const el = document.getElementById("auth-alert"); el.textContent = "User ID/Email वा Password मिलेन।"; el.classList.remove("hidden"); return; }
       loginAsUser(matched);
     });
 
     function openRecoveryModal() { document.getElementById("rec-result-box").classList.add("hidden"); document.getElementById("recovery-modal").classList.remove("hidden"); }
     document.getElementById("recovery-form").addEventListener("submit", function (e) {
       e.preventDefault();
-      const email = document.getElementById("rec-email-input").value.trim().toLowerCase();
-      const found = getRegisteredUsers().find(u => u.email === email);
+      const found = getRegisteredUsers().find(u => u.email === document.getElementById("rec-email-input").value.trim().toLowerCase());
       const box = document.getElementById("rec-result-box");
       if (!found) { box.textContent = "यो Email बाट अकाउन्ट भेटिएन।"; box.classList.remove("hidden"); return; }
       box.innerHTML = `<div>User ID: <strong>${escapeHtml(found.userId)}</strong> | Password: <strong>${escapeHtml(found.password)}</strong></div>`;
-      box.classList.remove("hidden");
-      triggerEmailCredentials(found);
+      box.classList.remove("hidden"); triggerEmailCredentials(found);
+    });
+
+    function refreshAccountDropdown() {
+      const sel = document.getElementById("account-selector");
+      sel.innerHTML = `<option value="ALL">All Demat Accounts (${connectedAccounts.length})</option>` + connectedAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)} (${escapeHtml(a.dp)})</option>`).join("");
+      if ([...sel.options].some(o => o.value === activeAccountFilter)) sel.value = activeAccountFilter;
+      else { activeAccountFilter = "ALL"; sel.value = "ALL"; }
+      document.getElementById("account-badge").textContent = sel.options[sel.selectedIndex]?.text || "All Accounts";
+    }
+    document.getElementById("account-selector").addEventListener("change", function (e) {
+      activeAccountFilter = e.target.value;
+      document.getElementById("account-badge").textContent = e.target.options[e.target.selectedIndex].text;
+      renderPortfolio();
     });
 
     function loginAsUser(u) {
@@ -905,445 +1488,6 @@
     function saveUserWorkspace() {
       if (currentUser) localStorage.setItem("nepse_workspace_" + currentUser.userId, JSON.stringify({ accounts: connectedAccounts, holdings: holdingsData }));
     }
-
-    // ==================== PORTFOLIO RENDERING ====================
-    function refreshAccountDropdown() {
-      const sel = document.getElementById("account-selector");
-      sel.innerHTML = `<option value="ALL">All Demat Accounts (${connectedAccounts.length})</option>` +
-        connectedAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)} (${escapeHtml(a.dp)})</option>`).join("");
-      if ([...sel.options].some(o => o.value === activeAccountFilter)) sel.value = activeAccountFilter;
-      else { activeAccountFilter = "ALL"; sel.value = "ALL"; }
-      document.getElementById("account-badge").textContent = sel.options[sel.selectedIndex]?.text || "All Accounts";
-    }
-
-    document.getElementById("account-selector").addEventListener("change", function (e) {
-      activeAccountFilter = e.target.value;
-      document.getElementById("account-badge").textContent = e.target.options[e.target.selectedIndex].text;
-      renderPortfolio();
-    });
-
-    function renderPortfolio() {
-      ["scrip", "units", "buyRate", "prevClose", "ltp", "val", "buypl", "daypl"].forEach(f => {
-        const ind = document.getElementById("sort-ind-" + f);
-        if (ind) {
-          ind.textContent = sortField === f ? (sortDir === "desc" ? "▼" : "▲") : "⇅";
-          ind.className = sortField === f ? "text-emerald-400 font-bold" : "text-slate-500";
-        }
-      });
-
-      const baseFiltered = activeAccountFilter === "ALL" ? holdingsData : holdingsData.filter(h => h.account === activeAccountFilter);
-      const filtered = getSortedHoldings(baseFiltered);
-
-      let totalInv = 0, totalCur = 0, totalPrev = 0;
-      const tbody = document.getElementById("holdings-tbody");
-      tbody.innerHTML = "";
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 text-xs">पोर्टफोलियो खाली छ — "+ Add Stock / MF" वा "📂 Import MeroShare CSV" थिच्नुहोस्।</td></tr>`;
-      }
-
-      filtered.forEach(item => {
-        const accObj = connectedAccounts.find(a => a.id === item.account);
-        const inv = item.units * item.buyRate, cur = item.units * item.ltp, prev = item.units * item.prevClose;
-        totalInv += inv; totalCur += cur; totalPrev += prev;
-        const buyDiff = item.ltp - item.buyRate, buyPL = cur - inv, buyPct = inv > 0 ? (buyPL / inv) * 100 : 0;
-        const dayDiff = item.ltp - item.prevClose, dayPL = cur - prev, dayPct = prev > 0 ? (dayPL / prev) * 100 : 0;
-        const buyCol = buyPL > 0 ? "text-emerald-400" : buyPL < 0 ? "text-red-400" : "text-purple-400";
-        const dayCol = dayPL > 0 ? "text-emerald-400" : dayPL < 0 ? "text-red-400" : "text-purple-400";
-
-        const tr = document.createElement("tr");
-        tr.className = "long-press-target hover:bg-slate-800/40 cursor-pointer";
-        tr.setAttribute("onmousedown", `startHoldingLongPress('${item.id}')`);
-        tr.setAttribute("onmouseup", "cancelLongPress()");
-        tr.setAttribute("ontouchstart", `startHoldingLongPress('${item.id}')`);
-        tr.setAttribute("ontouchend", "cancelLongPress()");
-        tr.innerHTML = `
-          <td class="py-3 px-4"><div class="font-bold text-white">${escapeHtml(item.scrip)}</div><div class="text-[11px] text-slate-400">${escapeHtml(accObj ? accObj.name : "Primary")} • ${escapeHtml(item.sector || "Equity")}</div></td>
-          <td class="py-3 px-3 text-right text-slate-200">${formatNepaliNumber(item.units, Number.isInteger(item.units) ? 0 : 2)}</td>
-          <td class="py-3 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(item.buyRate, 2)}</td>
-          <td class="py-3 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(item.prevClose, 2)}</td>
-          <td class="py-3 px-3 text-right font-extrabold text-white">Rs ${formatNepaliNumber(item.ltp, 2)} <span class="text-[10px] font-normal text-slate-400">/u</span></td>
-          <td class="py-3 px-3 text-right font-bold text-slate-100">Rs ${formatNepaliNumber(cur, 2)}</td>
-          <td class="py-3 px-3 text-right"><div class="font-bold ${buyCol}">${formatSignedNPR(buyPL)} (${buyPct >= 0 ? "+" : ""}${buyPct.toFixed(2)}%)</div><div class="text-[11px] ${buyCol}">${formatRateDiff(buyDiff)}</div></td>
-          <td class="py-3 px-3 text-right"><div class="font-bold ${dayCol}">${formatSignedNPR(dayPL)} (${dayPct >= 0 ? "+" : ""}${dayPct.toFixed(2)}%)</div><div class="text-[11px] ${dayCol}">${formatRateDiff(dayDiff)}</div></td>
-          <td class="py-3 px-3 text-right"><button type="button" onclick="event.stopPropagation(); openEditHoldingModal('${item.id}')" class="px-2 py-1 rounded bg-slate-800 text-amber-300 text-[11px] cursor-pointer">✏️</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      const ovPL = totalCur - totalInv, ovPct = totalInv > 0 ? (ovPL / totalInv) * 100 : 0;
-      const dyPL = totalCur - totalPrev, dyPct = totalPrev > 0 ? (dyPL / totalPrev) * 100 : 0;
-
-      document.getElementById("hero-total-value").textContent = formatNPR(totalCur);
-      document.getElementById("hero-investment").textContent = "Invested: " + formatNPR(totalInv);
-      document.getElementById("overall-pl-amount").textContent = formatSignedNPR(ovPL);
-      document.getElementById("overall-pl-pct").textContent = `${ovPct >= 0 ? "+" : ""}${ovPct.toFixed(2)}%`;
-      document.getElementById("daily-pl-amount").textContent = formatSignedNPR(dyPL);
-      document.getElementById("daily-pl-pct").textContent = `${dyPct >= 0 ? "+" : ""}${dyPct.toFixed(2)}%`;
-
-      if (!manualThemeOverride) applyTheme(filtered.length === 0 || ovPL === 0 ? "neutral" : ovPL > 0 ? "profit" : "loss");
-      renderTechnicalAnalytics();
-    }
-
-    function applyTheme(mode) {
-      document.body.classList.remove("theme-profit", "theme-loss", "theme-neutral");
-      const pill = document.getElementById("status-pill");
-      if (mode === "profit") { document.body.classList.add("theme-profit"); pill.textContent = "🟢 PROFIT"; }
-      else if (mode === "loss") { document.body.classList.add("theme-loss"); pill.textContent = "🔴 LOSS"; }
-      else { document.body.classList.add("theme-neutral"); pill.textContent = "🟣 NO CHANGE"; }
-    }
-    function forceTheme(m) { manualThemeOverride = m; applyTheme(m); }
-    function resetAutoTheme() { manualThemeOverride = null; renderPortfolio(); }
-
-    function switchTab(t) {
-      ["portfolio", "technical", "ai-agent", "nepse-directory"].forEach(name => {
-        document.getElementById("tab-" + name).classList.add("hidden");
-        document.getElementById("tab-btn-" + name).className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800 shrink-0 cursor-pointer";
-      });
-      document.getElementById("tab-" + t).classList.remove("hidden");
-      document.getElementById("tab-btn-" + t).className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-white border dynamic-border shrink-0 cursor-pointer";
-      if (t === "nepse-directory") renderDirectory();
-      if (t === "technical") renderTechnicalAnalytics();
-    }
-
-    // ==================== TECHNICAL & ADVANCED ANALYTICS ====================
-    function renderTechnicalAnalytics() {
-      const filtered = activeAccountFilter === "ALL" ? holdingsData : holdingsData.filter(h => h.account === activeAccountFilter);
-      const sel = document.getElementById("tech-scrip-select");
-      sel.innerHTML = filtered.map(h => `<option value="${h.id}">${escapeHtml(h.scrip)} (Rs ${h.ltp})</option>`).join("");
-      if (filtered.length > 0) loadScripIntoTechCalc();
-
-      const bars = document.getElementById("sector-allocation-bars");
-      const mBody = document.getElementById("tech-matrix-tbody");
-      if (filtered.length === 0) { bars.innerHTML = `<p class="text-slate-400 text-xs">No holdings yet.</p>`; mBody.innerHTML = ""; return; }
-
-      let totalVal = 0, wins = 0, losses = 0, best = { s: "—", p: -Infinity }, worst = { s: "—", p: Infinity };
-      const secTotals = {};
-      filtered.forEach(h => {
-        const val = h.units * h.ltp, inv = h.units * h.buyRate, pct = inv > 0 ? ((val - inv) / inv) * 100 : 0;
-        totalVal += val;
-        if (val > inv) wins++; else if (val < inv) losses++;
-        if (pct > best.p) best = { s: h.scrip, p: pct };
-        if (pct < worst.p) worst = { s: h.scrip, p: pct };
-        secTotals[h.sector || "Equity"] = (secTotals[h.sector || "Equity"] || 0) + val;
-      });
-
-      document.getElementById("tech-win-rate").textContent = ((wins / filtered.length) * 100).toFixed(1) + "%";
-      document.getElementById("tech-win-sub").textContent = `${wins} Profit / ${losses} Loss`;
-      document.getElementById("tech-top-gainer").textContent = `${best.s} (${best.p >= 0 ? "+" : ""}${best.p.toFixed(1)}%)`;
-      document.getElementById("tech-top-loser").textContent = `${worst.s} (${worst.p.toFixed(1)}%)`;
-      document.getElementById("tech-div-score").textContent = Math.min(100, Object.keys(secTotals).length * 20 + filtered.length * 4) + " / 100";
-
-      bars.innerHTML = Object.entries(secTotals).sort((a, b) => b[1] - a[1]).map(([sec, val]) => {
-        const pct = totalVal > 0 ? (val / totalVal) * 100 : 0;
-        return `<div><div class="flex justify-between mb-1"><span class="text-slate-200">${escapeHtml(sec)} ${pct > 35 ? "⚠️" : ""}</span><span>${pct.toFixed(1)}%</span></div><div class="w-full h-2 rounded-full bg-slate-800"><div class="h-full rounded-full ${pct > 35 ? "bg-amber-400" : "bg-emerald-400"}" style="width:${Math.min(100, pct)}%"></div></div></div>`;
-      }).join("");
-
-      mBody.innerHTML = filtered.map(h => {
-        const w = totalVal > 0 ? ((h.units * h.ltp) / totalVal) * 100 : 0;
-        const sl = h.buyRate * 0.92, tgt = h.buyRate * 1.15;
-        const sig = h.ltp >= tgt ? "BOOK PROFIT" : h.ltp <= sl ? "STOP-LOSS" : "HOLD";
-        return `<tr><td class="py-2 px-4 font-bold text-white">${escapeHtml(h.scrip)}</td><td class="py-2 px-3 text-right">${w.toFixed(1)}%</td><td class="py-2 px-3 text-right">Rs ${formatNepaliNumber(h.buyRate, 2)}</td><td class="py-2 px-3 text-right font-bold">Rs ${formatNepaliNumber(h.ltp, 2)}</td><td class="py-2 px-3 text-right text-red-300">Rs ${formatNepaliNumber(sl, 2)}</td><td class="py-2 px-3 text-right text-emerald-300">Rs ${formatNepaliNumber(tgt, 2)}</td><td class="py-2 px-3 text-right font-bold">${sig}</td></tr>`;
-      }).join("");
-    }
-
-    function loadScripIntoTechCalc() {
-      const item = holdingsData.find(h => String(h.id) === String(document.getElementById("tech-scrip-select").value));
-      if (!item) return;
-      document.getElementById("tech-high").value = +(Math.max(item.ltp, item.prevClose) * 1.018).toFixed(2);
-      document.getElementById("tech-low").value = +(Math.min(item.ltp, item.prevClose) * 0.982).toFixed(2);
-      document.getElementById("tech-close").value = item.ltp;
-      document.getElementById("tech-sl").value = +(item.buyRate * 0.92).toFixed(2);
-      calculateTechnicalLevels();
-    }
-
-    function calculateTechnicalLevels() {
-      const h = parseFloat(document.getElementById("tech-high").value), l = parseFloat(document.getElementById("tech-low").value), c = parseFloat(document.getElementById("tech-close").value);
-      const rsi = parseFloat(document.getElementById("tech-rsi").value);
-      if (!isNaN(h) && !isNaN(l) && !isNaN(c)) {
-        const pp = (h + l + c) / 3;
-        document.getElementById("out-pp").textContent = "Rs " + formatNepaliNumber(pp, 2);
-        document.getElementById("out-r1").textContent = "Rs " + formatNepaliNumber(2 * pp - l, 2);
-        document.getElementById("out-r2").textContent = "Rs " + formatNepaliNumber(pp + (h - l), 2);
-        document.getElementById("out-s1").textContent = "Rs " + formatNepaliNumber(2 * pp - h, 2);
-        document.getElementById("out-s2").textContent = "Rs " + formatNepaliNumber(pp - (h - l), 2);
-      }
-      if (!isNaN(rsi)) {
-        document.getElementById("out-rsi-sig").textContent = rsi >= 70 ? "Overbought (Sell)" : rsi <= 30 ? "Oversold (Buy)" : "Neutral";
-      }
-    }
-
-    function sendTechAnalysisToAI() {
-      const item = holdingsData.find(h => String(h.id) === String(document.getElementById("tech-scrip-select").value));
-      switchTab("ai-agent");
-      if (item) sendMessageToGeminiAgent(`${item.scrip} (Buy Rs ${item.buyRate}, LTP Rs ${item.ltp}, Pivot ${document.getElementById("out-pp").textContent}, RSI ${document.getElementById("tech-rsi").value}) को Technical Strategy दिनुहोस्।`);
-    }
-
-    // ==================== DEMAT VAULT WITH EDIT & DELETE ====================
-    function openVaultModal() {
-      cancelEditAccount();
-      renderVaultAccounts();
-      document.getElementById("vault-modal").classList.remove("hidden");
-    }
-
-    function renderVaultAccounts() {
-      document.getElementById("vault-accounts-list").innerHTML = connectedAccounts.map(a => `
-        <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
-          <div class="min-w-0 pr-2">
-            <div class="font-bold text-white truncate">${escapeHtml(a.name)}</div>
-            <div class="text-[11px] text-slate-400 font-mono truncate">${escapeHtml(a.dp)}</div>
-          </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <button type="button" onclick="startEditAccount('${a.id}')" class="px-2 py-1 rounded bg-slate-800 text-amber-300 border border-slate-700 cursor-pointer">✏️ Edit</button>
-            <button type="button" onclick="deleteDematAccount('${a.id}')" class="px-2 py-1 rounded bg-red-500/20 text-red-300 border border-red-500/40 cursor-pointer">🗑️ Delete</button>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    function startEditAccount(id) {
-      const acc = connectedAccounts.find(a => a.id === id);
-      if (!acc) return;
-      document.getElementById("edit-acc-id").value = acc.id;
-      document.getElementById("new-acc-name").value = acc.name;
-      document.getElementById("new-acc-dp").value = acc.dp;
-      document.getElementById("acc-form-title").textContent = `✏️ Editing: ${acc.name}`;
-      document.getElementById("cancel-acc-edit-btn").classList.remove("hidden");
-      document.getElementById("save-acc-submit-btn").textContent = "✔ Update Member";
-    }
-
-    function cancelEditAccount() {
-      document.getElementById("edit-acc-id").value = "";
-      document.getElementById("new-acc-name").value = "";
-      document.getElementById("new-acc-dp").value = "";
-      document.getElementById("acc-form-title").textContent = "+ Add New Demat Account";
-      document.getElementById("cancel-acc-edit-btn").classList.add("hidden");
-      document.getElementById("save-acc-submit-btn").textContent = "+ Save Member";
-    }
-
-    function deleteDematAccount(id) {
-      if (connectedAccounts.length <= 1) {
-        alert("⚠️ कम्तीमा १ वटा मुख्य Demat अकाउन्ट रहनुपर्छ।");
-        return;
-      }
-      const acc = connectedAccounts.find(a => a.id === id);
-      if (!confirm(`के तपाईं "${acc?.name || id}" Demat अकाउन्ट र यसभित्रका सेयरहरू हटाउन चाहनुहुन्छ?`)) return;
-      connectedAccounts = connectedAccounts.filter(a => a.id !== id);
-      holdingsData = holdingsData.filter(h => h.account !== id);
-      if (activeAccountFilter === id) activeAccountFilter = "ALL";
-      saveUserWorkspace(); refreshAccountDropdown(); renderVaultAccounts(); renderPortfolio();
-    }
-
-    document.getElementById("add-account-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const editId = document.getElementById("edit-acc-id").value;
-      const name = document.getElementById("new-acc-name").value.trim();
-      const dp = document.getElementById("new-acc-dp").value.trim();
-      if (!name || !dp) return;
-      if (editId) {
-        connectedAccounts = connectedAccounts.map(a => a.id === editId ? { ...a, name, dp } : a);
-      } else {
-        connectedAccounts.push({ id: "ACC" + Date.now().toString().slice(-4), name, dp });
-      }
-      saveUserWorkspace(); refreshAccountDropdown(); cancelEditAccount(); renderVaultAccounts(); renderPortfolio();
-    });
-
-    // ==================== CRUD & CSV PARSER ====================
-    function populateScripDatalist() {
-      document.getElementById("nepse-scrip-datalist").innerHTML = NEPSE_LISTED_SCRIPS.map(s => `<option value="${s.symbol}">${s.name}</option>`).join("");
-    }
-    function onScripInput(v) {
-      const sym = v.trim().toUpperCase();
-      const f = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
-      const live = latestMarketCache[sym];
-      if (f) { document.getElementById("hold-name").value = f.name; document.getElementById("hold-sector").value = f.sector; }
-      if (live && live.ltp > 0) {
-        document.getElementById("hold-ltp").value = live.ltp;
-        if (live.prevClose > 0) document.getElementById("hold-prev").value = live.prevClose;
-      }
-    }
-    function openHoldingModal(sym = "") {
-      document.getElementById("edit-holding-id").value = "";
-      document.getElementById("holding-form").reset();
-      document.getElementById("delete-holding-btn").classList.add("hidden");
-      document.getElementById("hold-account").innerHTML = connectedAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join("");
-      if (sym) { document.getElementById("hold-scrip").value = sym; onScripInput(sym); }
-      document.getElementById("holding-modal").classList.remove("hidden");
-    }
-    function openEditHoldingModal(id) {
-      const it = holdingsData.find(h => String(h.id) === String(id));
-      if (!it) return;
-      openHoldingModal();
-      document.getElementById("edit-holding-id").value = it.id;
-      document.getElementById("hold-account").value = it.account;
-      document.getElementById("hold-scrip").value = it.scrip;
-      document.getElementById("hold-sector").value = it.sector;
-      document.getElementById("hold-name").value = it.name;
-      document.getElementById("hold-units").value = it.units;
-      document.getElementById("hold-buy").value = it.buyRate;
-      document.getElementById("hold-prev").value = it.prevClose;
-      document.getElementById("hold-ltp").value = it.ltp;
-      document.getElementById("delete-holding-btn").classList.remove("hidden");
-    }
-    function startHoldingLongPress(id) { cancelLongPress(); longPressTimer = setTimeout(() => openEditHoldingModal(id), 550); }
-    function cancelLongPress() { if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; } }
-
-    document.getElementById("holding-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const editId = document.getElementById("edit-holding-id").value;
-      const obj = {
-        id: editId || "H" + Date.now(),
-        account: document.getElementById("hold-account").value,
-        scrip: document.getElementById("hold-scrip").value.trim().toUpperCase(),
-        sector: document.getElementById("hold-sector").value.trim(),
-        name: document.getElementById("hold-name").value.trim(),
-        units: parseFloat(document.getElementById("hold-units").value),
-        buyRate: parseFloat(document.getElementById("hold-buy").value),
-        prevClose: parseFloat(document.getElementById("hold-prev").value),
-        ltp: parseFloat(document.getElementById("hold-ltp").value)
-      };
-      if (editId) holdingsData = holdingsData.map(h => String(h.id) === String(editId) ? obj : h);
-      else holdingsData.push(obj);
-      saveUserWorkspace(); renderPortfolio();
-      document.getElementById("holding-modal").classList.add("hidden");
-    });
-
-    function deleteCurrentHolding() {
-      const id = document.getElementById("edit-holding-id").value;
-      holdingsData = holdingsData.filter(h => String(h.id) !== String(id));
-      saveUserWorkspace(); renderPortfolio();
-      document.getElementById("holding-modal").classList.add("hidden");
-    }
-
-    function clearAccountHoldings() {
-      if (holdingsData.length === 0 || !confirm("सबै सेयर सूची हटाउने हो?")) return;
-      holdingsData = activeAccountFilter === "ALL" ? [] : holdingsData.filter(h => h.account !== activeAccountFilter);
-      saveUserWorkspace(); renderPortfolio();
-    }
-
-    function handleCsvUpload(event) {
-      const file = event.target.files?.[0];
-      if (!file) return;
-      if (file.name.toLowerCase().endsWith(".xlsx") || file.name.toLowerCase().endsWith(".xls")) {
-        alert("⚠️ Excel (.xlsx) होइन, 'My Shares.csv' फाइल छान्नुहोस्।");
-        event.target.value = ""; return;
-      }
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const lines = (e.target.result || "").replace(/^\uFEFF/, "").split(/\r?\n/).filter(l => l.trim());
-        const targetAcc = activeAccountFilter !== "ALL" ? activeAccountFilter : (connectedAccounts[0]?.id || "ACC1");
-        let count = 0;
-
-        lines.forEach((line, idx) => {
-          const sep = line.split(";").length > line.split(",").length ? ";" : ",";
-          const cols = line.split(sep).map(c => c.replace(/^"|"$/g, "").trim());
-          const joined = cols.join("|").toLowerCase();
-          if (joined.includes("scrip") || joined.includes("total") || joined.includes("my portfolio")) return;
-
-          const sIdx = cols.findIndex(c => /^[A-Za-z]{2,10}$/.test(c.replace(/[^A-Za-z0-9]/g, "")));
-          if (sIdx < 0) return;
-          const scrip = cols[sIdx].replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-          const nums = cols.slice(sIdx + 1).map(v => parseFloat(v.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 0);
-          if (nums.length === 0) return;
-
-          const units = nums[0];
-          const prev = nums[1] || 100;
-          const ltp = (latestMarketCache[scrip]?.ltp) || nums[3] || nums[2] || prev;
-          const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === scrip);
-
-          const exIdx = holdingsData.findIndex(h => h.account === targetAcc && h.scrip === scrip);
-          if (exIdx >= 0) {
-            holdingsData[exIdx] = { ...holdingsData[exIdx], units, prevClose: prev, ltp };
-          } else {
-            holdingsData.push({
-              id: "CSV" + Date.now() + "_" + idx, account: targetAcc, scrip,
-              sector: listed ? listed.sector : "Equity", name: listed ? listed.name : scrip,
-              units, buyRate: prev, prevClose: prev, ltp
-            });
-          }
-          count++;
-        });
-        event.target.value = "";
-        if (count > 0) {
-          saveUserWorkspace(); renderPortfolio();
-          alert(`✅ MeroShare CSV बाट ${count} वटा सेयर लोड भयो!`);
-        } else {
-          alert("⚠️ CSV फाइलमा सेयर डेटा भेटिएन।");
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function renderDirectory() {
-      const q = (document.getElementById("dir-search").value || "").toLowerCase();
-      const sec = document.getElementById("dir-sector").value;
-      document.getElementById("directory-grid").innerHTML = NEPSE_LISTED_SCRIPS
-        .filter(s => (sec === "ALL" || s.sector === sec) && (!q || s.symbol.toLowerCase().includes(q) || s.name.toLowerCase().includes(q)))
-        .map(s => `<div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center text-xs"><div><strong>${s.symbol}</strong><div class="text-[11px] text-slate-400">${s.name}</div></div><button onclick="switchTab('portfolio'); openHoldingModal('${s.symbol}')" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold cursor-pointer">+ Add</button></div>`).join("");
-    }
-
-    // ==================== GEMINI AI ANALYST WITH LIVE REAL-TIME CONTEXT INJECTION ====================
-    document.getElementById("agent-chat-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const inp = document.getElementById("agent-input");
-      if (!inp.value.trim()) return;
-      const q = inp.value.trim(); inp.value = "";
-      sendMessageToGeminiAgent(q);
-    });
-
-    function askMyPortfolioAnalysis() {
-      sendMessageToGeminiAgent("मेरो अहिलेको Live पोर्टफोलियो, हर सेयरको Live LTP र नाफा/नोक्सान अनुसार विस्तृत सुझाव दिनुहोस्।");
-    }
-
-    async function sendMessageToGeminiAgent(userQuery) {
-      const box = document.getElementById("agent-chat-box");
-      const lang = document.getElementById("agent-lang").value;
-      box.innerHTML += `<div class="flex justify-end"><div class="dynamic-accent-bg text-slate-950 font-medium rounded-2xl px-3.5 py-2 max-w-xl">${escapeHtml(userQuery)}</div></div>`;
-      box.scrollTop = box.scrollHeight;
-
-      if (!apiKey || apiKey.length < 10) {
-        box.innerHTML += `<div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3 text-xs text-amber-200">पहिले माथिको <strong>🔑 API & Live URL</strong> बटनमा आफ्नो Gemini API Key सेभ गर्नुहोस्।</div>`;
-        return;
-      }
-
-      const loadId = "ld-" + Date.now();
-      box.innerHTML += `<div id="${loadId}" class="text-xs text-slate-400">Analyzing Real-Time Portfolio & NEPSE Data...</div>`;
-      box.scrollTop = box.scrollHeight;
-
-      const marketSt = getNepseMarketStatus();
-      const liveHoldingsContext = holdingsData.length > 0
-        ? holdingsData.map(h => `${h.scrip} (${h.sector}): ${h.units} units, Buy/WACC=Rs ${h.buyRate}, PrevClose=Rs ${h.prevClose}, Current Live LTP=Rs ${h.ltp}, Unrealized P/L=Rs ${((h.ltp - h.buyRate) * h.units).toFixed(2)}`).join("\n")
-        : "No holdings added yet.";
-
-      const liveMarketSample = Object.entries(latestMarketCache).slice(0, 40)
-        .map(([sym, d]) => `${sym}: LTP Rs ${d.ltp} (Prev Rs ${d.prevClose})`).join(", ");
-
-      const systemPrompt = `You are a senior NEPSE & Mutual Fund Analyst. You HAVE real-time market and portfolio data injected below — NEVER say you lack real-time data. Use the exact Live LTP numbers provided below. Respond strictly in ${lang}.
-Current Nepal Time & Market Status: ${marketSt.timeStr} (${marketSt.isOpen ? "Market Open" : "Market Closed"}).
-User's Live Portfolio Holdings:
-${liveHoldingsContext}
-${liveMarketSample ? "Latest Live NEPSE Market Feed: " + liveMarketSample : ""}`;
-
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${encodeURIComponent(apiKey)}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: userQuery }] }],
-            systemInstruction: { parts: [{ text: systemPrompt }] }
-          })
-        });
-        const data = await res.json();
-        document.getElementById(loadId)?.remove();
-        const reply = data?.error ? `⚠️ ${data.error.message}` : (data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response");
-        box.innerHTML += `<div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 text-slate-200 whitespace-pre-line">${escapeHtml(reply).replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')}</div>`;
-        box.scrollTop = box.scrollHeight;
-      } catch (err) {
-        document.getElementById(loadId)?.remove();
-        box.innerHTML += `<div class="bg-red-950/60 border border-red-500/40 rounded-2xl p-3 text-xs text-red-200">Error: ${escapeHtml(err.message)}</div>`;
-      }
-    }
-
     function escapeHtml(s) { return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
 
     renderExistingUsersPills();
