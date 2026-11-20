@@ -82,6 +82,9 @@
             class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500" />
         </div>
         <button type="submit" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm cursor-pointer">Unlock My Portfolio</button>
+        <button type="button" id="biometric-login-btn" onclick="loginWithBiometrics()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 font-bold text-xs cursor-pointer flex items-center justify-center gap-2">
+          <span>🪪 Sign In with Face ID / Biometrics</span>
+        </button>
       </form>
 
       <form id="master-register-form" class="hidden space-y-3">
@@ -157,7 +160,7 @@
       <div class="flex items-center gap-2">
         <select id="account-selector" class="flex-1 sm:w-48 px-3 py-2 rounded-xl bg-slate-900 border dynamic-border text-xs font-semibold text-white cursor-pointer"></select>
         <button onclick="openVaultModal()" class="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-semibold text-white shrink-0 cursor-pointer">👥 Demat</button>
-        <button onclick="openSettingsModal()" class="hidden sm:flex px-2.5 py-2 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs font-bold text-amber-300 cursor-pointer shrink-0">🔑 API & Live URL</button>
+        <button onclick="openSettingsModal()" class="hidden sm:flex px-2.5 py-2 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs font-bold text-amber-300 cursor-pointer shrink-0">🔑 API & Face ID</button>
         <button onclick="emailCurrentUserCredentials()" class="hidden sm:flex px-2.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-emerald-300 cursor-pointer">📧 ID/Pass</button>
         <button id="logout-btn-desktop" class="hidden sm:flex px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-white cursor-pointer">Lock</button>
       </div>
@@ -257,8 +260,7 @@
                 <th onclick="toggleSort('scrip')" class="py-3 px-4 cursor-pointer hover:text-emerald-300">Scrip & Status <span id="sort-ind-scrip">⇅</span></th>
                 <th onclick="toggleSort('units')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Units <span id="sort-ind-units">⇅</span></th>
                 <th onclick="toggleSort('buyRate')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Buy WACC <span id="sort-ind-buyRate">⇅</span></th>
-                <th onclick="toggleSort('prevClose')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Prev Close <span id="sort-ind-prevClose">⇅</span></th>
-                <th onclick="toggleSort('ltp')" class="py-3 px-3 text-right text-emerald-300 cursor-pointer hover:text-white">Live LTP / Unit <span id="sort-ind-ltp">⇅</span></th>
+                <th onclick="toggleSort('ltp')" class="py-3 px-3 text-right text-emerald-300 cursor-pointer hover:text-white">Live LTP (% Chg) / Prev & Qty <span id="sort-ind-ltp">⇅</span></th>
                 <th onclick="toggleSort('val')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Total Value <span id="sort-ind-val">⇅</span></th>
                 <th onclick="toggleSort('buypl')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Real Profit/Loss <span id="sort-ind-buypl">⇅</span></th>
                 <th onclick="toggleSort('daypl')" class="py-3 px-3 text-right cursor-pointer hover:text-emerald-300">Today P/L <span id="sort-ind-daypl">⇅</span></th>
@@ -483,7 +485,7 @@
   <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
     <div class="glass-card w-full max-w-md rounded-2xl border border-slate-700 p-5 space-y-3">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-        <h3 class="text-sm font-bold text-white">🔑 Gemini API Key & Live NEPSE URL</h3>
+        <h3 class="text-sm font-bold text-white">🔑 Gemini API Key, Live URL & Face ID</h3>
         <button onclick="document.getElementById('settings-modal').classList.add('hidden')" class="text-slate-400 font-bold px-2 cursor-pointer">✕</button>
       </div>
       <div>
@@ -494,6 +496,16 @@
         <label class="block text-[11px] text-emerald-300 mb-1">Google Apps Script Live NEPSE URL (१००% Real-Time का लागि)</label>
         <input id="live-proxy-url-input" type="text" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono" />
       </div>
+      <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-white">🪪 Face ID / Biometric Login</span>
+          <span id="biometric-status-badge" class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300">Not Enrolled</span>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" onclick="registerBiometricsForCurrentUser()" class="flex-1 py-2 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/45 text-indigo-200 border border-indigo-500/40 text-xs font-bold cursor-pointer">Enable / Re-enroll Face ID</button>
+          <button type="button" id="biometric-disable-btn" onclick="disableBiometricsForCurrentUser()" class="hidden px-3 py-2 rounded-xl bg-red-500/20 text-red-300 border border-red-500/40 text-xs font-bold cursor-pointer">Disable</button>
+        </div>
+      </div>
       <button onclick="saveAppSettings()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">Save & Sync</button>
     </div>
   </div>
@@ -502,6 +514,7 @@
     let apiKey = localStorage.getItem("nepse_gemini_api_key") || "";
     let customLiveUrl = localStorage.getItem("nepse_custom_live_url") || "";
     const USERS_REGISTRY_KEY = "nepse_cloudpulse_users_v3";
+    const BIOMETRIC_CREDS_KEY = "nepse_biometric_creds_v1";
     let currentUser = null, holdingsData = [], connectedAccounts = [], activeAccountFilter = "ALL";
     let manualThemeOverride = null, longPressTimer = null, autoLiveInterval = null;
     let sortField = "default", sortDir = "desc", latestMarketCache = {};
@@ -973,52 +986,98 @@
       }
     }
 
+    function fetchServerNepseText() {
+      return new Promise((resolve) => {
+        if (typeof google !== "undefined" && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler((text) => resolve(text || ""))
+            .withFailureHandler(() => resolve(""))
+            .fetchLiveNepseFromServer();
+        } else {
+          resolve("");
+        }
+      });
+    }
+
     async function fetchLiveNepsePrices(isManual = false) {
       const btn = document.getElementById("fetch-live-btn");
       const syncLabel = document.getElementById("last-rate-sync-label");
       const srcPill = document.getElementById("live-source-pill");
       if (btn) btn.textContent = "⏳ Syncing...";
 
-      const ts = Date.now();
-      const endpoints = [];
-      if (customLiveUrl && customLiveUrl.startsWith("http")) {
-        endpoints.push(customLiveUrl + (customLiveUrl.includes("?") ? "&" : "?") + "t=" + ts);
-      }
-      endpoints.push(
-        "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market?_=" + ts),
-        "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market?_=" + ts),
-        "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://www.sharesansar.com/live-trading?_=" + ts)
-      );
-
       let updatedCount = 0;
-      for (const url of endpoints) {
-        try {
-          const controller = new AbortController();
-          const timer = setTimeout(() => controller.abort(), 7000);
-          const res = await fetch(url, { signal: controller.signal, cache: "no-store" });
-          clearTimeout(timer);
-          if (!res.ok) continue;
-          const map = extractPricesFromText(await res.text());
-          if (Object.keys(map).length > 5) {
-            latestMarketCache = map;
-            holdingsData = holdingsData.map(h => {
-              const found = map[h.scrip];
-              if (found && found.ltp > 0) {
-                updatedCount++;
-                return { ...h, ltp: found.ltp, prevClose: found.prevClose > 0 ? found.prevClose : h.prevClose };
-              }
-              return h;
-            });
-            break;
-          }
-        } catch (e) {}
+      let usedAppsScriptServer = false;
+
+      const serverRaw = await fetchServerNepseText();
+      if (serverRaw) {
+        const serverMap = extractPricesFromText(serverRaw);
+        if (Object.keys(serverMap).length > 5) {
+          latestMarketCache = serverMap;
+          holdingsData = holdingsData.map(h => {
+            const found = serverMap[h.scrip];
+            if (found && found.ltp > 0) {
+              updatedCount++;
+              return {
+                ...h,
+                ltp: found.ltp,
+                prevClose: found.prevClose > 0 ? found.prevClose : h.prevClose,
+                pctChange: typeof found.pctChange === "number" ? found.pctChange : h.pctChange,
+                marketQty: typeof found.qty === "number" ? found.qty : h.marketQty
+              };
+            }
+            return h;
+          });
+          usedAppsScriptServer = true;
+        }
+      }
+
+      if (!usedAppsScriptServer) {
+        const ts = Date.now();
+        const endpoints = [];
+        if (customLiveUrl && customLiveUrl.startsWith("http")) {
+          endpoints.push(customLiveUrl + (customLiveUrl.includes("?") ? "&" : "?") + "t=" + ts);
+        }
+        endpoints.push(
+          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market?_=" + ts),
+          "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://nepsealpha.com/trading/1/live-market?_=" + ts),
+          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://www.sharesansar.com/live-trading?_=" + ts)
+        );
+
+        for (const url of endpoints) {
+          try {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 7000);
+            const res = await fetch(url, { signal: controller.signal, cache: "no-store" });
+            clearTimeout(timer);
+            if (!res.ok) continue;
+            const map = extractPricesFromText(await res.text());
+            if (Object.keys(map).length > 5) {
+              latestMarketCache = map;
+              holdingsData = holdingsData.map(h => {
+                const found = map[h.scrip];
+                if (found && found.ltp > 0) {
+                  updatedCount++;
+                  return {
+                    ...h,
+                    ltp: found.ltp,
+                    prevClose: found.prevClose > 0 ? found.prevClose : h.prevClose,
+                    pctChange: typeof found.pctChange === "number" ? found.pctChange : h.pctChange,
+                    marketQty: typeof found.qty === "number" ? found.qty : h.marketQty
+                  };
+                }
+                return h;
+              });
+              break;
+            }
+          } catch (e) {}
+        }
       }
 
       if (Object.keys(latestMarketCache).length > 5) {
         saveUserWorkspace(); renderPortfolio();
         const t = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
         syncLabel.textContent = `Live Synced (${updatedCount} updated @ ${t})`;
-        srcPill.textContent = customLiveUrl ? "Source: Google Live Server" : "Source: Live NEPSE Web";
+        srcPill.textContent = usedAppsScriptServer ? "Source: Apps Script Server" : (customLiveUrl ? "Source: Google Live Server" : "Source: Live NEPSE Web");
       } else {
         let snapUpdated = 0;
         holdingsData = holdingsData.map(h => {
@@ -1042,6 +1101,12 @@
 
     function extractPricesFromText(rawText) {
       const priceMap = {};
+      const parseNum = (val) => {
+        if (val === undefined || val === null) return NaN;
+        const n = parseFloat(String(val).replace(/,/g, "").replace(/%/g, "").trim());
+        return isNaN(n) ? NaN : n;
+      };
+
       try {
         const json = JSON.parse(rawText);
         const arr = Array.isArray(json) ? json : (json.content || json.data || json.prices || []);
@@ -1050,25 +1115,90 @@
             const sym = String(row.symbol || row.scrip || "").trim().toUpperCase();
             const ltp = Number(row.lastTradedPrice || row.ltp || row.closePrice || 0);
             const prev = Number(row.previousClose || row.prevClose || 0);
-            if (sym && ltp > 0) priceMap[sym] = { ltp, prevClose: prev };
+            const open = Number(row.openPrice || row.open || 0);
+            const high = Number(row.highPrice || row.high || 0);
+            const low = Number(row.lowPrice || row.low || 0);
+            const qty = Number(row.totalTradeQuantity || row.qty || 0);
+            const pctChange = Number(row.percentageChange || row.pctChange || 0);
+            if (sym && ltp > 0) priceMap[sym] = { ltp, prevClose: prev, open, high, low, qty, pctChange };
           });
         }
       } catch (e) {}
+
+      // Column order for Merolagani LatestMarket: Symbol | LTP | % Change | Open | High | Low | Qty. | Close Price
+      let colMap = null;
       const trs = rawText.match(/<tr[\s\S]*?<\/tr>/gi) || [];
       trs.forEach(tr => {
-        const cells = (tr.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || []).map(td => td.replace(/<[^>]+>/g, "").trim());
-        const sIdx = cells.findIndex(c => /^[A-Z]{2,10}$/.test(c));
-        if (sIdx >= 0) {
-          const sym = cells[sIdx];
-          const nums = cells.slice(sIdx + 1).map(v => parseFloat(v.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 1 && n < 100000);
-          if (nums.length >= 1 && !priceMap[sym]) priceMap[sym] = { ltp: nums[0], prevClose: nums[nums.length - 1] || 0 };
+        const cells = (tr.match(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi) || []).map(c => c.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+        if (cells.length < 2) return;
+
+        const lowerCells = cells.map(c => c.toLowerCase());
+        if (lowerCells.some(c => c === "symbol" || c === "scrip") && lowerCells.some(c => c.includes("ltp"))) {
+          colMap = { symbol: -1, ltp: -1, pct: -1, open: -1, high: -1, low: -1, qty: -1, close: -1 };
+          lowerCells.forEach((h, idx) => {
+            if (h === "symbol" || h === "scrip") colMap.symbol = idx;
+            else if (h === "ltp" || h.includes("last traded")) colMap.ltp = idx;
+            else if (h.includes("%") || h.includes("change")) colMap.pct = idx;
+            else if (h === "open") colMap.open = idx;
+            else if (h === "high") colMap.high = idx;
+            else if (h === "low") colMap.low = idx;
+            else if (h.includes("qty") || h.includes("vol")) colMap.qty = idx;
+            else if (h.includes("close") || h.includes("prev")) colMap.close = idx;
+          });
+          return;
+        }
+
+        const sIdx = (colMap && colMap.symbol >= 0) ? colMap.symbol : cells.findIndex(c => /^[A-Z0-9]{2,10}$/.test(c));
+        if (sIdx < 0 || sIdx >= cells.length) return;
+        const sym = cells[sIdx].replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+        if (!/^[A-Z0-9]{2,10}$/.test(sym) || sym === "SYMBOL") return;
+
+        const idxLtp = (colMap && colMap.ltp >= 0) ? colMap.ltp : sIdx + 1;
+        const idxPct = (colMap && colMap.pct >= 0) ? colMap.pct : sIdx + 2;
+        const idxOpen = (colMap && colMap.open >= 0) ? colMap.open : sIdx + 3;
+        const idxHigh = (colMap && colMap.high >= 0) ? colMap.high : sIdx + 4;
+        const idxLow = (colMap && colMap.low >= 0) ? colMap.low : sIdx + 5;
+        const idxQty = (colMap && colMap.qty >= 0) ? colMap.qty : sIdx + 6;
+        const idxClose = (colMap && colMap.close >= 0) ? colMap.close : sIdx + 7;
+
+        const ltp = parseNum(cells[idxLtp]);
+        if (isNaN(ltp) || ltp <= 0 || ltp >= 100000) return;
+
+        const pctChange = parseNum(cells[idxPct]);
+        const open = parseNum(cells[idxOpen]);
+        const high = parseNum(cells[idxHigh]);
+        const low = parseNum(cells[idxLow]);
+        const qty = parseNum(cells[idxQty]);
+        const closePrice = parseNum(cells[idxClose]);
+
+        const derivedPrev = (!isNaN(pctChange) && pctChange !== -100) ? +(ltp / (1 + pctChange / 100)).toFixed(2) : ltp;
+        const prevClose = (!isNaN(closePrice) && closePrice > 0 && closePrice < 100000) ? closePrice : derivedPrev;
+
+        if (!priceMap[sym]) {
+          priceMap[sym] = {
+            ltp,
+            prevClose,
+            pctChange: isNaN(pctChange) ? 0 : pctChange,
+            open: (!isNaN(open) && open > 0) ? open : prevClose,
+            high: (!isNaN(high) && high > 0) ? high : Math.max(ltp, prevClose),
+            low: (!isNaN(low) && low > 0) ? low : Math.min(ltp, prevClose),
+            qty: isNaN(qty) ? 0 : qty
+          };
         }
       });
+
       rawText.split(/\r?\n/).forEach(line => {
         const m = line.match(/\b([A-Z]{2,10})\b/);
-        if (m && !priceMap[m[1]]) {
-          const nums = (line.slice(line.indexOf(m[1]) + m[1].length).match(/\d[\d,]*\.?\d*/g) || []).map(n => parseFloat(n.replace(/,/g, ""))).filter(n => !isNaN(n) && n > 1 && n < 100000);
-          if (nums.length >= 1) priceMap[m[1]] = { ltp: nums[0], prevClose: nums[1] || 0 };
+        if (m && !priceMap[m[1]] && m[1] !== "SYMBOL") {
+          const nums = (line.slice(line.indexOf(m[1]) + m[1].length).match(/-?\d[\d,]*\.?\d*/g) || []).map(n => parseFloat(n.replace(/,/g, ""))).filter(n => !isNaN(n));
+          if (nums.length >= 7 && nums[0] > 0 && nums[0] < 100000) {
+            const ltp = nums[0], pctChange = nums[1], open = nums[2], high = nums[3], low = nums[4], qty = nums[5], closePrice = nums[6];
+            const prevClose = closePrice > 0 ? closePrice : (pctChange !== -100 ? +(ltp / (1 + pctChange / 100)).toFixed(2) : ltp);
+            priceMap[m[1]] = { ltp, prevClose, pctChange, open, high, low, qty };
+          } else {
+            const filtered = nums.filter(n => n > 1 && n < 100000);
+            if (filtered.length >= 1) priceMap[m[1]] = { ltp: filtered[0], prevClose: filtered[1] || 0 };
+          }
         }
       });
       return priceMap;
@@ -1081,7 +1211,16 @@
       let count = 0;
       holdingsData = holdingsData.map(h => {
         const found = map[h.scrip];
-        if (found && found.ltp > 0) { count++; return { ...h, ltp: found.ltp, prevClose: found.prevClose > 0 ? found.prevClose : h.prevClose }; }
+        if (found && found.ltp > 0) {
+          count++;
+          return {
+            ...h,
+            ltp: found.ltp,
+            prevClose: found.prevClose > 0 ? found.prevClose : h.prevClose,
+            pctChange: typeof found.pctChange === "number" ? found.pctChange : h.pctChange,
+            marketQty: typeof found.qty === "number" ? found.qty : h.marketQty
+          };
+        }
         return h;
       });
       document.getElementById("bulkpaste-modal").classList.add("hidden");
@@ -1129,7 +1268,7 @@
     const formatRateDiff = (d) => (d > 0 ? "+" : d < 0 ? "-" : "") + "Rs " + formatNepaliNumber(Math.abs(d), 2) + "/u";
 
     function renderPortfolio() {
-      ["scrip", "units", "buyRate", "prevClose", "ltp", "val", "buypl", "daypl"].forEach(f => {
+      ["scrip", "units", "buyRate", "ltp", "val", "buypl", "daypl"].forEach(f => {
         const ind = document.getElementById("sort-ind-" + f);
         if (ind) {
           ind.textContent = sortField === f ? (sortDir === "desc" ? "▼" : "▲") : "⇅";
@@ -1146,7 +1285,7 @@
       tbody.innerHTML = "";
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 text-xs">"📂 Import MeroShare / Trade Book" थिचेर आफ्नो फाइल अपलोड गर्नुहोस्।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400 text-xs">"📂 Import MeroShare / Trade Book" थिचेर आफ्नो फाइल अपलोड गर्नुहोस्।</td></tr>`;
       }
 
       filtered.forEach(item => {
@@ -1156,6 +1295,13 @@
         const dayDiff = item.ltp - item.prevClose, dayPL = cur - prev, dayPct = prev > 0 ? (dayPL / prev) * 100 : 0;
         const buyCol = buyPL > 0 ? "text-emerald-400" : buyPL < 0 ? "text-red-400" : "text-purple-400";
         const dayCol = dayPL > 0 ? "text-emerald-400" : dayPL < 0 ? "text-red-400" : "text-purple-400";
+
+        const liveInfo = latestMarketCache[item.scrip] || {};
+        const pctChg = typeof item.pctChange === "number"
+          ? item.pctChange
+          : (typeof liveInfo.pctChange === "number" ? liveInfo.pctChange : (item.prevClose > 0 ? ((item.ltp - item.prevClose) / item.prevClose) * 100 : 0));
+        const mktQty = item.marketQty || liveInfo.qty || 0;
+        const pctCol = pctChg > 0 ? "text-emerald-400" : pctChg < 0 ? "text-red-400" : "text-purple-300";
 
         const bonusBadge = item.bonusRightQty > 0
           ? `<button type="button" onclick="event.stopPropagation(); toggleBonusRightType('${item.id}')" class="mt-0.5 inline-block px-1.5 py-0.5 rounded bg-indigo-500/25 text-indigo-200 border border-indigo-500/40 text-[10px] font-semibold cursor-pointer">🎁 +${item.bonusRightQty} ${item.bonusType === 'right' ? 'Right @100' : 'Bonus @0'}</button>`
@@ -1171,8 +1317,7 @@
           <td class="py-3 px-4"><div class="font-bold text-white">${escapeHtml(item.scrip)}</div><div class="text-[11px] text-slate-400">${escapeHtml(item.sector || "Equity")}</div>${bonusBadge}</td>
           <td class="py-3 px-3 text-right font-semibold text-slate-200">${formatNepaliNumber(item.units, Number.isInteger(item.units) ? 0 : 2)}</td>
           <td class="py-3 px-3 text-right font-semibold text-amber-200">Rs ${formatNepaliNumber(item.buyRate, 2)}</td>
-          <td class="py-3 px-3 text-right text-slate-300">Rs ${formatNepaliNumber(item.prevClose, 2)}</td>
-          <td class="py-3 px-3 text-right font-extrabold text-white">Rs ${formatNepaliNumber(item.ltp, 2)} <span class="text-[10px] font-normal text-slate-400">/u</span></td>
+          <td class="py-3 px-3 text-right"><div class="font-extrabold text-white">Rs ${formatNepaliNumber(item.ltp, 2)} <span class="text-[10px] font-semibold ${pctCol}">(${pctChg >= 0 ? "+" : ""}${pctChg.toFixed(2)}%)</span></div><div class="text-[11px] text-slate-400">Prev: Rs ${formatNepaliNumber(item.prevClose, 2)} • Qty: ${mktQty > 0 ? formatNepaliNumber(mktQty, 0) : "—"}</div></td>
           <td class="py-3 px-3 text-right font-bold text-slate-100">Rs ${formatNepaliNumber(cur, 2)}</td>
           <td class="py-3 px-3 text-right"><div class="font-bold ${buyCol}">${formatSignedNPR(buyPL)} (${buyPct >= 0 ? "+" : ""}${buyPct.toFixed(2)}%)</div><div class="text-[11px] ${buyCol}">${formatRateDiff(buyDiff)}</div></td>
           <td class="py-3 px-3 text-right"><div class="font-bold ${dayCol}">${formatSignedNPR(dayPL)} (${dayPct >= 0 ? "+" : ""}${dayPct.toFixed(2)}%)</div><div class="text-[11px] ${dayCol}">${formatRateDiff(dayDiff)}</div></td>
@@ -1246,11 +1391,11 @@
       const live = latestMarketCache[sym] || VERIFIED_NEPSE_SNAPSHOT[sym];
       const listed = NEPSE_LISTED_SCRIPS.find(s => s.symbol === sym);
 
-      const close = holding?.ltp || live?.ltp || listed?.refPrice || 250;
-      const prev = holding?.prevClose || live?.prevClose || +(close * 0.992).toFixed(2);
-      const open = prev;
-      const high = +(Math.max(open, close) * 1.016).toFixed(2);
-      const low = +(Math.min(open, close) * 0.984).toFixed(2);
+      const close = live?.ltp || holding?.ltp || listed?.refPrice || 250;
+      const prev = live?.prevClose || holding?.prevClose || +(close * 0.992).toFixed(2);
+      const open = (live?.open && live.open > 0) ? live.open : prev;
+      const high = (live?.high && live.high > 0) ? live.high : +(Math.max(open, close) * 1.016).toFixed(2);
+      const low = (live?.low && live.low > 0) ? live.low : +(Math.min(open, close) * 0.984).toFixed(2);
 
       document.getElementById("c-title").textContent = `${sym} (${listed?.sector || holding?.sector || "NEPSE"})`;
       document.getElementById("in-ohlc-o").value = open;
@@ -1393,7 +1538,7 @@
       box.scrollTop = box.scrollHeight;
 
       if (!apiKey || apiKey.length < 10) {
-        box.innerHTML += `<div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3 text-xs text-amber-200">पहिले माथिको <strong>🔑 API & Live URL</strong> बटनमा आफ्नो Gemini API Key सेभ गर्नुहोस्।</div>`;
+        box.innerHTML += `<div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-3 text-xs text-amber-200">पहिले माथिको <strong>🔑 API & Face ID</strong> बटनमा आफ्नो Gemini API Key सेभ गर्नुहोस्।</div>`;
         return;
       }
 
@@ -1418,7 +1563,8 @@ USER QUESTION (Reply in ${lang} using the exact live numbers above; never say yo
 ${userQuery}`;
 
       try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${encodeURIComponent(apiKey)}`, {
+        const geminiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=' + encodeURIComponent(apiKey);
+        const res = await fetch(geminiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -1579,6 +1725,7 @@ ${userQuery}`;
     function openSettingsModal() {
       document.getElementById("gemini-key-input").value = apiKey;
       document.getElementById("live-proxy-url-input").value = customLiveUrl;
+      updateBiometricSettingsUI();
       document.getElementById("settings-modal").classList.remove("hidden");
     }
     function saveAppSettings() {
@@ -1588,6 +1735,130 @@ ${userQuery}`;
       localStorage.setItem("nepse_custom_live_url", customLiveUrl);
       document.getElementById("settings-modal").classList.add("hidden");
       fetchLiveNepsePrices(true); alert("✅ Settings सेभ भयो!");
+    }
+
+    // ==================== FACE ID / BIOMETRIC (WEBAUTHN) AUTH ====================
+    function getBiometricCreds() { try { return JSON.parse(localStorage.getItem(BIOMETRIC_CREDS_KEY) || "[]"); } catch { return []; } }
+    function saveBiometricCreds(list) { localStorage.setItem(BIOMETRIC_CREDS_KEY, JSON.stringify(list)); }
+
+    function bufferToBase64Url(buf) {
+      const bytes = new Uint8Array(buf);
+      let bin = "";
+      bytes.forEach(b => { bin += String.fromCharCode(b); });
+      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+    function base64UrlToBuffer(str) {
+      const pad = str.length % 4 === 0 ? "" : "=".repeat(4 - (str.length % 4));
+      const b64 = (str + pad).replace(/-/g, "+").replace(/_/g, "/");
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return bytes.buffer;
+    }
+
+    function updateBiometricSettingsUI() {
+      const badge = document.getElementById("biometric-status-badge");
+      const disBtn = document.getElementById("biometric-disable-btn");
+      if (!badge || !currentUser) return;
+      const enrolled = getBiometricCreds().some(c => c.userId === currentUser.userId);
+      if (enrolled) {
+        badge.textContent = "🟢 Enabled";
+        badge.className = "text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300";
+        if (disBtn) disBtn.classList.remove("hidden");
+      } else {
+        badge.textContent = "Not Enrolled";
+        badge.className = "text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300";
+        if (disBtn) disBtn.classList.add("hidden");
+      }
+    }
+
+    async function registerBiometricsForCurrentUser() {
+      if (!currentUser) return;
+      if (!window.PublicKeyCredential || !navigator.credentials) {
+        alert("⚠️ यो ब्राउजर वा डिभाइसमा Face ID / Biometrics (WebAuthn) उपलब्ध छैन।");
+        return;
+      }
+      try {
+        const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+        if (!available) {
+          alert("⚠️ यस डिभाइसमा Face ID / Fingerprint सेटअप गरिएको छैन।");
+          return;
+        }
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+        const userIdBytes = new TextEncoder().encode(currentUser.userId);
+        const cred = await navigator.credentials.create({
+          publicKey: {
+            challenge,
+            rp: { name: "NEPSE CloudPulse AI" },
+            user: { id: userIdBytes, name: currentUser.userId, displayName: currentUser.fullName },
+            pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
+            authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+            timeout: 60000
+          }
+        });
+        if (cred && cred.rawId) {
+          const creds = getBiometricCreds().filter(c => c.userId !== currentUser.userId);
+          creds.push({ userId: currentUser.userId, credId: bufferToBase64Url(cred.rawId) });
+          saveBiometricCreds(creds);
+          updateBiometricSettingsUI();
+          alert("✅ Face ID / Biometrics सफलतापूर्वक सक्रिय भयो!");
+        }
+      } catch (err) {
+        alert("⚠️ Face ID / Biometrics सक्रिय गर्न सकिएन: " + err.message);
+      }
+    }
+
+    function disableBiometricsForCurrentUser() {
+      if (!currentUser) return;
+      saveBiometricCreds(getBiometricCreds().filter(c => c.userId !== currentUser.userId));
+      updateBiometricSettingsUI();
+      alert("Face ID / Biometrics हटाइयो।");
+    }
+
+    async function loginWithBiometrics() {
+      const alertEl = document.getElementById("auth-alert");
+      alertEl.classList.add("hidden");
+      if (!window.PublicKeyCredential || !navigator.credentials) {
+        alertEl.textContent = "यो ब्राउजरमा Face ID / Biometrics समर्थित छैन। User ID र Password प्रयोग गर्नुहोस्।";
+        alertEl.classList.remove("hidden");
+        return;
+      }
+      const typedId = document.getElementById("login-userid").value.trim().toLowerCase();
+      const users = getRegisteredUsers();
+      const targetUser = typedId ? users.find(u => u.userId === typedId || u.email === typedId) : null;
+      const allCreds = getBiometricCreds();
+      const matchingCreds = targetUser ? allCreds.filter(c => c.userId === targetUser.userId) : allCreds;
+
+      if (matchingCreds.length === 0) {
+        alertEl.textContent = "पहिले Password बाट Sign In गरी 🔑 API & Face ID भित्र Face ID सक्रिय गर्नुहोस्।";
+        alertEl.classList.remove("hidden");
+        return;
+      }
+      try {
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+        const assertion = await navigator.credentials.get({
+          publicKey: {
+            challenge,
+            allowCredentials: matchingCreds.map(c => ({ id: base64UrlToBuffer(c.credId), type: "public-key", transports: ["internal"] })),
+            userVerification: "required",
+            timeout: 60000
+          }
+        });
+        if (assertion) {
+          const usedId = bufferToBase64Url(assertion.rawId);
+          const matchedCred = matchingCreds.find(c => c.credId === usedId) || matchingCreds[0];
+          const matchedUser = users.find(u => u.userId === matchedCred.userId);
+          if (matchedUser) {
+            loginAsUser(matchedUser);
+            return;
+          }
+        }
+        alertEl.textContent = "Biometric प्रमाणीकरण पूरा भएन।";
+        alertEl.classList.remove("hidden");
+      } catch (err) {
+        alertEl.textContent = "Face ID / Biometrics असफल भयो वा रद्द गरियो। Password बाट लगइन गर्नुहोस्।";
+        alertEl.classList.remove("hidden");
+      }
     }
 
     function triggerEmailCredentials(u) {
